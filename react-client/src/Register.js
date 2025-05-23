@@ -43,6 +43,7 @@ function Register() {
             <input
               type="password"
               className="form-control"
+              placeholder="Mot de passe"
               name="password"
               value={form.password}
               onChange={handleChange}
