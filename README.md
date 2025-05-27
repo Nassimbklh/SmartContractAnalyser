@@ -20,3 +20,50 @@ SmartContractAnalyser/
 │   ├── start-react.bat     ← Script de démarrage frontend (Windows)
 ```
 
+---
+
+## ⚙️ Prérequis
+
+- Python 3.12+
+- Node.js 18+
+- PostgreSQL en local (ou hébergée sur Azure)
+- Une clé API OpenAI (`sk-...`) valide
+
+---
+
+## 🔧 Installation backend
+
+1. Ouvre un terminal et va dans le dossier backend :
+
+```bash
+cd backend
+```
+2.	Active un environnement virtuel :
+```
+python -m venv .venv
+source .venv/bin/activate    # macOS/Linux
+.venv\Scripts\activate       # Windows
+```
+3.	Installe les dépendances Python :
+
+```bash
+pip install -r requirements.txt
+```
+
+4.	Lance le backend :
+```bash
+cd backend
+python app.py
+```
+
+5. Dans un nouveau terminal, va dans le dossier React :
+```bash
+cd react-client
+npm install
+npm start ou start-react.bat (c'est mieux)
+
+```
+L’interface sera dispo ici : http://localhost:3000
+
+
+
