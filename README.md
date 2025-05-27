@@ -64,6 +64,7 @@ npm start ou start-react.bat (c'est mieux)
 
 ```
 L’interface sera dispo ici : http://localhost:3000
+user : admin pwd : admin
 
 
 
