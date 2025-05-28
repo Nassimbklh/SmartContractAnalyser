@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { authAPI } from "../services/api";
+import { handleApiError } from "../utils/utils";
 
 function Register() {
   const navigate = useNavigate();
@@ -28,14 +29,13 @@ function Register() {
     }
 
     try {
-      const BACKEND_URL = (window.env && window.env.REACT_APP_API_URL) || process.env.REACT_APP_API_URL || "http://localhost:4455";
-      const res = await axios.post(`${BACKEND_URL}/register`, form);
+      await authAPI.register(form);
       setMessage("✅ Inscription réussie !");
       setMessageType("success");
       setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      const error = err.response?.data?.error || "❌ Erreur lors de l'inscription";
-      setMessage(error);
+    } catch (error) {
+      const errorMessage = handleApiError(error) || "❌ Erreur lors de l'inscription";
+      setMessage(errorMessage);
       setMessageType("danger");
     }
   };

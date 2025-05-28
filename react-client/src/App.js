@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./AuthContext";
-import Login from "./Login";
-import Register from "./Register";
-import Analyze from "./Analyze";
-import Navbar from "./Navbar";
-import History from "./History";
+import { AuthProvider, AuthContext } from "./contexts/AuthContext";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Analyze from "./components/Analyze";
+import Navbar from "./components/Navbar";
+import History from "./components/History";
 
 function ProtectedRoute({ children }) {
   const { token } = React.useContext(AuthContext);

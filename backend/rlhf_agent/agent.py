@@ -17,8 +17,11 @@ import openai
 import requests
 
 # -------------------- CONFIGURATION --------------------
-OPENAI_API_KEY = "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"
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+# Get OpenAI API key from environment variable
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+if not OPENAI_API_KEY:
+    print("Warning: OPENAI_API_KEY environment variable not set")
+openai.api_key = OPENAI_API_KEY
 SOLC_VERSION = "0.4.26"
 DATA_FOLDER = "./data/val"
 BUFFER_FILE = "rlaif_buffer.jsonl"

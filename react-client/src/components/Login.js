@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-
-// Utilise l'URL du backend depuis window.env, .env ou fallback localhost
-const BACKEND_URL = (window.env && window.env.REACT_APP_API_URL) || process.env.REACT_APP_API_URL || "http://localhost:4455";
+import { authAPI } from "../services/api";
+import { handleApiError } from "../utils/utils";
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -19,11 +17,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${BACKEND_URL}/login`, form);
-      login(res.data.access_token);
+      const res = await authAPI.login(form);
+      login(res.data.data.access_token);
       navigate("/analyze");
-    } catch {
-      setMessage("❌ Adresse ou mot de passe invalide");
+    } catch (error) {
+      setMessage(`❌ ${handleApiError(error) || "Adresse ou mot de passe invalide"}`);
     }
   };
 

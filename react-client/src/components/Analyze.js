@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
+import { contractAPI } from "../services/api";
+import { downloadBlob, handleApiError } from "../utils/utils";
 
 function Analyze() {
   const [code, setCode] = useState("");
@@ -35,24 +36,16 @@ function Analyze() {
     if (code.trim()) formData.append("code", code);
 
     try {
-      const BACKEND_URL = (window.env && window.env.REACT_APP_API_URL) || process.env.REACT_APP_API_URL || "http://localhost:4455";
-      const res = await axios.post(`${BACKEND_URL}/analyze`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: "text",
-      });
+      const res = await contractAPI.analyze(formData);
 
-      // The response is now directly the markdown content
-      const markdownContent = res.data;
-      setReportContent(markdownContent);
+      const text = await res.data.text();
+      setReportContent(text);
 
-      // Create a blob URL for download
-      const blobUrl = window.URL.createObjectURL(new Blob([markdownContent], { type: "text/markdown" }));
+      const blobUrl = window.URL.createObjectURL(new Blob([text], { type: "text/plain" }));
       setDownloadUrl(blobUrl);
-    } catch (err) {
-      console.error(err);
-      setError("❌ Erreur lors de l'analyse");
+    } catch (error) {
+      console.error(error);
+      setError(`❌ Erreur lors de l'analyse: ${handleApiError(error)}`);
     } finally {
       setLoading(false);
     }
@@ -109,16 +102,14 @@ function Analyze() {
       {reportContent && (
         <div className="mt-4">
           <h4 className="mb-2">📝 Résultat de l’analyse :</h4>
-          <div className="bg-light p-3 rounded border max-h-96 overflow-auto markdown-report">
-            <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', margin: 0 }}>
-              {reportContent}
-            </pre>
-          </div>
+          <pre className="bg-light p-3 rounded border max-h-96 overflow-auto">
+            {reportContent}
+          </pre>
 
           {downloadUrl && (
             <a
               href={downloadUrl}
-              download="rapport.md"
+              download="rapport.txt"
               className="btn btn-success mt-3"
             >
               📥 Télécharger le rapport
