@@ -1,35 +1,40 @@
-# Build stage
-FROM node:18-alpine as build
+# Simplified Dockerfile for React application
+# Using a single-stage build for easier understanding
 
+# Base image: Node.js 18 with Alpine Linux (lightweight)
+FROM node:18-alpine
+
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json first (for better caching)
+# This step is separated to leverage Docker's layer caching
 COPY package*.json ./
 
 # Install dependencies
+# Using 'npm ci' for clean install based on package-lock.json
 RUN npm ci
 
-# Copy the rest of the code
+# Copy all application files to the container
 COPY . .
 
 # Set NODE_OPTIONS for OpenSSL compatibility
+# This helps with older React applications that need legacy OpenSSL
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-# Build the app
+# Build the React application
+# This creates optimized production files in the /app/build directory
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Install a simple HTTP server to serve the static files
+# serve is a lightweight server that can handle SPA routing
+RUN npm install -g serve
 
-# Copy the build output to replace the default nginx contents
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy custom nginx config
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-
-# Expose port
+# Expose port 80 (standard HTTP port)
+# This matches the port expected in docker-compose.yml
 EXPOSE 80
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Start the server
+# -s flag serves the app as a single-page application (handles client-side routing)
+# -l 80 sets the listening port to 80
+CMD ["serve", "-s", "build", "-l", "80"]
