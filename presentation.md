@@ -60,6 +60,324 @@ La base de données stocke les informations des utilisateurs et les rapports d'a
    - Le backend récupère les rapports de l'utilisateur depuis la base de données
    - Les rapports sont affichés dans l'interface utilisateur
 
+## Implémentation Détaillée des API et Communication Frontend-Backend
+
+### 1. Structure du Backend et Création des API
+
+Le backend est organisé selon une architecture modulaire utilisant les **blueprints** de Flask pour organiser les routes API de manière claire et maintenable.
+
+#### 1.1 Organisation des Fichiers Backend
+
+```
+backend/
+├── api/                  # Définition des endpoints API
+│   ├── __init__.py       # Enregistrement des blueprints
+│   ├── auth.py           # Endpoints d'authentification
+│   └── contract.py       # Endpoints de gestion des contrats
+├── models/               # Modèles de données
+├── services/             # Logique métier
+├── utils/                # Utilitaires
+└── app.py                # Point d'entrée de l'application
+```
+
+#### 1.2 Création des API avec Flask Blueprints
+
+Les API sont créées en trois étapes principales :
+
+1. **Définition des blueprints** dans des fichiers séparés :
+
+```python
+# Exemple de api/auth.py
+from flask import Blueprint, request, jsonify
+from ..services import register_user, authenticate_user
+from ..utils import success_response, error_response
+
+auth_bp = Blueprint('auth', __name__)
+
+@auth_bp.route("/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    wallet = data.get("wallet")
+    password = data.get("password")
+
+    try:
+        register_user(wallet, password)
+        return success_response(message="Inscription réussie")
+    except ValueError as e:
+        return error_response(str(e), 400)
+```
+
+2. **Enregistrement des blueprints** dans le fichier `api/__init__.py` :
+
+```python
+from .auth import auth_bp
+from .contract import contract_bp
+
+def register_blueprints(app):
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(contract_bp)
+```
+
+3. **Initialisation de l'application** dans `app.py` :
+
+```python
+from flask import Flask
+from flask_cors import CORS
+from .api import register_blueprints
+from .models.base import Base, engine
+
+def create_app():
+    app = Flask(__name__)
+    app.config.update(Config.get_config())
+    CORS(app)  # Active CORS pour permettre les requêtes cross-origin
+
+    # Crée les tables dans la base de données
+    Base.metadata.create_all(bind=engine)
+
+    # Enregistre les blueprints
+    register_blueprints(app)
+
+    return app
+
+app = create_app()
+```
+
+#### 1.3 Protection des Routes avec JWT
+
+Les routes protégées utilisent un décorateur `@token_required` qui vérifie la validité du token JWT :
+
+```python
+# Dans utils/auth.py
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        auth_header = request.headers.get('Authorization')
+
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(' ')[1]
+
+        if not token:
+            return error_response("Token manquant", 401)
+
+        try:
+            payload = jwt.decode(token, Config.get_config()['SECRET_KEY'], algorithms=["HS256"])
+            wallet = payload['wallet']
+        except:
+            return error_response("Token invalide", 401)
+
+        return f(wallet, *args, **kwargs)
+    return decorated
+
+# Utilisation dans les routes
+@contract_bp.route("/analyze", methods=["POST"])
+@token_required
+def analyze(wallet):
+    # Le paramètre wallet est automatiquement extrait du token
+    # ...
+```
+
+### 2. Structure du Frontend et Communication avec le Backend
+
+#### 2.1 Service API Centralisé
+
+Le frontend utilise un service API centralisé (`services/api.js`) basé sur Axios pour communiquer avec le backend :
+
+```javascript
+import axios from 'axios';
+
+// URL du backend depuis les variables d'environnement
+const BACKEND_URL = process.env.REACT_APP_API_URL || "http://localhost:4455";
+
+// Instance Axios avec configuration par défaut
+const api = axios.create({
+  baseURL: BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Intercepteur pour ajouter le token JWT à chaque requête
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// API d'authentification
+export const authAPI = {
+  login: (credentials) => api.post('/login', credentials),
+  register: (userData) => api.post('/register', userData),
+};
+
+// API de gestion des contrats
+export const contractAPI = {
+  analyze: (formData) => api.post('/analyze', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    responseType: 'blob',
+  }),
+  getHistory: () => api.get('/history'),
+  getReport: (wallet, filename) => api.get(`/report/${wallet}/${filename}`, {
+    responseType: 'blob',
+  }),
+};
+```
+
+#### 2.2 Gestion de l'Authentification avec AuthContext
+
+L'état d'authentification est géré de manière centralisée avec React Context :
+
+```javascript
+// Dans AuthContext.js
+import React, { createContext, useState } from "react";
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const login = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+```
+
+#### 2.3 Protection des Routes Frontend
+
+Le frontend utilise un composant `ProtectedRoute` pour rediriger les utilisateurs non authentifiés :
+
+```javascript
+// Dans App.js
+function ProtectedRoute({ children }) {
+  const { token } = React.useContext(AuthContext);
+  return token ? children : <Navigate to="/login" />;
+}
+
+// Utilisation dans les routes
+<Route path="/analyze" element={<ProtectedRoute><Analyze /></ProtectedRoute>} />
+```
+
+### 3. Exemples Concrets de Communication Frontend-Backend
+
+#### 3.1 Authentification (Login.js → /login)
+
+```javascript
+// Dans Login.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post(`${BACKEND_URL}/login`, form);
+    login(res.data.access_token); // Stocke le token dans AuthContext
+    navigate("/analyze");
+  } catch {
+    setMessage("❌ Adresse ou mot de passe invalide");
+  }
+};
+```
+
+Côté backend (api/auth.py) :
+```python
+@auth_bp.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    wallet = data.get("wallet")
+    password = data.get("password")
+
+    try:
+        auth_data = authenticate_user(wallet, password)
+        return success_response(data=auth_data)
+    except ValueError:
+        return error_response("Identifiants invalides", 401)
+```
+
+#### 3.2 Analyse de Contrat (Analyze.js → /analyze)
+
+```javascript
+// Dans Analyze.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  if (file) formData.append("file", file);
+  if (code.trim()) formData.append("code", code);
+
+  try {
+    const res = await axios.post(`${BACKEND_URL}/analyze`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: "text",
+    });
+    setReportContent(res.data);
+  } catch (err) {
+    setError("❌ Erreur lors de l'analyse");
+  }
+};
+```
+
+Côté backend (api/contract.py) :
+```python
+@contract_bp.route("/analyze", methods=["POST"])
+@token_required
+def analyze(wallet):
+    file = request.files.get("file")
+    code = request.form.get("code")
+    content = code or (file.read().decode("utf-8") if file else "")
+
+    # Analyse du contrat
+    result = analyze_contract(content, user.id)
+
+    # Génération du rapport
+    markdown = generate_report_markdown(result["report"])
+    return markdown, 200, {'Content-Type': 'text/markdown; charset=utf-8'}
+```
+
+#### 3.3 Consultation de l'Historique (History.js → /history)
+
+```javascript
+// Dans History.js
+useEffect(() => {
+  fetch(`${BACKEND_URL}/history`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+    .then(res => res.json())
+    .then(data => setHistory(data))
+    .catch(err => setError("Erreur lors du chargement de l'historique"));
+}, [token, BACKEND_URL]);
+```
+
+Côté backend (api/contract.py) :
+```python
+@contract_bp.route("/history", methods=["GET"])
+@token_required
+def history(wallet):
+    user = get_user_by_wallet(wallet)
+    reports = get_user_reports(user.id)
+    formatted_reports = [
+        {
+            "filename": r.filename,
+            "date": r.created_at.strftime("%Y-%m-%d %H:%M"),
+            "status": r.status,
+            "attack": r.attack
+        } for r in reports
+    ]
+    return success_response(data=formatted_reports)
+```
+
 ## Configuration Docker
 
 ### Architecture Docker

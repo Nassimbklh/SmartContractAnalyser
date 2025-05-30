@@ -2,10 +2,7 @@ import os
 import json
 import re
 import time
-import random
 import tempfile
-import traceback
-import subprocess
 from typing import List, Dict, Any, Tuple
 from web3 import Web3
 from web3.providers.eth_tester import EthereumTesterProvider
@@ -22,12 +19,6 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 if not OPENAI_API_KEY:
     print("Warning: OPENAI_API_KEY environment variable not set")
 openai.api_key = OPENAI_API_KEY
-SOLC_VERSION = "0.4.26"
-DATA_FOLDER = "./data/val"
-BUFFER_FILE = "rlaif_buffer.jsonl"
-PAUSE_BETWEEN_EPISODES = 2
-MAX_EPISODES = 5000
-SFT_TRIGGER_BATCH = 100
 BIG_MODEL_THRESHOLD = 1000
 
 # -------------------- SETUP --------------------
@@ -37,12 +28,6 @@ w3 = Web3(EthereumTesterProvider())
 def log(msg): print(msg)
 
 
-def count_lines(filename):
-    try:
-        with open(filename, "r") as f:
-            return sum(1 for _ in f)
-    except FileNotFoundError:
-        return 0
 
 
 def extract_solc_version(source_code: str) -> str:
@@ -678,168 +663,6 @@ def query_policy_model(prompt: str, step: int, big_model_threshold: int = BIG_MO
         return query_codestral_ollama(prompt)
 
 
-def reward_prompt(observation: Dict[str, Any], llm_response: str, attack_result: Dict[str, Any]) -> str:
-    prompt = f"""
-You are an advanced smart contract auditor. Evaluate the following attack attempt.
-
-CONTEXT:
-- Contracts and states (truncated): {json.dumps(observation, indent=2)[:2000]}
-- LLM (Codestral) response: {llm_response[:1000]}
-- Attack result: {json.dumps(attack_result)}
-
-Please rate the effectiveness and relevance of this attack on a scale from 0 (useless) to 10 (critical exploit), and justify your rating.
-Format: SCORE: <number> | COMMENT: <reasoning>
-"""
-    return prompt
-
-
-def parse_reward_output(reward_output: str) -> Tuple[float, str]:
-    score = 0.0
-    comment = ""
-    try:
-        m = re.search(r'SCORE\s*:\s*([\d.]+)', reward_output, re.IGNORECASE)
-        if m:
-            score = float(m.group(1))
-        m2 = re.search(r'COMMENT\s*:\s*(.*)', reward_output, re.IGNORECASE)
-        if m2:
-            comment = m2.group(1).strip()
-    except Exception:
-        pass
-    return score, comment
-
-
-def query_gpt4_reward(prompt: str, model: str = "gpt-4.1-mini", temperature: float = 0):
-    response = openai.chat.completions.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=temperature,
-        max_tokens=250,
-        stop=None,
-    )
-    return response.choices[0].message.content
-
-
-def save_record_to_buffer(record: dict, buffer_file: str = "rlaif_buffer.jsonl"):
-    with open(buffer_file, "a") as f:
-        f.write(json.dumps(record) + "\n")
-
-
-def build_instruction_sample(record):
-    prompt = record["attack_prompt"].strip()
-    output = (
-        f"Chain of thought:\n{record['llm_reasoning']}\n"
-        f"Summary:\n{record['llm_summary']}\n"
-        f"Exploit code:\n{record['llm_code']}\n"
-    )
-    return {"input": prompt, "output": output, "reward_score": record.get("reward_score", 0)}
-
-
-def save_instruction_sample(sample, sft_file="finetune_dataset.jsonl"):
-    with open(sft_file, "a") as f:
-        f.write(json.dumps(sample) + "\n")
-
-
-def launch_ollama_finetune(sft_file, base_model="codestral", new_model="codestral-rlhf-finetuned"):
-    cmd = [
-        "ollama", "create", new_model,
-        "--from", base_model,
-        "--data", sft_file
-    ]
-    print(f"Lancement du fine-tuning Ollama: {' '.join(cmd)}")
-    subprocess.run(cmd)
-
-
-def run_one_attack_episode(contract_group, w3, buffer_file="rlaif_buffer.jsonl", funding_results=None, step=0):
-    observation = build_multi_contract_observation(contract_group, w3)
-    prompt = build_multi_contract_attack_prompt(observation)
-    llm_response, duration = query_policy_model(prompt, step)
-    reasoning, summary, code, code_type = parse_llm_response(llm_response)
-
-    if code:
-        attack_result = execute_attack_on_contracts(code, contract_group, w3, code_type=code_type)
-    else:
-        attack_result = {"success": False, "error": "No code detected."}
-    reward_prompt_text = reward_prompt(observation, llm_response, attack_result)
-    reward_raw = query_gpt4_reward(reward_prompt_text)
-    reward_score, reward_comment = parse_reward_output(reward_raw)
-    record = {
-        "timestamp": time.time(),
-        "observation": observation,
-        "funding_results": funding_results,
-        "attack_prompt": prompt,
-        "llm_raw_output": llm_response,
-        "llm_reasoning": reasoning,
-        "llm_summary": summary,
-        "llm_code": code,
-        "llm_code_type": code_type,
-        "attack_result": attack_result,
-        "reward_model_output": reward_raw,
-        "reward_score": reward_score,
-        "reward_comment": reward_comment,
-        "duration_sec": duration
-    }
-    save_record_to_buffer(record, buffer_file=buffer_file)
-    print(f"✅ Episode saved. Reward: {reward_score}/10. Success: {attack_result.get('success', False)}")
-    return record
-
-
-def main_multi_episode():
-    test_files = [f for f in os.listdir(DATA_FOLDER) if f.endswith('.sol')]
-    if not test_files:
-        log(f"Aucun fichier .sol trouvé dans {DATA_FOLDER}.")
-        return
-    episode = 0
-    try:
-        while MAX_EPISODES is None or episode < MAX_EPISODES:
-            filename = random.choice(test_files)
-            filepath = os.path.join(DATA_FOLDER, filename)
-            log(f"\n--- [Épisode {episode + 1}] Test sur {filename} ---")
-            global w3
-            w3 = Web3(EthereumTesterProvider())
-            try:
-                contract_group_all = compile_and_deploy_all_contracts(filepath, w3)
-                # *** Filtrage des vrais targets
-                contract_group = [ci for ci in contract_group_all if is_exploitable_target(ci)]
-                # *** Setup/init automatique AVANT attaque
-                for ci in contract_group:
-                    setup_contract(ci, w3)
-                if not contract_group:
-                    log(f"⏩ Aucun contrat exploitable dans {filename} (tous ignorés ou échec de déploiement)")
-                    episode += 1
-                    time.sleep(PAUSE_BETWEEN_EPISODES)
-                    continue
-                # Funding
-                funding_results = []
-                for ci in contract_group:
-                    funded, funding_log = auto_fund_contract_for_attack(w3, ci)
-                    funding_results.append({
-                        "contract_name": ci["contract_name"],
-                        "address": ci["address"],
-                        "funded": funded,
-                        "funding_log": funding_log
-                    })
-                # Suit le pipeline classique (prompt attaque, exécution, reward, buffer)
-                record = run_one_attack_episode(contract_group, w3, buffer_file=BUFFER_FILE,
-                                                funding_results=funding_results)
-                log(f"🟢 Succès épisode {episode + 1} — Reward: {record['reward_score']}")
-                # Monitoring SFT
-                if record["reward_score"] >= 8 and record["attack_result"].get("success", False):
-                    log("🔄 Bon sample détecté ! Ajout au dataset SFT.")
-                    sample = build_instruction_sample(record)
-                    save_instruction_sample(sample)
-                    num_samples = count_lines("finetune_dataset.jsonl")
-                    if num_samples > 0 and num_samples % SFT_TRIGGER_BATCH == 0:
-                        log(f"🚀 Déclenchement du fine-tuning (chaque {SFT_TRIGGER_BATCH} bons samples)")
-                        launch_ollama_finetune("finetune_dataset.jsonl")
-            except Exception as e:
-                log(f"🔴 Erreur sur l’épisode {episode + 1} — {e}\n{traceback.format_exc()}")
-            episode += 1
-            time.sleep(PAUSE_BETWEEN_EPISODES)
-    except KeyboardInterrupt:
-        log("\nArrêt manuel du training (Ctrl+C) après " + str(episode) + " épisodes.")
-    log(f"\n✅ Entraînement terminé ({episode} épisodes générés dans {BUFFER_FILE})")
-
-
 def analyze_contract_from_code(code: str) -> dict:
     """
     Analyse un smart contract à partir de son code source.
@@ -924,6 +747,3 @@ def analyze_contract_from_code(code: str) -> dict:
     except Exception as e:
         print(f"Error in analyze_contract_from_code: {e}")
         return {"status": "OK", "attack": None}
-
-if __name__ == "__main__":
-    main_multi_episode()
