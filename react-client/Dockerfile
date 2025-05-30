@@ -1,14 +1,6 @@
-# Simplified Dockerfile for React application
-# Using a single-stage build for easier understanding
-
 # Base image: Node.js 18 with Alpine Linux (lightweight)
 FROM node:18-alpine
-
-# Set working directory inside the container
 WORKDIR /app
-
-# Copy package.json and package-lock.json first (for better caching)
-# This step is separated to leverage Docker's layer caching
 COPY package*.json ./
 
 # Install dependencies
