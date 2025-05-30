@@ -1,156 +1,214 @@
-# SmartContractAnalyser
+# Guide d'utilisation de SmartContractAnalyser
 
-Un outil pour analyser les contrats intelligents à la recherche de vulnérabilités et d'exploits potentiels.
+Ce guide explique comment accéder et utiliser les différentes composantes du projet SmartContractAnalyser.
 
 ## Prérequis
 
-- **Docker** : Nécessaire pour exécuter l'application conteneurisée
-- **Docker Compose** : Nécessaire pour orchestrer l'application multi-conteneurs
-- **Git** : Nécessaire pour cloner le dépôt
-- **Navigateur Web** : Chrome, Firefox, Edge ou Safari pour accéder à l'interface web
-- **Clé API OpenAI** : Nécessaire pour la fonctionnalité d'analyse des contrats intelligents
+- Docker et Docker Compose installés sur votre machine
+- Un terminal pour exécuter les commandes
+- Un navigateur web moderne (Chrome, Firefox, Edge, etc.)
+- Une clé API OpenAI (pour l'analyse des contrats intelligents)
+- Git (pour cloner le dépôt)
 
-## Guide d'installation et de lancement
+## Lancement du projet
 
-### 1. Cloner le dépôt
+1. Clonez le dépôt GitHub :
+   ```bash
+   git clone <url-du-dépôt>
+   cd SmartContractAnalyser
+   ```
 
-```bash
-git clone https://github.com/yourusername/SmartContractAnalyser.git
-cd SmartContractAnalyser
-```
+2. Créez un fichier `.env` à la racine du projet avec le contenu suivant :
+   ```
+   # OpenAI API Key
+   OPENAI_API_KEY=votre_clé_api_openai_ici
 
-### 2. Créer le fichier d'environnement
+   # Database Configuration
+   POSTGRES_USER=user
+   POSTGRES_PASSWORD=password
+   POSTGRES_DB=mydb
+   DATABASE_URL=postgresql://user:password@db:5432/mydb
 
-Créez un fichier `.env` à la racine du projet avec le contenu suivant :
+   # Frontend Configuration
+   REACT_APP_API_URL=http://localhost:4455
+   ```
 
-```
-# Clé API OpenAI (Requise pour l'analyse des contrats intelligents)
-OPENAI_API_KEY=votre_clé_api_openai_ici
+3. Rendez le script de démarrage exécutable :
+   ```bash
+   chmod +x start.sh
+   ```
 
-# Configuration de la base de données
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_DB=mydb
-DATABASE_URL=postgresql://user:password@db:5432/mydb
+4. Lancez le projet avec le script de démarrage :
+   ```bash
+   ./start.sh
+   ```
 
-# Configuration du frontend
-REACT_APP_API_URL=http://localhost:4455
-```
-
-### 3. Rendre le script de démarrage exécutable
-
-```bash
-chmod +x start.sh
-```
-
-### 4. Lancer l'application
-
-```bash
-./start.sh
-```
-
-Le script va :
-- Vérifier les prérequis (Docker, Docker Compose, fichier .env)
-- Arrêter les conteneurs existants
-- Construire et démarrer tous les conteneurs
-- Vérifier que tous les services fonctionnent correctement
-- Afficher les URLs d'accès et les identifiants
+5. Attendez que tous les conteneurs soient démarrés. Vous verrez un message de confirmation lorsque tout est prêt.
 
 ## Accès aux services
 
-### Frontend (Interface Web)
+### Frontend (Interface utilisateur)
 
 - **URL** : http://localhost:4456
-- **Description** : Interface web pour analyser les contrats intelligents
+- **Description** : Interface web pour interagir avec l'analyseur de contrats intelligents
 - **Fonctionnalités** :
-  - Inscription et connexion utilisateur
+  - Inscription et connexion
   - Analyse de contrats intelligents
   - Historique des analyses
-  - Téléchargement de rapports
+  - Téléchargement des rapports
 
-### API Backend
+### Backend (API)
 
 - **URL** : http://localhost:4455
 - **Description** : API REST pour l'analyse des contrats intelligents
-- **Points d'accès** :
-  - `/register` - Inscrire un nouvel utilisateur
-  - `/login` - Se connecter et obtenir un jeton d'accès
-  - `/analyze` - Analyser un contrat intelligent
-  - `/history` - Obtenir l'historique des analyses
-  - `/report/<wallet>/<filename>` - Obtenir un rapport d'analyse spécifique
+- **Endpoints** :
+  - `/register` - Inscription d'un nouvel utilisateur
+  - `/login` - Connexion et obtention d'un token d'accès
+  - `/analyze` - Analyse d'un contrat intelligent
+  - `/history` - Récupération de l'historique des analyses
+  - `/report/<wallet>/<filename>` - Récupération d'un rapport spécifique
 
-### Gestion de la base de données (pgAdmin)
+### Base de données (PostgreSQL)
+
+- **Port** : 5432
+- **Utilisateur** : user
+- **Mot de passe** : password
+- **Base de données** : mydb
+- **Description** : Stocke les utilisateurs et les rapports d'analyse
+
+### pgAdmin (Interface d'administration de la base de données)
 
 - **URL** : http://localhost:4457
-- **Identifiants** : 
-  - Email : admin@admin.com
-  - Mot de passe : admin
-- **Pour se connecter à la base de données** :
-  1. Ajouter un nouveau serveur
-  2. Nom : mydb
-  3. Onglet Connexion :
-     - Hôte : db
+- **Email** : admin@admin.com
+- **Mot de passe** : admin
+- **Description** : Interface web pour gérer la base de données PostgreSQL
+- **Configuration de la connexion à la base de données** :
+  1. Cliquez sur "Add New Server"
+  2. Onglet "General" :
+     - Name : mydb
+  3. Onglet "Connection" :
+     - Host : db
      - Port : 5432
-     - Base de données : mydb
-     - Nom d'utilisateur : user
-     - Mot de passe : password
+     - Maintenance database : mydb
+     - Username : user
+     - Password : password
 
-## Comment tester l'application
+## Utilisation du frontend
 
-1. Ouvrez le frontend dans votre navigateur : http://localhost:4456
-2. Inscrivez-vous ou connectez-vous avec un compte existant
-3. Sur la page d'analyse :
-   - Collez directement le code Solidity dans le champ de texte
+1. Ouvrez http://localhost:4456 dans votre navigateur
+2. Créez un compte en cliquant sur "S'inscrire"
+3. Connectez-vous avec vos identifiants
+4. Sur la page d'analyse :
+   - Collez le code Solidity directement dans le champ de texte
    - OU téléchargez un fichier .sol
-4. Cliquez sur "Lancer l'analyse"
-5. Attendez que l'analyse soit terminée
-6. Examinez les résultats et téléchargez le rapport si nécessaire
-7. Accédez à l'historique de vos analyses via le menu
+5. Cliquez sur "Lancer l'analyse"
+6. Attendez que l'analyse soit terminée
+7. Consultez les résultats et téléchargez le rapport si nécessaire
+8. Accédez à l'historique des analyses via le menu
 
-## Commandes de gestion Docker
+## Gestion des conteneurs Docker
 
-### Affichage des logs
+- **Afficher les logs** :
+  ```bash
+  docker-compose logs
+  ```
 
-```bash
-# Afficher les logs de tous les conteneurs
-docker-compose logs
+- **Afficher les logs d'un service spécifique** :
+  ```bash
+  docker-compose logs [backend|frontend|db|pgadmin]
+  ```
 
-# Afficher les logs d'un service spécifique
-docker-compose logs [backend|frontend|db|pgadmin]
+- **Redémarrer les services** :
+  ```bash
+  docker-compose down
+  docker-compose up -d
+  ```
 
-# Suivre les logs en temps réel
-docker-compose logs -f
-```
+- **Arrêter les services** :
+  ```bash
+  docker-compose down
+  ```
 
-### Gestion des conteneurs
+## Développement local
 
-```bash
-# Arrêter tous les conteneurs
-docker-compose down
+Si vous souhaitez développer localement sans utiliser Docker, voici les étapes à suivre :
 
-# Arrêter les conteneurs et supprimer les volumes
-docker-compose down -v
+### Structure du projet
 
-# Arrêter les conteneurs, supprimer les volumes et les images
-docker-compose down -v --rmi all
+Le projet est organisé selon une architecture modulaire pour faciliter la maintenance et l'évolution du code :
 
-# Redémarrer un service spécifique
-docker-compose restart [nom_du_service]
-```
+#### Backend (Flask)
 
-## Persistance des données avec les volumes Docker
+- **api/** : Contient les endpoints de l'API REST
+- **models/** : Définit les modèles de données pour la base de données
+- **services/** : Contient la logique métier
+- **utils/** : Fonctions utilitaires (authentification, réponses HTTP, etc.)
+- **config/** : Configuration de l'application
+- **rlhf_agent/** : Agent d'analyse des contrats intelligents
 
-L'application utilise des volumes Docker pour conserver les données même lorsque les conteneurs sont arrêtés ou reconstruits :
+#### Frontend (React)
 
-- **pgdata** : Stocke les fichiers de la base de données PostgreSQL
-  - Nom du volume : smartcontract-analyser-postgres-data
-  - Objectif : Préserve les comptes utilisateurs, les rapports d'analyse et tout le contenu de la base de données
+- **src/components/** : Composants React réutilisables
+- **src/contexts/** : Contextes React (authentification, etc.)
+- **src/services/** : Services pour les appels API
+- **src/utils/** : Fonctions utilitaires
+- **src/assets/** : Ressources statiques (images, etc.)
+- **src/styles/** : Fichiers CSS
 
-- **pgadmin-data** : Stocke la configuration de pgAdmin
-  - Nom du volume : smartcontract-analyser-pgadmin-data
-  - Objectif : Préserve les paramètres de pgAdmin, les connexions aux serveurs et les préférences
+### Backend (Flask)
 
-Cela signifie que vous pouvez arrêter, redémarrer ou même reconstruire les conteneurs sans perdre vos données. Les volumes persisteront jusqu'à ce qu'ils soient explicitement supprimés avec `docker-compose down -v`.
+1. Naviguez vers le répertoire backend :
+   ```bash
+   cd backend
+   ```
+
+2. Créez un environnement virtuel Python :
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Sur Windows : venv\Scripts\activate
+   ```
+
+3. Installez les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configurez les variables d'environnement :
+   ```bash
+   export OPENAI_API_KEY=votre_clé_api_openai_ici
+   export DATABASE_URL=postgresql://user:password@localhost:5432/mydb
+   ```
+
+5. Lancez le serveur Flask :
+   ```bash
+   flask run --host=0.0.0.0 --port=8000
+   ```
+
+### Frontend (React)
+
+1. Naviguez vers le répertoire react-client :
+   ```bash
+   cd react-client
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   npm install
+   ```
+
+3. Pour éviter les erreurs OpenSSL avec Node.js v18, utilisez le script fourni :
+   ```bash
+   chmod +x start-react.sh
+   ./start-react.sh
+   ```
+
+   Ou définissez manuellement la variable d'environnement :
+   ```bash
+   export NODE_OPTIONS=--openssl-legacy-provider
+   npm start
+   ```
+
+4. Le frontend sera accessible à l'adresse http://localhost:3000
 
 ## Dépannage
 
@@ -158,28 +216,53 @@ Cela signifie que vous pouvez arrêter, redémarrer ou même reconstruire les co
   - **Solution** : Vérifiez que la variable d'environnement REACT_APP_API_URL est correctement définie dans le fichier .env
 
 - **Problème** : L'analyse des contrats échoue
-  - **Solution** : Vérifiez que votre clé API OpenAI est valide et correctement définie dans le fichier .env
+  - **Solution** : Vérifiez que la clé API OpenAI est correctement définie dans le fichier .env
 
 - **Problème** : Impossible de se connecter à pgAdmin
   - **Solution** : Vérifiez que le conteneur pgAdmin est en cours d'exécution avec `docker-compose ps`
 
-- **Problème** : Erreur OpenSSL dans le frontend
-  - **Solution** : Ceci est géré automatiquement dans la configuration Docker. Pour le développement local, utilisez `export NODE_OPTIONS=--openssl-legacy-provider`
+- **Problème** : Les conteneurs ne démarrent pas
+  - **Solution** : Vérifiez les logs avec `docker-compose logs` pour identifier le problème
 
-Pour un dépannage plus détaillé, consultez les logs des conteneurs avec `docker-compose logs`.
+- **Problème** : Problèmes de base de données
+  - **Solution** : 
+    - Vérifiez que le conteneur db est en cours d'exécution
+    - Vérifiez les logs de la base de données avec `docker-compose logs db`
+    - Utilisez pgAdmin pour vérifier l'état de la base de données
 
-## Structure du projet
+- **Problème** : Erreurs d'API dans le frontend
+  - **Solution** :
+    - Vérifiez que le backend est accessible
+    - Vérifiez les logs du backend avec `docker-compose logs backend`
 
-- **backend/** : Code backend Flask
-  - **api/** : Points d'accès API
-  - **models/** : Modèles de base de données
-  - **services/** : Logique métier
-  - **utils/** : Fonctions utilitaires
-  - **config/** : Configuration de l'application
-  - **rlhf_agent/** : Logique d'analyse des contrats intelligents
+- **Problème** : Erreur OpenSSL lors du build du frontend
+  - **Solution** :
+    - Cette erreur peut survenir avec Node.js v18 et les versions récentes d'OpenSSL
+    - Le message d'erreur typique est : `error:0308010C:digital envelope routines::unsupported`
+    - La solution est déjà implémentée dans le Dockerfile du frontend avec `ENV NODE_OPTIONS=--openssl-legacy-provider`
+    - Si vous rencontrez cette erreur en développement local, exécutez : `export NODE_OPTIONS=--openssl-legacy-provider` avant de lancer le frontend
 
-- **react-client/** : Code frontend React
-  - **src/components/** : Composants React
-  - **src/contexts/** : Contextes React
-  - **src/services/** : Services API
-  - **src/utils/** : Fonctions utilitaires
+- **Problème** : Erreur qemu-x86_64 dans le backend
+  - **Solution** :
+    - Cette erreur peut survenir lors de l'exécution de binaires x86_64 sur une architecture différente (comme ARM)
+    - Le message d'erreur typique est : `qemu-x86_64: Could not open '/lib64/ld-linux-x86-64.so.2': No such file or directory`
+    - La solution est d'installer qemu-user-static dans le conteneur, ce qui est maintenant implémenté dans le Dockerfile du backend
+
+- **Problème** : Avertissements de dépréciation dans les logs du backend
+  - **Solution** :
+    - Les avertissements concernant `datetime.datetime.utcnow()` et `pkg_resources` ont été corrigés
+    - Si vous voyez d'autres avertissements, ils sont généralement informatifs et n'affectent pas le fonctionnement de l'application
+
+- **Problème** : Erreur de dépendance Python lors du build du backend
+  - **Solution** :
+    - Si vous rencontrez une erreur `ERROR: ResolutionImpossible` ou `ERROR: No matching distribution found for py-evm==0.5.0a4`, c'est un problème de conflit de dépendances
+    - Modifiez le fichier `backend/requirements.txt` pour remplacer `py-evm==0.5.0a4` ou `py-evm==0.5.0a3` par simplement `py-evm` sans contrainte de version
+    - Nettoyez les images Docker avec `docker-compose down -v --rmi all` avant de reconstruire
+
+- **Problème** : "No response from server" dans le frontend
+  - **Solution** :
+    - Vérifiez que le backend est en cours d'exécution avec `docker-compose ps`
+    - Si le backend est en état "restarting", vérifiez les logs avec `docker-compose logs backend`
+    - Si vous voyez une erreur d'importation comme `ModuleNotFoundError: No module named 'api'`, c'est un problème de chemin d'importation
+    - Modifiez les imports dans `backend/app.py` pour utiliser des imports relatifs (par exemple, changez `from api import register_blueprints` en `from .api import register_blueprints`)
+    - Redémarrez le backend avec `docker-compose restart backend`
