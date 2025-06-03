@@ -1,28 +1,83 @@
-version: '3.8'
-
 services:
-  frontend:
-    build:
-      context: ./react-client
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     ports:
-      - "5000:5000"
-    networks:
-      - app-network
+      - "4455:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+    depends_on:
+      - db
+      - ganache
     volumes:
-      - ./backend/reports:/app/reports
+      - ./backend:/app
+    restart: always
+    networks:
+      - web_network
+      - data_network
+
+  frontend:
+    build:
+      context: ./react-client
+    ports:
+      - "4456:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:4455
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - web_network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - data_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "4457:80"
+    depends_on:
+      - db
+    restart: always
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - data_network
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - "8545:8545"
+    command: --deterministic --networkId 1337 --chainId 1337 --accounts 10 --defaultBalanceEther 100
+    restart: always
+    networks:
+      - data_network
 
 networks:
-  app-network:
+  web_network:
     driver: bridge
+  data_network:
+    driver: bridge
+
+volumes:
+  pgdata:
+    name: smartcontract-analyser-postgres-data
+  pgadmin-data:
+    name: smartcontract-analyser-pgadmin-data

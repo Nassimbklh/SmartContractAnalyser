@@ -1,0 +1,96 @@
+2025-06-02 18:07:37,283 - app.app - INFO - Application started
+2025-06-02 18:07:37,286 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.4:8000
+2025-06-02 18:07:37,287 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-02 18:07:39,489 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:07:39] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-02 18:07:39,505 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:07:39] "[31m[1mGET /history HTTP/1.1[0m" 401 -
+2025-06-02 18:08:11,724 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:08:11] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-02 18:08:11,834 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:08:11] "POST /login HTTP/1.1" 200 -
+2025-06-02 18:08:24,762 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:08:24] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-02 18:08:24,768 - app.api.contract - INFO - Received analyze request from wallet: 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+2025-06-02 18:08:24,770 - app.api.contract - INFO - Analyzing code snippet
+2025-06-02 18:08:24,775 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-02 18:08:24,795 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-02_18-08, status: ERROR
+2025-06-02 18:08:24,796 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-02 18:08:24,797 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:08:24] "POST /analyze HTTP/1.1" 200 -
+2025-06-02 18:25:53,860 - app.app - INFO - Application started
+2025-06-02 18:25:53,863 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.4:8000
+2025-06-02 18:25:53,863 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-02 18:29:44,472 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:29:44] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-02 18:29:44,594 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:29:44] "POST /login HTTP/1.1" 200 -
+2025-06-02 18:29:51,796 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:29:51] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-02 18:29:51,804 - app.api.contract - INFO - Received analyze request from wallet: 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+2025-06-02 18:29:51,806 - app.api.contract - INFO - Analyzing code snippet
+2025-06-02 18:29:51,809 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-02 18:29:51,878 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-02 18:29:52,473 - solcx - INFO - Using solc version 0.8.0
+2025-06-02 18:29:52,474 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-02 18:29:52,475 - solcx - INFO - Using solc version 0.8.0
+2025-06-02 18:29:54,660 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-02 18:29:54,900 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-02 18:29:54,900 - app.modules.attack_generator - INFO - Contract name: SimpleStorage
+2025-06-02 18:29:54,900 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-02 18:29:54,901 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-02 18:29:54,901 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-02 18:29:54,902 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-02 18:29:54,902 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-02 18:30:05,154 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-02 18:30:05,158 - app.modules.attack_generator - INFO - Received response from OpenAI API in 10.26 seconds
+2025-06-02 18:30:05,160 - app.modules.attack_generator - INFO - Contract analysis completed in 10.26 seconds
+2025-06-02 18:30:05,160 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract does not have any explicit vulnerabilities such as reentrancy, logic bugs, permission i...
+2025-06-02 18:30:05,160 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-02 18:30:05,161 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-02 18:30:05,161 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-02 18:30:05,162 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-02 18:30:10,144 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-02 18:30:10,151 - app.modules.attack_generator - INFO - Received response from OpenAI API in 4.99 seconds
+2025-06-02 18:30:10,152 - app.modules.attack_generator - INFO - Attack code generation completed in 4.99 seconds
+2025-06-02 18:30:10,152 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 437
+2025-06-02 18:30:10,152 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 15.25 seconds
+2025-06-02 18:30:10,153 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-02 18:30:10,174 - app.api.contract - INFO - Report saved with filename: SimpleStorage_2025-06-02_18-30, status: KO
+2025-06-02 18:30:10,175 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-02 18:30:10,176 - werkzeug - INFO - 172.18.0.1 - - [02/Jun/2025 18:30:10] "POST /analyze HTTP/1.1" 200 -
+2025-06-03 06:26:27,642 - app.app - INFO - Application started
+2025-06-03 06:26:27,647 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.5:8000
+2025-06-03 06:26:27,648 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-03 06:26:54,745 - werkzeug - INFO - 172.18.0.1 - - [03/Jun/2025 06:26:54] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-03 06:26:54,858 - werkzeug - INFO - 172.18.0.1 - - [03/Jun/2025 06:26:54] "POST /login HTTP/1.1" 200 -
+2025-06-03 06:27:03,860 - werkzeug - INFO - 172.18.0.1 - - [03/Jun/2025 06:27:03] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-03 06:27:03,867 - app.api.contract - INFO - Received analyze request from wallet: 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+2025-06-03 06:27:03,869 - app.api.contract - INFO - Analyzing code snippet
+2025-06-03 06:27:03,872 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-03 06:27:03,878 - solcx - INFO - Using solc version 0.8.0
+2025-06-03 06:27:05,871 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-03 06:27:06,074 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-03 06:27:06,074 - app.modules.attack_generator - INFO - Contract name: SimpleStorage
+2025-06-03 06:27:06,075 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-03 06:27:06,075 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-03 06:27:06,076 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-03 06:27:06,076 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-03 06:27:06,077 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-03 06:27:16,248 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-03 06:27:16,252 - app.modules.attack_generator - INFO - Received response from OpenAI API in 10.18 seconds
+2025-06-03 06:27:16,271 - app.modules.attack_generator - INFO - Contract analysis completed in 10.18 seconds
+2025-06-03 06:27:16,271 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract does not have any apparent security vulnerabilities. It does not contain any reentrancy...
+2025-06-03 06:27:16,271 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-03 06:27:16,272 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-03 06:27:16,272 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-03 06:27:16,273 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-03 06:27:20,928 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-03 06:27:20,929 - app.modules.attack_generator - INFO - Received response from OpenAI API in 4.66 seconds
+2025-06-03 06:27:20,930 - app.modules.attack_generator - INFO - Attack code generation completed in 4.66 seconds
+2025-06-03 06:27:20,930 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 333
+2025-06-03 06:27:20,931 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 14.83 seconds
+2025-06-03 06:27:20,931 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-03 06:27:20,948 - app.api.contract - INFO - Report saved with filename: SimpleStorage_2025-06-03_06-27, status: KO
+2025-06-03 06:27:20,949 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-03 06:27:20,950 - werkzeug - INFO - 172.18.0.1 - - [03/Jun/2025 06:27:20] "POST /analyze HTTP/1.1" 200 -

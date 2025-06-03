@@ -1,8 +1,11 @@
-web3<6
+web3>=6.0.0
 py-solc-x
-stable-baselines3
-gym
 numpy
 flask
 flask-cors
 pyjwt
+openai
+eth-tester
+psycopg2-binary
+sqlalchemy
+werkzeug

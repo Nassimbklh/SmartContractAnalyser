@@ -11,3 +11,73 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Styles for markdown report */
+.markdown-report {
+  line-height: 1.6;
+  color: #333;
+}
+
+.markdown-report pre {
+  background-color: #f5f5f5;
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.markdown-report pre code {
+  white-space: pre;
+}
+
+/* Style markdown headings */
+.markdown-report h1, 
+.markdown-report h2, 
+.markdown-report h3, 
+.markdown-report h4, 
+.markdown-report h5, 
+.markdown-report h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Style markdown lists */
+.markdown-report ul, 
+.markdown-report ol {
+  padding-left: 2rem;
+}
+
+/* Style markdown blockquotes */
+.markdown-report blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #666;
+}
+
+/* Style markdown tables */
+.markdown-report table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.markdown-report th, 
+.markdown-report td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.markdown-report th {
+  background-color: #f5f5f5;
+}
+
+/* Style markdown links */
+.markdown-report a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.markdown-report a:hover {
+  text-decoration: underline;
+}
