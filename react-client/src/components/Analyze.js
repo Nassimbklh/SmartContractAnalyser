@@ -38,7 +38,8 @@ function Analyze() {
     try {
       const res = await contractAPI.analyze(formData);
 
-      const text = await res.data.text();
+      // res.data is already a string when responseType is 'text'
+      const text = res.data;
       setReportContent(text);
 
       const blobUrl = window.URL.createObjectURL(new Blob([text], { type: "text/plain" }));

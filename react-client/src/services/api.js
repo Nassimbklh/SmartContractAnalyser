@@ -35,7 +35,7 @@ export const contractAPI = {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    responseType: 'blob',
+    responseType: 'text',
   }),
   getHistory: () => api.get('/history'),
   getReport: (wallet, filename) => api.get(`/report/${wallet}/${filename}`, {

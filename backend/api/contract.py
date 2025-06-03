@@ -7,7 +7,9 @@ from ..utils import (
     token_required, success_response, error_response,
     not_found_response, server_error_response
 )
+import logging
 
+logger = logging.getLogger(__name__)
 contract_bp = Blueprint('contract', __name__)
 
 @contract_bp.route("/analyze", methods=["POST"])
@@ -23,31 +25,47 @@ def analyze(wallet):
     Returns:
         str: The markdown report content.
     """
+    logger.info(f"Received analyze request from wallet: {wallet}")
+
     file = request.files.get("file")
     code = request.form.get("code")
-    content = code or (file.read().decode("utf-8") if file else "")
+
+    if file:
+        logger.info(f"Analyzing file: {file.filename}")
+        content = file.read().decode("utf-8")
+    elif code:
+        logger.info("Analyzing code snippet")
+        content = code
+    else:
+        content = ""
 
     if not content:
+        logger.warning("No content provided for analysis")
         return error_response("Aucun code fourni", 400)
 
     try:
         # Get user by wallet
         user = get_user_by_wallet(wallet)
         if not user:
+            logger.warning(f"User not found for wallet: {wallet}")
             return not_found_response("Utilisateur non trouvé")
 
+        logger.info(f"Starting contract analysis for user: {user.id}")
         # Analyze contract
         result = analyze_contract(content, user.id)
 
         # Save report
         report = result["report"]
         save_report(report)
+        logger.info(f"Report saved with filename: {report.filename}, status: {report.status}")
 
         # Generate markdown report
         markdown = generate_report_markdown(report)
+        logger.info("Analysis completed successfully, returning report")
 
         return markdown, 200, {'Content-Type': 'text/markdown; charset=utf-8'}
     except Exception as e:
+        logger.error(f"Error during contract analysis: {str(e)}", exc_info=True)
         return server_error_response(str(e))
 
 @contract_bp.route("/history", methods=["GET"])

@@ -38,13 +38,13 @@ export const formatDate = (dateString) => {
 };
 
 /**
- * Create a download link for a blob
- * @param {Blob} blob - Blob to download
- * @param {string} filename - Filename
+ * Download a blob as a file
+ * @param {Blob} blob - The blob to download
+ * @param {string} filename - The name of the file to download
  */
 export const downloadBlob = (blob, filename) => {
   const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = filename;
   a.click();
@@ -52,20 +52,23 @@ export const downloadBlob = (blob, filename) => {
 };
 
 /**
- * Handle API errors
- * @param {Error} error - Error object
- * @returns {string} Error message
+ * Handle API errors and return a user-friendly error message
+ * @param {Error} error - The error object from the API call
+ * @returns {string} A user-friendly error message
  */
 export const handleApiError = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    return error.response.data.error || 'An error occurred';
+    if (error.response.data && error.response.data.error) {
+      return error.response.data.error;
+    }
+    return `Erreur ${error.response.status}: ${error.response.statusText}`;
   } else if (error.request) {
     // The request was made but no response was received
-    return 'No response from server';
+    return "Pas de réponse du serveur. Vérifiez votre connexion.";
   } else {
     // Something happened in setting up the request that triggered an Error
-    return error.message || 'An error occurred';
+    return error.message || "Une erreur inconnue s'est produite";
   }
 };

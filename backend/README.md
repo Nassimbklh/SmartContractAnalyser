@@ -25,7 +25,7 @@ Ce dossier contient les définitions des routes API (endpoints) de l'application
 
 Ce dossier contient les définitions des modèles de données utilisés par l'application.
 
-- `base.py` : Classe de base pour les modèles
+- `base.py` : Classe de base pour les modèles et configuration de la connexion à la base de données
 - `user.py` : Modèle pour les utilisateurs
 - `report.py` : Modèle pour les rapports d'analyse de smart contracts
 
@@ -36,12 +36,25 @@ Ce dossier contient la logique métier de l'application, séparée des routes AP
 - `user_service.py` : Services liés aux opérations sur les utilisateurs
 - `contract_service.py` : Services liés aux opérations sur les smart contracts
 
+### `/modules`
+
+Ce dossier contient les modules spécialisés pour l'analyse des smart contracts, remplaçant l'ancien fichier agent.py.
+
+- `contract_compiler.py` : Compilation des smart contracts
+- `contract_deployer.py` : Déploiement des contrats
+- `contract_analyzer.py` : Analyse de la structure des contrats
+- `attack_generator.py` : Génération des stratégies d'attaque
+- `attack_executor.py` : Exécution des attaques
+- `attack_evaluator.py` : Évaluation des résultats d'attaque
+- `results_manager.py` : Gestion et sauvegarde des résultats
+
 ### `/utils`
 
 Ce dossier contient des fonctions utilitaires réutilisables dans toute l'application.
 
 - `auth.py` : Fonctions liées à l'authentification (gestion des tokens JWT, hachage de mots de passe)
 - `responses.py` : Fonctions pour formater les réponses API
+- `openai_utils.py` : Fonctions pour l'initialisation et l'utilisation de l'API OpenAI
 
 ### `/config`
 
@@ -52,8 +65,6 @@ Ce dossier contient la configuration de l'application.
 ### Fichiers à la racine du backend
 
 - `app.py` : Point d'entrée principal de l'application Flask
-- `database.py` : Configuration de la connexion à la base de données
-- `models.py` : Ancien fichier de modèles (maintenant remplacé par le dossier `/models`)
 - `requirements.txt` : Liste des dépendances Python
 - `Dockerfile` : Instructions pour créer l'image Docker du backend
 

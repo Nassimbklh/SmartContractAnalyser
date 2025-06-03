@@ -24,8 +24,16 @@ from .config import Config
 # --- Setup logging ---
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Log to console
+        logging.FileHandler('backend.log')  # Also log to file
+    ]
 )
+# Set debug level for specific modules to get more detailed logs
+logging.getLogger('backend.modules.attack_generator').setLevel(logging.DEBUG)
+logging.getLogger('backend.api.contract').setLevel(logging.DEBUG)
+
 logger = logging.getLogger(__name__)
 
 # --- Create app ---
