@@ -9,3 +9,4 @@ eth-tester
 psycopg2-binary
 sqlalchemy
 werkzeug
+requests

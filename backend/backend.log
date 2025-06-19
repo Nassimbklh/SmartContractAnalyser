@@ -94,3 +94,420 @@
 2025-06-03 06:27:20,948 - app.api.contract - INFO - Report saved with filename: SimpleStorage_2025-06-03_06-27, status: KO
 2025-06-03 06:27:20,949 - app.api.contract - INFO - Analysis completed successfully, returning report
 2025-06-03 06:27:20,950 - werkzeug - INFO - 172.18.0.1 - - [03/Jun/2025 06:27:20] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:24:46,039 - app.app - INFO - Application démarrée
+2025-06-18 14:24:46,043 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.5:8000
+2025-06-18 14:24:46,044 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 14:26:27,090 - app.app - INFO - Application démarrée
+2025-06-18 14:26:27,092 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.20.0.5:8000
+2025-06-18 14:26:27,093 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 14:28:03,272 - app.app - INFO - Application démarrée
+2025-06-18 14:28:03,274 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.22.0.4:8000
+2025-06-18 14:28:03,275 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 14:32:58,693 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:32:58] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-18 14:32:58,757 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:32:58] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-06-18 14:33:09,783 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:09] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-18 14:33:09,922 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:09] "POST /register HTTP/1.1" 200 -
+2025-06-18 14:33:19,266 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:19] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-18 14:33:19,398 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:19] "POST /login HTTP/1.1" 200 -
+2025-06-18 14:33:23,081 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:23] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:33:23,095 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:33:23,098 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:33:23,105 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:33:23,129 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-33, status: ERROR
+2025-06-18 14:33:23,130 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:33:23,132 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:33:23] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:34:48,652 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:34:48] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:34:48,675 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:34:48,679 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:34:48,693 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:34:48,914 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:34:49,546 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-34, status: ERROR
+2025-06-18 14:34:49,547 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:34:49,548 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:34:49] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:40:02,015 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:40:02] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:40:02,034 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:40:02,038 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:40:02,047 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:40:02,268 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:40:02,870 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-40, status: ERROR
+2025-06-18 14:40:02,871 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:40:02,872 - werkzeug - INFO - 172.22.0.1 - - [18/Jun/2025 14:40:02] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:40:50,237 - app.app - INFO - Application démarrée
+2025-06-18 14:40:50,239 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.24.0.5:8000
+2025-06-18 14:40:50,240 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 14:41:00,211 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:00] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-18 14:41:00,310 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:00] "POST /login HTTP/1.1" 200 -
+2025-06-18 14:41:05,918 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:05] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:41:05,937 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:41:05,942 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:41:05,947 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:41:06,126 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:41:06,719 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-41, status: ERROR
+2025-06-18 14:41:06,720 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:41:06,721 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:06] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:41:34,198 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:34] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:41:34,233 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:41:34,237 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:41:34,246 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:41:34,449 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:41:35,325 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-41, status: ERROR
+2025-06-18 14:41:35,326 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:41:35,328 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:35] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:41:39,862 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:39] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-18 14:41:39,886 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:41:39] "GET /history HTTP/1.1" 200 -
+2025-06-18 14:43:38,897 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:43:38] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:43:38,954 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:43:38,959 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:43:38,986 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:43:39,145 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:43:39,578 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-43, status: ERROR
+2025-06-18 14:43:39,579 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:43:39,581 - werkzeug - INFO - 172.24.0.1 - - [18/Jun/2025 14:43:39] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:47:09,608 - app.app - INFO - Application démarrée
+2025-06-18 14:47:09,622 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.27.0.5:8000
+2025-06-18 14:47:09,623 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 14:47:11,904 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:11] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-18 14:47:12,425 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:12] "POST /login HTTP/1.1" 200 -
+2025-06-18 14:47:27,928 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:27] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:47:27,961 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:47:27,991 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:47:28,008 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:47:28,274 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-18 14:47:29,246 - solcx - INFO - Using solc version 0.8.0
+2025-06-18 14:47:29,248 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-18 14:47:29,252 - solcx - INFO - Using solc version 0.8.0
+2025-06-18 14:47:33,701 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-18 14:47:33,873 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-18_14-47, status: ERROR
+2025-06-18 14:47:33,876 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:47:33,879 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:33] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 14:47:50,912 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:50] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-18 14:47:50,956 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:47:50] "GET /history HTTP/1.1" 200 -
+2025-06-18 14:55:11,160 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:55:11] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-18 14:55:11,190 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-18 14:55:11,202 - app.api.contract - INFO - Analyzing code snippet
+2025-06-18 14:55:11,230 - app.api.contract - INFO - Starting contract analysis for user: 2
+2025-06-18 14:55:11,250 - solcx - INFO - Using solc version 0.8.0
+2025-06-18 14:55:13,827 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-18 14:55:13,829 - app.modules.attack_generator - INFO - Contract name: VulnerableBank
+2025-06-18 14:55:13,831 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-18 14:55:13,833 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-18 14:55:13,836 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-18 14:55:13,838 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-18 14:55:13,839 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-18 14:55:29,202 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-18 14:55:29,231 - app.modules.attack_generator - INFO - ✅ OPENAI API CALL SUCCESSFUL - Request ID: chatcmpl-BjoTycpESLvJNDAAuu9HkewfcNpe4
+2025-06-18 14:55:29,237 - app.modules.attack_generator - INFO - Received response from OpenAI API in 15.39 seconds
+2025-06-18 14:55:29,240 - app.modules.attack_generator - INFO - Response first 50 chars: '1. Contract Analysis:
+The contract is a simple ban...'
+2025-06-18 14:55:29,260 - app.modules.attack_generator - INFO - Contract analysis completed in 15.39 seconds
+2025-06-18 14:55:29,267 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract is vulnerable to a reentrancy attack. This is because in the withdraw function, the con...
+2025-06-18 14:55:29,271 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-18 14:55:29,274 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-18 14:55:29,278 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-18 14:55:29,280 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-18 14:55:37,185 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-18 14:55:37,212 - app.modules.attack_generator - INFO - ✅ OPENAI API CALL SUCCESSFUL - Request ID: chatcmpl-BjoUE62TogAfoyLQ4P4ljB7WNMUd8
+2025-06-18 14:55:37,216 - app.modules.attack_generator - INFO - Received response from OpenAI API in 7.93 seconds
+2025-06-18 14:55:37,221 - app.modules.attack_generator - INFO - Response first 50 chars: ';
+
+interface IBank {
+    function deposit() extern...'
+2025-06-18 14:55:37,236 - app.modules.attack_generator - INFO - Attack code generation completed in 7.93 seconds
+2025-06-18 14:55:37,239 - app.modules.attack_generator - INFO - No attack code was generated
+2025-06-18 14:55:37,242 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 23.33 seconds
+2025-06-18 14:55:37,244 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-18 14:55:37,264 - app.api.contract - INFO - Report saved with filename: VulnerableBank_2025-06-18_14-55, status: OK
+2025-06-18 14:55:37,266 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-18 14:55:37,269 - werkzeug - INFO - 172.27.0.1 - - [18/Jun/2025 14:55:37] "POST /analyze HTTP/1.1" 200 -
+2025-06-18 15:11:19,589 - app.app - INFO - Application démarrée
+2025-06-18 15:11:19,601 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-18 15:11:19,603 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 15:11:50,491 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:11:50] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-18 15:11:50,572 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:11:50] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-18 15:11:59,178 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:11:59] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-18 15:11:59,219 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:11:59] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2025-06-18 15:12:14,273 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:12:14] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-18 15:12:14,297 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:12:14] "[35m[1mPOST /register HTTP/1.1[0m" 500 -
+2025-06-18 15:48:12,083 - app.app - INFO - Application démarrée
+2025-06-18 15:48:12,096 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-18 15:48:12,097 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 15:49:15,231 - app.app - INFO - Application démarrée
+2025-06-18 15:49:15,243 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-18 15:49:15,244 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 15:59:34,787 - werkzeug - INFO - 172.29.0.1 - - [18/Jun/2025 15:59:34] "GET /expertise-questions HTTP/1.1" 200 -
+2025-06-18 16:11:43,737 - app.app - INFO - Application démarrée
+2025-06-18 16:11:43,751 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.16.5:8000
+2025-06-18 16:11:43,753 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 16:16:54,767 - werkzeug - INFO - 192.168.16.1 - - [18/Jun/2025 16:16:54] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-18 16:16:54,846 - werkzeug - INFO - 192.168.16.1 - - [18/Jun/2025 16:16:54] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2025-06-18 17:02:15,274 - app.app - INFO - Application started
+2025-06-18 17:02:15,276 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.19.0.5:8000
+2025-06-18 17:02:15,277 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-18 17:04:06,289 - app.app - INFO - Application started
+2025-06-18 17:04:06,291 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.20.0.5:8000
+2025-06-18 17:04:06,293 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:22:34,508 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:34] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:22:34,556 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:34] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-19 12:22:42,685 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:42] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-19 12:22:42,842 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:42] "POST /register HTTP/1.1" 200 -
+2025-06-19 12:22:49,078 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:49] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:22:49,202 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:22:49] "POST /login HTTP/1.1" 200 -
+2025-06-19 12:23:30,090 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:23:30] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:23:30,103 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:23:30,106 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:23:30,108 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:23:30,119 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-23, status: ERROR
+2025-06-19 12:23:30,120 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:23:30,122 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 12:23:30] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:33:31,718 - app.app - INFO - Application started
+2025-06-19 12:33:31,721 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.22.0.5:8000
+2025-06-19 12:33:31,722 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:36:54,348 - app.app - INFO - Application started
+2025-06-19 12:36:54,350 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.24.0.5:8000
+2025-06-19 12:36:54,351 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:37:08,991 - werkzeug - INFO - 172.24.0.1 - - [19/Jun/2025 12:37:08] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:37:09,111 - werkzeug - INFO - 172.24.0.1 - - [19/Jun/2025 12:37:09] "POST /login HTTP/1.1" 200 -
+2025-06-19 12:37:58,374 - werkzeug - INFO - 172.24.0.1 - - [19/Jun/2025 12:37:58] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:37:58,398 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:37:58,405 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:37:58,426 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:37:58,542 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 12:37:59,385 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-37, status: ERROR
+2025-06-19 12:37:59,386 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:37:59,388 - werkzeug - INFO - 172.24.0.1 - - [19/Jun/2025 12:37:59] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:41:35,529 - app.app - INFO - Application started
+2025-06-19 12:41:35,531 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.26.0.5:8000
+2025-06-19 12:41:35,532 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:41:52,362 - werkzeug - INFO - 172.26.0.1 - - [19/Jun/2025 12:41:52] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:41:52,472 - werkzeug - INFO - 172.26.0.1 - - [19/Jun/2025 12:41:52] "POST /login HTTP/1.1" 200 -
+2025-06-19 12:42:00,877 - werkzeug - INFO - 172.26.0.1 - - [19/Jun/2025 12:42:00] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:42:00,899 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:42:00,905 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:42:00,914 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:42:00,926 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:42:01,055 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-42, status: ERROR
+2025-06-19 12:42:01,057 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:42:01,058 - werkzeug - INFO - 172.26.0.1 - - [19/Jun/2025 12:42:01] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:48:19,430 - app.app - INFO - Application started
+2025-06-19 12:48:19,432 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-19 12:48:19,433 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:48:42,152 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:48:42] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:48:42,312 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:48:42] "POST /login HTTP/1.1" 200 -
+2025-06-19 12:48:49,603 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:48:49] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:48:49,624 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:48:49,630 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:48:49,641 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:48:49,689 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:48:49,808 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-48, status: ERROR
+2025-06-19 12:48:49,809 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:48:49,810 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:48:49] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:08,816 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:08] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:08,837 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:49:08,841 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:49:08,850 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:49:08,854 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:49:08,974 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-49, status: ERROR
+2025-06-19 12:49:08,975 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:49:08,976 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:08] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:16,396 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:16] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:16,417 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:49:16,420 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:49:16,425 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:49:16,428 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:49:16,550 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-49, status: ERROR
+2025-06-19 12:49:16,551 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:49:16,553 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:16] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:16,951 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:49:16,954 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:49:16,958 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:49:16,965 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:49:17,086 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-49, status: ERROR
+2025-06-19 12:49:17,087 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:49:17,089 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:17] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:49:17,500 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:49:17,505 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:49:17,514 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:49:17,522 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:49:17,650 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-49, status: ERROR
+2025-06-19 12:49:17,652 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:49:17,654 - werkzeug - INFO - 172.29.0.1 - - [19/Jun/2025 12:49:17] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:53:43,385 - app.app - INFO - Application started
+2025-06-19 12:53:43,387 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.30.0.5:8000
+2025-06-19 12:53:43,387 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:54:09,820 - werkzeug - INFO - 172.30.0.1 - - [19/Jun/2025 12:54:09] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 12:54:09,940 - werkzeug - INFO - 172.30.0.1 - - [19/Jun/2025 12:54:09] "POST /login HTTP/1.1" 200 -
+2025-06-19 12:54:17,355 - werkzeug - INFO - 172.30.0.1 - - [19/Jun/2025 12:54:17] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:54:17,379 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:54:17,383 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:54:17,389 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:54:17,401 - solcx - INFO - Using solc version 0.4.26
+2025-06-19 12:54:17,528 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_12-54, status: ERROR
+2025-06-19 12:54:17,530 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 12:54:17,531 - werkzeug - INFO - 172.30.0.1 - - [19/Jun/2025 12:54:17] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 12:57:01,124 - app.app - INFO - Application started
+2025-06-19 12:57:01,127 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.32.5:8000
+2025-06-19 12:57:01,127 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 12:59:59,729 - werkzeug - INFO - 192.168.32.1 - - [19/Jun/2025 12:59:59] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 12:59:59,741 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 12:59:59,745 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 12:59:59,760 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 12:59:59,855 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 13:00:00,693 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_13-00, status: ERROR
+2025-06-19 13:00:00,694 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 13:00:00,696 - werkzeug - INFO - 192.168.32.1 - - [19/Jun/2025 13:00:00] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 13:00:21,827 - app.app - INFO - Application started
+2025-06-19 13:00:21,829 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.112.5:8000
+2025-06-19 13:00:21,830 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 13:01:23,046 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:23] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 13:01:23,065 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 13:01:23,069 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 13:01:23,090 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 13:01:23,103 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_13-01, status: ERROR
+2025-06-19 13:01:23,104 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 13:01:23,106 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:23] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 13:01:33,871 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:33] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 13:01:33,997 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:33] "POST /login HTTP/1.1" 200 -
+2025-06-19 13:01:36,229 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:36] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 13:01:36,247 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 13:01:36,250 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 13:01:36,254 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 13:01:36,561 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 13:01:38,180 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_13-01, status: ERROR
+2025-06-19 13:01:38,182 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 13:01:38,185 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:01:38] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 13:02:37,943 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:02:37] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 13:02:37,963 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 13:02:37,969 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 13:02:37,985 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 13:02:38,123 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 13:02:39,101 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_13-02, status: ERROR
+2025-06-19 13:02:39,103 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 13:02:39,105 - werkzeug - INFO - 192.168.112.1 - - [19/Jun/2025 13:02:39] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 13:26:19,344 - app.app - INFO - Application started
+2025-06-19 13:26:19,347 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.128.5:8000
+2025-06-19 13:26:19,347 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 13:53:10,169 - app.app - INFO - Application started
+2025-06-19 13:53:10,171 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.160.5:8000
+2025-06-19 13:53:10,172 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 13:53:57,958 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:53:57] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-19 13:55:23,252 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:55:23] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-06-19 13:55:26,216 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:55:26] "[31m[1mPOST /register HTTP/1.1[0m" 400 -
+2025-06-19 13:55:31,239 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:55:31] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-19 13:56:00,985 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:56:00] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 13:56:01,124 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:56:01] "POST /login HTTP/1.1" 200 -
+2025-06-19 13:56:25,128 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:56:25] "POST /login HTTP/1.1" 200 -
+2025-06-19 13:56:25,157 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 13:56:25] "[31m[1mPOST /analyze HTTP/1.1[0m" 401 -
+2025-06-19 14:25:14,522 - app.app - INFO - Application started
+2025-06-19 14:25:14,524 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.5:8000
+2025-06-19 14:25:14,526 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 14:25:43,751 - werkzeug - INFO - 172.18.0.1 - - [19/Jun/2025 14:25:43] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 14:25:43,790 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 14:25:43,801 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 14:25:43,816 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 14:25:43,908 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 14:25:44,799 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-19_14-25, status: ERROR
+2025-06-19 14:25:44,801 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 14:25:44,803 - werkzeug - INFO - 172.18.0.1 - - [19/Jun/2025 14:25:44] "POST /analyze HTTP/1.1" 200 -
+2025-06-19 14:33:40,063 - app.app - INFO - Application started
+2025-06-19 14:33:40,075 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.20.0.5:8000
+2025-06-19 14:33:40,077 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-19 14:35:46,618 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 14:35:46] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-19 14:35:47,110 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 14:35:47] "POST /login HTTP/1.1" 200 -
+2025-06-19 14:36:05,076 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 14:36:05] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-19 14:36:05,110 - app.api.contract - INFO - Received analyze request from wallet: 0x742d35Cc6634C0532925a3b844Bc454e4438f44R
+2025-06-19 14:36:05,124 - app.api.contract - INFO - Analyzing code snippet
+2025-06-19 14:36:05,137 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-19 14:36:05,324 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-19 14:36:06,210 - solcx - INFO - Using solc version 0.8.0
+2025-06-19 14:36:06,212 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-19 14:36:06,217 - solcx - INFO - Using solc version 0.8.0
+2025-06-19 14:36:08,738 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-19 14:36:08,740 - app.modules.attack_generator - INFO - Contract name: VulnerableBank
+2025-06-19 14:36:08,742 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-19 14:36:08,743 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-19 14:36:08,746 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-19 14:36:08,748 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-19 14:36:08,749 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-19 14:36:22,851 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-19 14:36:22,895 - app.modules.attack_generator - INFO - Received response from OpenAI API in 14.15 seconds
+2025-06-19 14:36:22,901 - app.modules.attack_generator - INFO - Contract analysis completed in 14.15 seconds
+2025-06-19 14:36:22,903 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract has a reentrancy vulnerability in the withdraw function. The contract sends Ether to th...
+2025-06-19 14:36:22,904 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-19 14:36:22,906 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-19 14:36:22,907 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-19 14:36:22,909 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-19 14:36:32,847 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-19 14:36:32,871 - app.modules.attack_generator - INFO - Received response from OpenAI API in 9.96 seconds
+2025-06-19 14:36:32,876 - app.modules.attack_generator - INFO - Attack code generation completed in 9.96 seconds
+2025-06-19 14:36:32,880 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 982
+2025-06-19 14:36:32,882 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 24.11 seconds
+2025-06-19 14:36:32,885 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-19 14:36:32,932 - app.api.contract - INFO - Report saved with filename: VulnerableBank_2025-06-19_14-36, status: KO
+2025-06-19 14:36:32,933 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-19 14:36:32,936 - werkzeug - INFO - 172.20.0.1 - - [19/Jun/2025 14:36:32] "POST /analyze HTTP/1.1" 200 -
