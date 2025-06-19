@@ -148,6 +148,9 @@ def analyze_contract(content, user_id):
     solc_version = contract_info.get("solc_version", "—")
     contract_address = contract_info.get("address", "—")
 
+    # Set code_result based on status
+    code_result = 1 if status == "OK" else 0
+
     # Create a new report
     report = Report(
         user_id=user_id,
@@ -160,6 +163,7 @@ def analyze_contract(content, user_id):
         summary=summary,
         reasoning=reasoning,
         exploit_code=exploit_code,
+        code_result=code_result,
         created_at=datetime.datetime.now()
     )
 

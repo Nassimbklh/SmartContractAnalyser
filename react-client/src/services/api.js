@@ -43,4 +43,9 @@ export const contractAPI = {
   }),
 };
 
+// Feedback API
+export const feedbackAPI = {
+  submitFeedback: (feedbackData) => api.post('/feedback', feedbackData),
+};
+
 export default api;
