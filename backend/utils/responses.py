@@ -2,15 +2,15 @@ from flask import jsonify
 
 def success_response(data=None, message=None, status_code=200):
     """
-    Create a standardized success response.
-    
+    Crée une réponse de succès standardisée.
+
     Args:
-        data (any, optional): The data to include in the response. Defaults to None.
-        message (str, optional): A success message. Defaults to None.
-        status_code (int, optional): The HTTP status code. Defaults to 200.
-        
+        data (any, optional): Les données à inclure dans la réponse. Par défaut None.
+        message (str, optional): Un message de succès. Par défaut None.
+        status_code (int, optional): Le code de statut HTTP. Par défaut 200.
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     response = {"success": True}
     if data is not None:
@@ -21,73 +21,73 @@ def success_response(data=None, message=None, status_code=200):
 
 def error_response(message, status_code=400):
     """
-    Create a standardized error response.
-    
+    Crée une réponse d'erreur standardisée.
+
     Args:
-        message (str): The error message.
-        status_code (int, optional): The HTTP status code. Defaults to 400.
-        
+        message (str): Le message d'erreur.
+        status_code (int, optional): Le code de statut HTTP. Par défaut 400.
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "error": message}), status_code
 
 def validation_error_response(errors):
     """
-    Create a standardized validation error response.
-    
+    Crée une réponse d'erreur de validation standardisée.
+
     Args:
-        errors (dict): A dictionary of validation errors.
-        
+        errors (dict): Un dictionnaire d'erreurs de validation.
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "errors": errors}), 422
 
 def not_found_response(message="Resource not found"):
     """
-    Create a standardized not found response.
-    
+    Crée une réponse standardisée pour les ressources non trouvées.
+
     Args:
-        message (str, optional): The error message. Defaults to "Resource not found".
-        
+        message (str, optional): Le message d'erreur. Par défaut "Resource not found".
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "error": message}), 404
 
 def unauthorized_response(message="Unauthorized"):
     """
-    Create a standardized unauthorized response.
-    
+    Crée une réponse standardisée pour les accès non autorisés.
+
     Args:
-        message (str, optional): The error message. Defaults to "Unauthorized".
-        
+        message (str, optional): Le message d'erreur. Par défaut "Unauthorized".
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "error": message}), 401
 
 def forbidden_response(message="Forbidden"):
     """
-    Create a standardized forbidden response.
-    
+    Crée une réponse standardisée pour les accès interdits.
+
     Args:
-        message (str, optional): The error message. Defaults to "Forbidden".
-        
+        message (str, optional): Le message d'erreur. Par défaut "Forbidden".
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "error": message}), 403
 
 def server_error_response(message="Internal server error"):
     """
-    Create a standardized server error response.
-    
+    Crée une réponse standardisée pour les erreurs serveur.
+
     Args:
-        message (str, optional): The error message. Defaults to "Internal server error".
-        
+        message (str, optional): Le message d'erreur. Par défaut "Internal server error".
+
     Returns:
-        tuple: A tuple containing the response JSON and the status code.
+        tuple: Un tuple contenant le JSON de réponse et le code de statut.
     """
     return jsonify({"success": False, "error": message}), 500

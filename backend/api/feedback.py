@@ -16,65 +16,65 @@ feedback_bp = Blueprint('feedback', __name__)
 @token_required
 def submit_feedback(wallet):
     """
-    Submit feedback for a report.
-    
-    Request body:
-        report_id (int): The report ID.
-        status (str): The feedback status ("OK" or "KO").
-        comment (str, optional): The feedback comment.
-        
+    Soumettre un retour pour un rapport.
+
+    Corps de la requête:
+        report_id (int): L'ID du rapport.
+        status (str): Le statut du retour ("OK" ou "KO").
+        comment (str, optional): Le commentaire du retour.
+
     Returns:
-        JSON: A success response.
+        JSON: Une réponse de succès.
     """
-    logger.info(f"Received feedback submission from wallet: {wallet}")
-    
-    # Get request data
+    logger.info(f"Réception d'un retour depuis le portefeuille: {wallet}")
+
+    # Récupérer les données de la requête
     data = request.json
     if not data:
-        logger.warning("No data provided in feedback submission")
+        logger.warning("Aucune donnée fournie dans la soumission du retour")
         return error_response("Aucune donnée fournie", 400)
-    
+
     report_id = data.get("report_id")
     status = data.get("status")
     comment = data.get("comment")
-    
-    # Validate required fields
+
+    # Valider les champs requis
     if not report_id:
-        logger.warning("No report_id provided in feedback submission")
+        logger.warning("Aucun report_id fourni dans la soumission du retour")
         return error_response("ID du rapport manquant", 400)
-    
+
     if not status:
-        logger.warning("No status provided in feedback submission")
+        logger.warning("Aucun statut fourni dans la soumission du retour")
         return error_response("Statut manquant", 400)
-    
+
     if status not in ["OK", "KO"]:
-        logger.warning(f"Invalid status provided in feedback submission: {status}")
+        logger.warning(f"Statut invalide fourni dans la soumission du retour: {status}")
         return error_response("Statut invalide (doit être 'OK' ou 'KO')", 400)
-    
+
     try:
-        # Get user by wallet
+        # Récupérer l'utilisateur par portefeuille
         user = get_user_by_wallet(wallet)
         if not user:
-            logger.warning(f"User not found for wallet: {wallet}")
+            logger.warning(f"Utilisateur non trouvé pour le portefeuille: {wallet}")
             return not_found_response("Utilisateur non trouvé")
-        
-        # Check if report exists
+
+        # Vérifier si le rapport existe
         report = get_report_by_id(report_id)
         if not report:
-            logger.warning(f"Report not found with ID: {report_id}")
+            logger.warning(f"Rapport non trouvé avec l'ID: {report_id}")
             return not_found_response("Rapport introuvable")
-        
-        # Check if user has already submitted feedback for this report
+
+        # Vérifier si l'utilisateur a déjà soumis un retour pour ce rapport
         existing_feedback = get_feedback_by_user_and_report(user.id, report_id)
         if existing_feedback:
-            logger.warning(f"User {user.id} has already submitted feedback for report {report_id}")
+            logger.warning(f"L'utilisateur {user.id} a déjà soumis un retour pour le rapport {report_id}")
             return error_response("Vous avez déjà donné votre avis sur ce rapport", 400)
-        
-        # Save feedback
+
+        # Sauvegarder le retour
         feedback = save_feedback(user.id, report_id, status, comment)
-        logger.info(f"Feedback saved with ID: {feedback.id}, status: {feedback.status}")
-        
+        logger.info(f"Retour sauvegardé avec ID: {feedback.id}, statut: {feedback.status}, poids de la requête: {feedback.weight_request}")
+
         return success_response(message="Merci pour votre retour !")
     except Exception as e:
-        logger.error(f"Error during feedback submission: {str(e)}", exc_info=True)
+        logger.error(f"Erreur lors de la soumission du retour: {str(e)}", exc_info=True)
         return server_error_response(str(e))

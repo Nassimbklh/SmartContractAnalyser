@@ -16,13 +16,25 @@ def save_feedback(user_id, report_id, status, comment=None):
     # Set code_result based on status
     code_result = 1 if status == "OK" else 0
 
+    # Get user's technical_score
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        technical_score = user.technical_score if user and user.technical_score is not None else 1
+    finally:
+        db.close()
+
+    # Calculate weight_request based on code_result and technical_score
+    weight_request = technical_score if code_result == 1 else 0
+
     # Create a new feedback
     feedback = Feedback(
         user_id=user_id,
         report_id=report_id,
         status=status,
         comment=comment,
-        code_result=code_result
+        code_result=code_result,
+        weight_request=weight_request
     )
 
     # Save to database

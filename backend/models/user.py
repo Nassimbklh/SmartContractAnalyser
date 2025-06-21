@@ -3,7 +3,7 @@ from .base import Base
 
 class User(Base):
     """
-    User model for storing user information.
+    Modèle utilisateur pour stocker les informations des utilisateurs.
     """
     __tablename__ = "user"
 

@@ -6,7 +6,7 @@ from datetime import UTC
 
 class Report(Base):
     """
-    Report model for storing smart contract analysis reports.
+    Modèle de rapport pour stocker les rapports d'analyse de contrats intelligents.
     """
     __tablename__ = "report"
 

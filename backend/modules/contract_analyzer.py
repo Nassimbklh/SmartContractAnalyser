@@ -133,4 +133,3 @@ def build_multi_contract_observation(contract_group: List[Dict[str, Any]], w3: W
     }
 
     return observation
-    return observation

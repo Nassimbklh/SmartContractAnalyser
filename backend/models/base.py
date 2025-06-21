@@ -3,22 +3,22 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 
-# Create the SQLAlchemy base
+# Créer la base SQLAlchemy
 Base = declarative_base()
 
-# Get database URL from environment variable
+# Obtenir l'URL de la base de données depuis la variable d'environnement
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# Create engine and session
+# Créer le moteur et la session
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 def get_db():
     """
-    Get a database session.
-    
+    Obtenir une session de base de données.
+
     Returns:
-        Session: A SQLAlchemy session.
+        Session: Une session SQLAlchemy.
     """
     db = SessionLocal()
     try:

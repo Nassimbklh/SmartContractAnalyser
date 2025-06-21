@@ -1275,3 +1275,282 @@ interface IBank {
 2025-06-21 11:22:52,046 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
 2025-06-21 11:22:52,077 - app.api.feedback - INFO - Feedback saved with ID: 4, status: KO
 2025-06-21 11:22:52,080 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:52] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:36:05,824 - app.app - INFO - Application started
+2025-06-21 11:36:05,836 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.208.5:8000
+2025-06-21 11:36:05,838 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 11:36:12,896 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:12] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:36:13,183 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:13] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:36:17,416 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:17] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:36:17,446 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:36:17,458 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:36:17,469 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:36:17,522 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-36, status: ERROR
+2025-06-21 11:36:17,524 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:36:17,527 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:17] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:36:17,555 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:17] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:36:19,788 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:19] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:36:19,816 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:36:19,868 - app.api.feedback - INFO - Feedback saved with ID: 5, status: OK
+2025-06-21 11:36:19,871 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:19] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:36:22,827 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:22] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:36:22,856 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:36:22,869 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:36:22,878 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:36:22,899 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-36, status: ERROR
+2025-06-21 11:36:22,901 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:36:22,903 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:22] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:36:22,918 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:22] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:36:22,940 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:22] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:36:24,974 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:24] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:36:25,006 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:36:25,033 - app.api.feedback - INFO - Feedback saved with ID: 6, status: KO
+2025-06-21 11:36:25,037 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:25] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:36:26,625 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:26] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:36:33,655 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:33] "OPTIONS /report/0xAb5801a7D398351b8bE11C439e05C5B3259aec44/Unknown_2025-06-21_11-22 HTTP/1.1" 200 -
+2025-06-21 11:36:33,698 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:36:33] "GET /report/0xAb5801a7D398351b8bE11C439e05C5B3259aec44/Unknown_2025-06-21_11-22 HTTP/1.1" 200 -
+2025-06-21 11:55:22,986 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:22] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:55:23,040 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:23] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:55:25,630 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:25] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:55:26,115 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:26] "POST /login HTTP/1.1" 200 -
+2025-06-21 11:55:28,986 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:28] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:55:29,018 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:55:29,029 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:55:29,037 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:55:29,062 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-55, status: ERROR
+2025-06-21 11:55:29,064 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:55:29,066 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:29] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:55:29,083 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:29] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:55:29,106 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:29] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:55:31,202 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:31] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:55:31,229 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:55:31,259 - app.api.feedback - INFO - Feedback saved with ID: 7, status: KO
+2025-06-21 11:55:31,263 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:31] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:55:33,868 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:55:33,883 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:55:33,896 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:55:33,922 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-55, status: ERROR
+2025-06-21 11:55:33,926 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:55:33,929 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:33] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:55:33,958 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:33] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:55:35,649 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:55:35,692 - app.api.feedback - INFO - Feedback saved with ID: 8, status: OK
+2025-06-21 11:55:35,697 - werkzeug - INFO - 192.168.208.1 - - [21/Jun/2025 11:55:35] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:57:58,031 - app.app - INFO - Application started
+2025-06-21 11:57:58,044 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.240.5:8000
+2025-06-21 11:57:58,047 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 11:58:49,196 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:58:49] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:58:49,287 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:58:49] "[33mGET /history HTTP/1.1[0m" 404 -
+2025-06-21 11:58:54,437 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:58:54] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:58:54,469 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:58:54] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-21 11:59:13,040 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:13] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 11:59:13,487 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:13] "POST /register HTTP/1.1" 200 -
+2025-06-21 11:59:23,229 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:23] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:59:23,652 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:23] "POST /login HTTP/1.1" 200 -
+2025-06-21 11:59:26,590 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:26] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:59:26,621 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:59:26,637 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:59:26,646 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:59:26,686 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-59, status: ERROR
+2025-06-21 11:59:26,688 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:59:26,692 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:26] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:59:26,705 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:26] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:59:26,745 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:26] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:59:29,274 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:29] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:59:29,300 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:59:29,349 - app.api.feedback - INFO - Feedback saved with ID: 1, status: OK, user_score: 1
+2025-06-21 11:59:29,352 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 11:59:29] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 12:01:01,580 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:01] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:01:01,612 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:01:01,623 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:01:01,638 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:01:01,662 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-01, status: ERROR
+2025-06-21 12:01:01,664 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:01:01,667 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:01] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:01:01,693 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:01] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:01:01,720 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:01] "GET /history HTTP/1.1" 200 -
+2025-06-21 12:01:03,707 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:03] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 12:01:03,731 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:01:03,757 - app.api.feedback - INFO - Feedback saved with ID: 2, status: KO, user_score: 1
+2025-06-21 12:01:03,760 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:03] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 12:01:06,395 - werkzeug - INFO - 192.168.240.1 - - [21/Jun/2025 12:01:06] "GET /history HTTP/1.1" 200 -
+2025-06-21 12:07:22,695 - app.app - INFO - Application started
+2025-06-21 12:07:22,710 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.19.0.5:8000
+2025-06-21 12:07:22,712 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 12:15:31,042 - app.app - INFO - Application started
+2025-06-21 12:15:31,059 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.21.0.5:8000
+2025-06-21 12:15:31,062 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 12:15:33,935 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:33] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:15:33,970 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:15:33,983 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:15:34,060 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:15:34,127 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-15, status: ERROR
+2025-06-21 12:15:34,129 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:15:34,132 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:34] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:15:34,153 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:34] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:15:34,204 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:34] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 12:15:41,186 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:41] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 12:15:41,618 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:41] "POST /login HTTP/1.1" 200 -
+2025-06-21 12:15:43,804 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:43] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:15:43,834 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:15:43,846 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:15:43,855 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:15:43,874 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-15, status: ERROR
+2025-06-21 12:15:43,876 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:15:43,879 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:43] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:15:43,895 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:43] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:15:43,919 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:43] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 12:15:47,013 - werkzeug - INFO - 172.21.0.1 - - [21/Jun/2025 12:15:47] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 12:16:39,114 - app.app - INFO - Application started
+2025-06-21 12:16:39,128 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.23.0.5:8000
+2025-06-21 12:16:39,129 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 12:17:24,181 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:24] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:17:24,293 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:24] "[33mGET /history HTTP/1.1[0m" 404 -
+2025-06-21 12:17:30,979 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:30] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 12:17:31,011 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:31] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-21 12:17:44,732 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:44] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 12:17:45,184 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:45] "POST /register HTTP/1.1" 200 -
+2025-06-21 12:17:51,733 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:51] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 12:17:52,135 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:52] "POST /login HTTP/1.1" 200 -
+2025-06-21 12:17:55,153 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:55] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:17:55,186 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:17:55,201 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:17:55,207 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:17:55,247 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-17, status: ERROR
+2025-06-21 12:17:55,249 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:17:55,251 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:55] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:17:55,269 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:55] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:17:55,317 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:55] "GET /history HTTP/1.1" 200 -
+2025-06-21 12:17:57,586 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:57] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 12:17:57,613 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:17:57,662 - app.api.feedback - INFO - Feedback saved with ID: 1, status: OK, user_score: 1, weight_request: 1.0
+2025-06-21 12:17:57,665 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:17:57] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 12:18:01,228 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:01] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:18:01,256 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:18:01,268 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:18:01,276 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:18:01,295 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-18, status: ERROR
+2025-06-21 12:18:01,297 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:18:01,300 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:01] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:18:01,314 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:01] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:18:01,337 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:01] "GET /history HTTP/1.1" 200 -
+2025-06-21 12:18:03,742 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:03] "GET /history HTTP/1.1" 200 -
+2025-06-21 12:18:09,700 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:09] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 12:18:09,726 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:18:09,757 - app.api.feedback - INFO - Feedback saved with ID: 2, status: KO, user_score: 1, weight_request: 0.3
+2025-06-21 12:18:09,760 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:09] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 12:18:13,098 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:13] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 12:18:13,128 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 12:18:13,139 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 12:18:13,148 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 12:18:13,169 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_12-18, status: ERROR
+2025-06-21 12:18:13,171 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 12:18:13,173 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:13] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 12:18:13,188 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:13] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 12:18:13,216 - werkzeug - INFO - 172.23.0.1 - - [21/Jun/2025 12:18:13] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:00:12,304 - app.app - INFO - Application démarrée
+2025-06-21 13:00:12,318 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.25.0.5:8000
+2025-06-21 13:00:12,320 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 13:00:42,849 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:00:42] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 13:00:42,940 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:00:42] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-21 13:01:19,987 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:19] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 13:01:20,444 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:20] "POST /register HTTP/1.1" 200 -
+2025-06-21 13:01:30,032 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:30] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 13:01:30,453 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:30] "POST /login HTTP/1.1" 200 -
+2025-06-21 13:01:35,104 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:35] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:35,138 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:01:35,151 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 13:01:35,159 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 13:01:35,197 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_13-01, status: ERROR
+2025-06-21 13:01:35,198 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 13:01:35,201 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:35] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:35,216 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:35] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:01:35,258 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:35] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:01:44,931 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:44] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:44,961 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:01:44,973 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 13:01:44,984 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 13:01:45,003 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_13-01, status: ERROR
+2025-06-21 13:01:45,005 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 13:01:45,007 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:45] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:45,022 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:45] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:01:45,044 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:45] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:01:49,160 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:49] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:01:51,354 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:51] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 13:01:51,380 - app.api.feedback - INFO - Réception d'un retour depuis le portefeuille: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:01:51,430 - app.api.feedback - INFO - Retour sauvegardé avec ID: 1, statut: OK, score utilisateur: 1, poids de la requête: 1.0
+2025-06-21 13:01:51,433 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:51] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 13:01:52,967 - app.api.feedback - INFO - Réception d'un retour depuis le portefeuille: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:01:53,003 - app.api.feedback - INFO - Retour sauvegardé avec ID: 2, statut: OK, score utilisateur: 1, poids de la requête: 1.0
+2025-06-21 13:01:53,007 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:53] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 13:01:58,261 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:58] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:58,293 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:01:58,304 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 13:01:58,312 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 13:01:58,332 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_13-01, status: ERROR
+2025-06-21 13:01:58,334 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 13:01:58,337 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:58] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 13:01:58,352 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:58] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:01:58,375 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:01:58] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:02:00,540 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:02:00] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 13:02:00,579 - app.api.feedback - INFO - Réception d'un retour depuis le portefeuille: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:02:00,611 - app.api.feedback - INFO - Retour sauvegardé avec ID: 3, statut: KO, score utilisateur: 1, poids de la requête: 0.0
+2025-06-21 13:02:00,614 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:02:00] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 13:02:02,850 - werkzeug - INFO - 172.25.0.1 - - [21/Jun/2025 13:02:02] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:13:24,404 - app.app - INFO - Application démarrée
+2025-06-21 13:13:24,418 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-21 13:13:24,420 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 13:14:06,449 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:14:06] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:14:06,545 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:14:06] "[33mGET /history HTTP/1.1[0m" 404 -
+2025-06-21 13:14:12,098 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:14:12] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 13:14:12,127 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:14:12] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-21 13:15:02,712 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:02] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 13:15:03,156 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:03] "POST /register HTTP/1.1" 200 -
+2025-06-21 13:15:10,329 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:10] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 13:15:10,743 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:10] "POST /login HTTP/1.1" 200 -
+2025-06-21 13:15:14,134 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:14] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 13:15:14,167 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:15:14,182 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 13:15:14,190 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 13:15:14,232 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_13-15, status: ERROR
+2025-06-21 13:15:14,234 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 13:15:14,238 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:14] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 13:15:14,257 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:14] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:15:14,305 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:14] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:15:16,572 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:16] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 13:15:16,600 - app.api.feedback - INFO - Réception d'un retour depuis le portefeuille: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:15:16,650 - app.api.feedback - INFO - Retour sauvegardé avec ID: 1, statut: OK, poids de la requête: 4.0
+2025-06-21 13:15:16,653 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:16] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 13:15:20,901 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:20] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 13:15:20,929 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:15:20,941 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 13:15:20,951 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 13:15:20,970 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_13-15, status: ERROR
+2025-06-21 13:15:20,972 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 13:15:20,974 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:20] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 13:15:20,989 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:20] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 13:15:21,010 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:21] "GET /history HTTP/1.1" 200 -
+2025-06-21 13:15:23,451 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:23] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 13:15:23,476 - app.api.feedback - INFO - Réception d'un retour depuis le portefeuille: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 13:15:23,510 - app.api.feedback - INFO - Retour sauvegardé avec ID: 2, statut: KO, poids de la requête: 0.0
+2025-06-21 13:15:23,513 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 13:15:23] "POST /feedback HTTP/1.1" 200 -

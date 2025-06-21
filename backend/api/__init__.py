@@ -4,10 +4,10 @@ from .feedback import feedback_bp
 
 def register_blueprints(app):
     """
-    Register all blueprints with the Flask app.
+    Enregistre tous les blueprints avec l'application Flask.
 
     Args:
-        app (Flask): The Flask app.
+        app (Flask): L'application Flask.
     """
     app.register_blueprint(auth_bp)
     app.register_blueprint(contract_bp)
