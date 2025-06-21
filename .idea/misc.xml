@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.12 (netoyage_des_donnée)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.12.11 Docker (&lt;none&gt;:&lt;none&gt;)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (SmartContractAnalyser)" project-jdk-type="Python SDK" />
 </project>

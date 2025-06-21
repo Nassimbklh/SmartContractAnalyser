@@ -41,7 +41,7 @@ echo "Waiting for the containers to start..."
 sleep 5
 
 # Check if the containers are running
-if [ "$(docker-compose ps -q | wc -l)" -ne 4 ]; then
+if [ "$(docker-compose ps -q | wc -l)" -ne 5 ]; then
   echo "Error: Not all containers are running. Please check the logs with 'docker-compose logs'."
   exit 1
 fi

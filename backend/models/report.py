@@ -9,7 +9,7 @@ class Report(Base):
     Report model for storing smart contract analysis reports.
     """
     __tablename__ = "report"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     filename = Column(String)
@@ -21,7 +21,8 @@ class Report(Base):
     summary = Column(Text)
     reasoning = Column(Text)
     exploit_code = Column(Text)
+    code_result = Column(Integer)
     created_at = Column(DateTime, default=lambda: datetime.datetime.now(UTC))
-    
+
     def __repr__(self):
         return f"<Report(id={self.id}, filename={self.filename}, status={self.status})>"
