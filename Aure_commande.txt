@@ -1,0 +1,189 @@
+az container create --resource-group SmartContract_LLM --name smartinstance --image smartcontractcontainer.azurecr.io/smartimage:v1 --ports 8000 --cpu 1 --memory 1 --ip-address Public --os-type Linux --registry-login-server smartcontractcontainer.azurecr.io --registry-username SmartContractContainer --registry-password MVe4grP0gRdTW+ilehm2dZlfuwt0L1mgBsGH85/BGw+ACRBjjrnO --environment-variables POSTGRES_USER=user POSTGRES_PASSWORD=Smartcontract_pass17 POSTGRES_DB=mydb DATABASE_URL="postgresql://user:Smartcontract_pass17@smartcontract-db.postgres.database.azure.com:5432/mydb?sslmode=require"
+
+Voici le détail de chaque segment de la commande et son lien avec Azure, ton projet et Docker :
+
+1. **`az container create`**
+
+   * *Azure* : commande CLI pour déployer un **Container Instance**.
+   * *Projet/Docker* : c’est l’équivalent de lancer `docker run` dans le cloud Azure.
+
+2. **`--resource-group SmartContract_LLM`**
+
+   * *Azure* : spécifie le **groupe de ressources** où sera créé le conteneur.
+   * *Projet* : tu as déjà un RG nommé `SmartContract_LLM`.
+
+3. **`--name smartinstance`**
+
+   * *Azure* : nom logique de ton container instance.
+   * *Projet* : c’est l’alias sous lequel tu retrouveras le conteneur dans Azure.
+
+4. **`--image smartcontractcontainer.azurecr.io/smartimage:v1`**
+
+   * *Azure* : indique l’**image Docker** hébergée dans ton Azure Container Registry (ACR).
+   * *Projet/Docker* : correspond à l’image que tu as construite/localement taguée `smartcontractcontainer.azurecr.io/smartimage:v1` via `docker build` + `docker push`.
+
+5. **`--ports 8000`**
+
+   * *Azure* : ouvre le port **8000** sur le container instance.
+   * *Dockerfile* : tu as `EXPOSE 8000` et Flask écoute déjà sur ce port (`FLASK_RUN_PORT=8000`).
+
+6. **`--cpu 1 --memory 1`**
+
+   * *Azure* : alloue **1 vCore** et **1 GiB** de RAM à ton conteneur.
+   * *Projet* : défini la capacité minimale pour exécuter ton application Python/Flask.
+
+7. **`--ip-address Public`**
+
+   * *Azure* : attribue une **IP publique** à ton instance pour y accéder depuis Internet.
+   * *Projet* : tu pourras appeler ton API via cette IP + port 8000.
+
+8. **`--os-type Linux`**
+
+   * *Azure* : VM sous-jacente sera en **Linux**.
+   * *Projet/Docker* : ton image Python est basée sur `python:3.12-slim` (Linux).
+
+9. **`--registry-login-server smartcontractcontainer.azurecr.io`**
+
+   * *Azure* : URL de ton **Azure Container Registry** (ACR).
+   * *Projet/Docker* : nom de domaine privé où ton image est stockée.
+
+10. **`--registry-username SmartContractContainer`**
+
+11. **`--registry-password MVe4grP0gRdTW+ilehm2dZlfuwt0L1mgBsGH85/BGw+ACRBjjrnO`**
+
+    * *Azure* : identifiants pour que l’ACI puisse **tirer** l’image depuis ton ACR.
+    * *Projet* : correspond au service principal ou aux credentials ACR que tu as configurés.
+
+12. **`--environment-variables POSTGRES_USER=user POSTGRES_PASSWORD=Smartcontract_pass17 POSTGRES_DB=mydb DATABASE_URL="postgresql://user:Smartcontract_pass17@smartcontract-db.postgres.database.azure.com:5432/mydb?sslmode=require"`**
+
+    * *Azure* : injecte des **variables d’environnement** dans le conteneur.
+    * *Projet/.env* :
+
+      * `POSTGRES_USER=user` ← correspond à `POSTGRES_USER` dans ton `.env`
+      * `POSTGRES_PASSWORD=Smartcontract_pass17` ← idem pour le mot de passe
+      * `POSTGRES_DB=mydb` ← nom de ta base
+      * `DATABASE_URL=...` ← chaîne complète pour que Flask/SQLAlchemy se connecte à ton serveur Flexible PostgreSQL
+
+---
+
+En résumé, cette seule ligne :
+
+* **Dépêche** Azure de créer une instance de conteneur Linux
+* **Récupère** ton image Python/Flask depuis ton ACR
+* **Expose** le port 8000 dans le cloud
+* **Alloue** les ressources CPU/RAM
+* **Injecte** les clés de ta base de données pour que ton backend fonctionne sans autre configuration
+
+Dis‑moi si tout est clair ou si tu veux plus de détails sur une partie !
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+
+az postgres flexible-server firewall-rule list --resource-group SmartContract_LLM --name smartcontract-db --output table
+
+EndIpAddress    Name                                  ResourceGroup      StartIpAddress
+--------------  ------------------------------------  -----------------  ----------------
+90.90.238.123   FirewallIPAddress_2025-6-14_18-17-16  SmartContract_LLM  90.90.238.123
+
+Ce que ça fait :
+
+Liste toutes les règles de firewall actives sur ton serveur PostgreSQL smartcontract-db.
+
+Tu verras les colonnes Name, StartIpAddress, EndIpAddress.
+
+
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+
+
+az postgres flexible-server firewall-rule create --resource-group SmartContract_LLM --name smartcontract-db --rule-name AllowACI --start-ip-address 4.178.237.29 --end-ip-address 4.178.237.29
+
+{
+  "endIpAddress": "4.178.237.29",
+  "id": "/subscriptions/ec320e0a-bae4-4388-a660-7e2a702e9068/resourceGroups/SmartContract_LLM/providers/Microsoft.DBforPostgreSQL/flexibleServers/smartcontract-db/firewallRules/AllowACI",
+  "name": "AllowACI",
+  "resourceGroup": "SmartContract_LLM",
+  "startIpAddress": "4.178.237.29",
+  "systemData": null,
+  "type": "Microsoft.DBforPostgreSQL/flexibleServers/firewallRules"
+}
+
+Ce que ça fait :
+
+Crée une règle de firewall nommée AllowACI sur le serveur smartcontract-db.
+
+Autorise l’IP 4.178.237.29 (celle de ton Azure Container Instance) à se connecter au PostgreSQL.
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+az container show --resource-group SmartContract_LLM --name smartinstance --query "instanceView.state" --output tsv
+
+Running
+
+Ce que ça fait :
+
+Récupère la propriété state de la vue d’instance du container (instanceView.state).
+
+Affiche simplement si ton container est Running, Succeeded, Failed, etc.
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+
+ az container list --resource-group SmartContract_LLM --output table
+Name           ResourceGroup      Status     Image                                            IP:ports           Network    CPU/Memory       OsType    Location
+-------------  -----------------  ---------  -----------------------------------------------  -----------------  ---------  ---------------  --------  -------------
+smartinstance  SmartContract_LLM  Succeeded  smartcontractcontainer.azurecr.io/smartimage:v1  4.178.237.29:8000  Public     1.0 core/1.0 gb  Linux     francecentral
+
+
+Liste toutes les Azure Container Instances dans ce RG et leur état (Running, Succeeded, etc.).
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+az postgres flexible-server list --resource-group SmartContract_LLM --output table
+Name              Resource Group     Location        Version    Storage Size(GiB)    Tier       SKU            State    HA State    Availability zone
+----------------  -----------------  --------------  ---------  -------------------  ---------  -------------  -------  ----------  -------------------
+smartcontract-db  SmartContract_LLM  France Central  17         32                   Burstable  Standard_B1ms  Ready    NotEnabled  1
+
+
+Affiche tous les serveurs PostgreSQL Flexible dans ton RG et leur état (Ready, Stopped, etc.).
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+az resource list --resource-group SmartContract_LLM --output table
+Name                    ResourceGroup      Location       Type                                         Status
+----------------------  -----------------  -------------  -------------------------------------------  --------
+SmartContractContainer  SmartContract_LLM  francecentral  Microsoft.ContainerRegistry/registries
+smartinstance           SmartContract_LLM  francecentral  Microsoft.ContainerInstance/containerGroups
+smartcontract-db        SmartContract_LLM  francecentral  Microsoft.DBforPostgreSQL/flexibleServers
+
+
+Donne un inventaire de toutes les ressources (ACR, ACI, DB, éventuels VMs ou fonctions…) présentes dans ce groupe de ressources.
+
+
+
+
+*****************************************
+
+Aucun container n’est actuellement en cours d’exécution (tu aurais vu Running dans la colonne Status).
+
+Ton serveur PostgreSQL est en état Ready, il reste allumé tant que tu ne l’arrêtes pas ou ne le supprimes pas.
+
+Le ACR n’est pas un service consommant CPU/RAM au sens d’un conteneur, mais il occupe du stockage.
+
+
+
+_____________________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+

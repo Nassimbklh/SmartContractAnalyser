@@ -90,3 +90,42 @@ Cette organisation modulaire présente plusieurs avantages :
 ## Différence avec l'ancienne structure
 
 Auparavant, le backend était organisé en un seul fichier ou quelques fichiers à plat. La nouvelle structure modulaire offre une meilleure organisation et facilite la maintenance du code à mesure que le projet grandit.
+
+
+## Arrêter les services
+
+Pour économiser on va arrêter les services
+
+### Arrêter (stop) le serveur PostgreSQL Flexible et le relancer
+
+`az postgres flexible-server stop \
+  --resource-group SmartContract_LLM \
+  --name smartcontract-db`
+
+`az postgres flexible-server start \
+  --resource-group SmartContract_LLM \
+  --name smartcontract-db`
+
+
+### Supprimer l’instance de conteneur et la recréer
+
+`az container delete \
+  --resource-group SmartContract_LLM \
+  --name smartinstance \
+  --yes`
+
+`az container create \ 
+  --resource-group SmartContract_LLM 
+  --name smartinstance 
+  --image smartcontractcontainer.azurecr.io/smartimage:v1 
+  --ports 8000 
+  --cpu 1 
+  --memory 1 
+  --ip-address Public 
+  --os-type Linux 
+  --registry-login-server smartcontractcontainer.azurecr.io 
+  --registry-username SmartContractContainer 
+  --registry-password MVe4grP0gRdTW+ilehm2dZlfuwt0L1mgBsGH85/BGw+ACRBjjrnO 
+  --environment-variables POSTGRES_USER=user POSTGRES_PASSWORD=Smartcontract_pass17 POSTGRES_DB=mydb DATABASE_URL="postgresql://user:Smartcontract_pass17@smartcontract-db.postgres.database.azure.com:5432/mydb?sslmode=require"`
+
+

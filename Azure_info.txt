@@ -1,0 +1,28 @@
+Groupe de ressource : SmartContract_LLM
+	Container registry : SmartContractContainer
+		clé d'accès :
+			Nom du registre : SmartContractContainer
+			Nom d'utilisateur : SmartContractContainer
+			mot de passe 1 : MVe4grP0gRdTW+ilehm2dZlfuwt0L1mgBsGH85/BGw+ACRBjjrnO
+			mot de passe 2 : sBAkpnyWZXp50irlnoaKBHneDKp9ZoN+ThsDRBZZ8L+ACRCadMB5
+	Instance : smartinstance
+
+
+host et chaine de connection serveur postgreSQL : 
+
+{
+  "connectionString": "postgresql://user:Smartcontract_pass17@smartcontract-db.postgres.database.azure.com/postgres?sslmode=require",
+  "databaseName": "postgres",
+  "firewallName": "FirewallIPAddress_2025-6-14_18-17-16",
+  "host": "smartcontract-db.postgres.database.azure.com",
+  "id": "/subscriptions/ec320e0a-bae4-4388-a660-7e2a702e9068/resourceGroups/SmartContract_LLM/providers/Microsoft.DBforPostgreSQL/flexibleServers/smartcontract-db",
+  "location": "France Central",
+  "password": "Smartcontract_pass17",
+  "resourceGroup": "SmartContract_LLM",
+  "skuname": "Standard_B1ms",
+  "username": "user",
+  "version": "17"
+}
+
+
+

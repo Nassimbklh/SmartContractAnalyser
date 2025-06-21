@@ -37,7 +37,7 @@ def register():
     except Exception as e:
         return error_response("Erreur serveur", 500)
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     """
     Authenticate a user.

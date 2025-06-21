@@ -1,14 +1,17 @@
+version: '3.8'
+
 services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "4455:8000"
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - FLASK_APP=app.py
-      - FLASK_RUN_HOST=0.0.0.0
+      DATABASE_URL: postgresql://user:password@db:5432/mydb
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      FLASK_APP: app.py
+      FLASK_RUN_HOST: 0.0.0.0
     depends_on:
       - db
       - ganache
@@ -22,10 +25,11 @@ services:
   frontend:
     build:
       context: ./react-client
+      dockerfile: Dockerfile
     ports:
       - "4456:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:4455
+      REACT_APP_API_URL: http://backend:4455
     depends_on:
       - backend
     restart: always

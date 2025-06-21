@@ -14,7 +14,7 @@ if not hasattr(inspect, "getargspec"):
     inspect.getargspec = getargspec
 
 # --- Imports ---
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_cors import CORS
 import logging
 from .api import register_blueprints
@@ -47,6 +47,11 @@ def create_app():
     # Create app
     app = Flask(__name__)
 
+    # Health Check
+    @app.route("/", methods=["GET"])
+    def health_check():
+        return "OK", 200
+
     # Configure app
     app.config.update(Config.get_config())
 
@@ -66,6 +71,11 @@ def create_app():
 
 # --- Create app instance ---
 app = create_app()
+
+@app.route("/")
+def home():
+    # Génère l’URL de la vue 'login' du blueprint 'auth'
+    return redirect(url_for("auth.login"))
 
 # --- Run app ---
 if __name__ == "__main__":
