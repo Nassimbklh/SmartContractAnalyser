@@ -53,10 +53,18 @@ function Analyze() {
       const text = res.data;
       setReportContent(text);
 
-      // Extract report ID from response or set a dummy ID for now
-      // In a real implementation, this would need to be updated to extract the actual report ID
-      // or make a separate API call to get the report ID
-      setReportId(1); // Dummy ID for now
+      // Get the latest report ID from history
+      try {
+        const historyRes = await contractAPI.getHistory();
+        if (historyRes.data && historyRes.data.data && historyRes.data.data.length > 0) {
+          // Use the ID of the most recent report (first in the list)
+          const latestReport = historyRes.data.data[0];
+          setReportId(latestReport.id);
+        }
+      } catch (historyError) {
+        console.error("Failed to fetch report ID from history:", historyError);
+        setFeedbackError("Impossible de récupérer l'ID du rapport. Le feedback pourrait ne pas fonctionner correctement.");
+      }
 
       const blobUrl = window.URL.createObjectURL(new Blob([text], { type: "text/plain" }));
       setDownloadUrl(blobUrl);
@@ -79,6 +87,12 @@ function Analyze() {
       return;
     }
 
+    if (!reportId) {
+      setFeedbackError("Impossible d'envoyer le feedback: ID du rapport manquant");
+      setFeedbackLoading(false);
+      return;
+    }
+
     try {
       await feedbackAPI.submitFeedback({
         report_id: reportId,
@@ -89,7 +103,15 @@ function Analyze() {
       setFeedbackSubmitted(true);
     } catch (error) {
       console.error(error);
-      setFeedbackError(`Erreur lors de l'envoi du feedback: ${handleApiError(error)}`);
+      const errorMessage = handleApiError(error);
+
+      // Check if the error is due to already submitted feedback
+      if (errorMessage.includes("déjà donné votre avis") || errorMessage.includes("already submitted")) {
+        setFeedbackError("Vous avez déjà donné votre avis sur ce rapport.");
+        setFeedbackSubmitted(true); // Treat as submitted to disable the form
+      } else {
+        setFeedbackError(`Erreur lors de l'envoi du feedback: ${errorMessage}`);
+      }
     } finally {
       setFeedbackLoading(false);
     }

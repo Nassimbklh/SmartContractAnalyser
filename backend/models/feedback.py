@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from .base import Base
 import datetime
@@ -17,6 +17,17 @@ class Feedback(Base):
     comment = Column(Text, nullable=True)
     code_result = Column(Integer)
     created_at = Column(DateTime, default=lambda: datetime.datetime.now(UTC))
+
+    # Add unique constraint to ensure one feedback per user per report
+    __table_args__ = (
+        UniqueConstraint('user_id', 'report_id', name='uix_user_report'),
+        {
+            'sqlite_autoincrement': True,
+            'mysql_engine': 'InnoDB',
+            'mysql_charset': 'utf8mb4',
+            'extend_existing': True
+        }
+    )
 
     # Relationships
     user = relationship("User", backref="feedbacks")

@@ -87,14 +87,33 @@ def history(wallet):
         reports = get_user_reports(user.id)
 
         # Format reports
-        formatted_reports = [
-            {
+        formatted_reports = []
+        for r in reports:
+            # Check if user has provided feedback for this report
+            user_feedback = None
+            for feedback in r.feedbacks:
+                if feedback.user_id == user.id:
+                    user_feedback = feedback
+                    break
+
+            report_data = {
+                "id": r.id,
                 "filename": r.filename,
                 "date": r.created_at.strftime("%Y-%m-%d %H:%M"),
                 "status": r.status,
-                "attack": r.attack
-            } for r in reports
-        ]
+                "attack": r.attack,
+                "feedback": None
+            }
+
+            # Include feedback if it exists
+            if user_feedback:
+                report_data["feedback"] = {
+                    "status": user_feedback.status,
+                    "code_result": user_feedback.code_result,
+                    "comment": user_feedback.comment
+                }
+
+            formatted_reports.append(report_data)
 
         return success_response(data=formatted_reports)
     except Exception as e:

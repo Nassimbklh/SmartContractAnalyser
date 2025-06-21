@@ -952,3 +952,326 @@ interface IBank {
 2025-06-19 16:37:41,228 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 16:37:41] "POST /analyze HTTP/1.1" 200 -
 2025-06-19 16:37:52,934 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 16:37:52] "OPTIONS /history HTTP/1.1" 200 -
 2025-06-19 16:37:52,985 - werkzeug - INFO - 192.168.160.1 - - [19/Jun/2025 16:37:52] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:35:18,278 - app.app - INFO - Application started
+2025-06-21 10:35:18,291 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.22.0.5:8000
+2025-06-21 10:35:18,293 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 10:35:51,996 - app.app - INFO - Application started
+2025-06-21 10:35:52,008 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.24.0.5:8000
+2025-06-21 10:35:52,011 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 10:36:14,419 - werkzeug - INFO - 172.24.0.1 - - [21/Jun/2025 10:36:14] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 10:36:14,913 - werkzeug - INFO - 172.24.0.1 - - [21/Jun/2025 10:36:14] "POST /register HTTP/1.1" 200 -
+2025-06-21 10:36:20,063 - werkzeug - INFO - 172.24.0.1 - - [21/Jun/2025 10:36:20] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 10:36:20,471 - werkzeug - INFO - 172.24.0.1 - - [21/Jun/2025 10:36:20] "POST /login HTTP/1.1" 200 -
+2025-06-21 10:42:55,315 - app.app - INFO - Application started
+2025-06-21 10:42:55,345 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.26.0.5:8000
+2025-06-21 10:42:55,348 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 10:42:57,838 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:42:57] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 10:42:58,325 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:42:58] "POST /login HTTP/1.1" 200 -
+2025-06-21 10:43:06,925 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:06] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:43:06,959 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:43:06,971 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:43:06,988 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:43:07,188 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-21 10:43:08,132 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 10:43:08,134 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-21 10:43:08,138 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 10:43:13,341 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:43:14,689 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-21 10:43:14,692 - app.modules.attack_generator - INFO - Contract name: Counter
+2025-06-21 10:43:14,693 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-21 10:43:14,694 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-21 10:43:14,697 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:43:14,698 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:43:14,700 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:43:24,203 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:43:24,229 - app.modules.attack_generator - INFO - Received response from OpenAI API in 9.53 seconds
+2025-06-21 10:43:24,240 - app.modules.attack_generator - INFO - Contract analysis completed in 9.53 seconds
+2025-06-21 10:43:24,243 - app.modules.attack_generator - INFO - Vulnerability assessment: This contract does not seem to have any security vulnerabilities. It does not hold any Ether, so the...
+2025-06-21 10:43:24,246 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-21 10:43:24,249 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:43:24,253 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:43:24,255 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:43:29,049 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:43:29,072 - app.modules.attack_generator - INFO - Received response from OpenAI API in 4.82 seconds
+2025-06-21 10:43:29,079 - app.modules.attack_generator - INFO - Attack code generation completed in 4.82 seconds
+2025-06-21 10:43:29,083 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 447
+2025-06-21 10:43:29,086 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 14.35 seconds
+2025-06-21 10:43:29,088 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-21 10:43:29,141 - app.api.contract - INFO - Report saved with filename: Counter_2025-06-21_10-43, status: KO
+2025-06-21 10:43:29,143 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:43:29,146 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:29] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:43:36,574 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:36] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:43:36,599 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:43:36,657 - app.api.feedback - INFO - Feedback saved with ID: 1, status: OK
+2025-06-21 10:43:36,659 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:36] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 10:43:39,891 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:39] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:43:39,932 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:39] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 10:43:42,602 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:43:42] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 10:45:49,684 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:45:49] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:45:49,735 - werkzeug - INFO - 172.26.0.1 - - [21/Jun/2025 10:45:49] "[35m[1mGET /history HTTP/1.1[0m" 500 -
+2025-06-21 10:47:29,630 - app.app - INFO - Application started
+2025-06-21 10:47:29,645 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.29.0.5:8000
+2025-06-21 10:47:29,647 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 10:47:32,252 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:32] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:47:32,437 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:32] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:47:45,095 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:45] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:47:45,124 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:47:45,138 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:47:45,147 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:47:45,186 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_10-47, status: ERROR
+2025-06-21 10:47:45,187 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:47:45,190 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:45] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:47:46,747 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:46] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:47:46,788 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:46] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:47:49,118 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:49] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:47:49,145 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:47:49,194 - app.api.feedback - INFO - Feedback saved with ID: 2, status: KO
+2025-06-21 10:47:49,197 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:47:49] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 10:48:44,289 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:48:44] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 10:48:44,914 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:48:44] "POST /login HTTP/1.1" 200 -
+2025-06-21 10:48:48,345 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:48:48] "POST /login HTTP/1.1" 200 -
+2025-06-21 10:49:27,700 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:49:27] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 10:49:28,169 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:49:28] "POST /register HTTP/1.1" 200 -
+2025-06-21 10:49:45,194 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:49:45] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 10:49:45,639 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:49:45] "POST /login HTTP/1.1" 200 -
+2025-06-21 10:50:54,833 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:50:54] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:50:54,865 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:50:54,875 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:50:54,889 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:50:54,929 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_10-50, status: ERROR
+2025-06-21 10:50:54,931 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:50:54,935 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:50:54] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:51:00,130 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:51:00] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:51:00,171 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:51:00] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:51:18,421 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:51:18] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:51:18,464 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:51:18] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:52:56,057 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:52:56] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:52:56,091 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:52:56,100 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:52:56,114 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:52:56,275 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-21 10:52:57,233 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 10:52:57,236 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-21 10:52:57,240 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 10:52:58,763 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:52:58] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:52:58,796 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:52:58] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:52:59,446 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-21 10:52:59,448 - app.modules.attack_generator - INFO - Contract name: SimpleWallet
+2025-06-21 10:52:59,449 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-21 10:52:59,450 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-21 10:52:59,453 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:52:59,456 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:52:59,457 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:53:02,197 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:02] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:53:02,226 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:53:02,237 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:53:02,248 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:53:02,260 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 10:53:03,688 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-21 10:53:03,690 - app.modules.attack_generator - INFO - Contract name: SimpleWallet
+2025-06-21 10:53:03,691 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-21 10:53:03,693 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-21 10:53:03,695 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:53:03,696 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:53:03,697 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:53:10,778 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:53:10,819 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:53:10,823 - app.modules.attack_generator - INFO - Received response from OpenAI API in 7.13 seconds
+2025-06-21 10:53:10,829 - app.modules.attack_generator - INFO - Received response from OpenAI API in 11.37 seconds
+2025-06-21 10:53:10,833 - app.modules.attack_generator - INFO - Contract analysis completed in 7.13 seconds
+2025-06-21 10:53:10,835 - app.modules.attack_generator - INFO - Contract analysis completed in 11.37 seconds
+2025-06-21 10:53:10,836 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract appears to be secure. It has a check to ensure that only the owner can withdraw funds, ...
+2025-06-21 10:53:10,837 - app.modules.attack_generator - INFO - Vulnerability assessment: The contract seems to be secure against common vulnerabilities such as reentrancy, logic bugs, math ...
+2025-06-21 10:53:10,838 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-21 10:53:10,840 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-21 10:53:10,841 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:53:10,842 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 10:53:10,843 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:53:10,844 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 10:53:10,846 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:53:10,847 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 10:53:14,223 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:53:14,249 - app.modules.attack_generator - INFO - Received response from OpenAI API in 3.40 seconds
+2025-06-21 10:53:14,255 - app.modules.attack_generator - INFO - Attack code generation completed in 3.40 seconds
+2025-06-21 10:53:14,258 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 301
+2025-06-21 10:53:14,260 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 14.78 seconds
+2025-06-21 10:53:14,262 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-21 10:53:14,285 - app.api.contract - INFO - Report saved with filename: SimpleWallet_2025-06-21_10-53, status: KO
+2025-06-21 10:53:14,287 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:53:14,291 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:14] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:53:16,637 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 10:53:16,658 - app.modules.attack_generator - INFO - Received response from OpenAI API in 5.81 seconds
+2025-06-21 10:53:16,663 - app.modules.attack_generator - INFO - Attack code generation completed in 5.81 seconds
+2025-06-21 10:53:16,665 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 494
+2025-06-21 10:53:16,669 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 12.94 seconds
+2025-06-21 10:53:16,672 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-21 10:53:16,689 - app.api.contract - INFO - Report saved with filename: SimpleWallet_2025-06-21_10-53, status: KO
+2025-06-21 10:53:16,691 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:53:16,695 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:16] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:53:24,917 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:24] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:53:24,947 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:53:24,968 - app.api.feedback - WARNING - User 1 has already submitted feedback for report 1
+2025-06-21 10:53:24,972 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:24] "[31m[1mPOST /feedback HTTP/1.1[0m" 400 -
+2025-06-21 10:53:33,586 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:33] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 10:53:33,624 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:33] "GET /history HTTP/1.1" 200 -
+2025-06-21 10:53:36,230 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:36] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:53:36,254 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:53:36,283 - app.api.feedback - INFO - Feedback saved with ID: 3, status: OK
+2025-06-21 10:53:36,287 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:36] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 10:53:41,675 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:41] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:53:41,703 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:53:41,734 - app.api.feedback - INFO - Feedback saved with ID: 4, status: KO
+2025-06-21 10:53:41,738 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:41] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 10:53:42,848 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:53:42,887 - app.api.feedback - INFO - Feedback saved with ID: 5, status: KO
+2025-06-21 10:53:42,891 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:53:42] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 10:55:10,679 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:55:10] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 10:55:10,712 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:55:10,723 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 10:55:10,738 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 10:55:10,770 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_10-55, status: ERROR
+2025-06-21 10:55:10,772 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 10:55:10,776 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:55:10] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 10:55:13,067 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:55:13] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 10:55:13,093 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 10:55:13,114 - app.api.feedback - WARNING - User 1 has already submitted feedback for report 1
+2025-06-21 10:55:13,119 - werkzeug - INFO - 172.29.0.1 - - [21/Jun/2025 10:55:13] "[31m[1mPOST /feedback HTTP/1.1[0m" 400 -
+2025-06-21 11:11:54,963 - app.app - INFO - Application started
+2025-06-21 11:11:54,976 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.96.5:8000
+2025-06-21 11:11:54,979 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 11:12:33,042 - app.app - INFO - Application started
+2025-06-21 11:12:33,056 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.144.5:8000
+2025-06-21 11:12:33,057 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 11:13:01,169 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:01] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:13:01,275 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:01] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-21 11:13:14,898 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:14] "OPTIONS /register HTTP/1.1" 200 -
+2025-06-21 11:13:15,355 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:15] "POST /register HTTP/1.1" 200 -
+2025-06-21 11:13:19,849 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:19] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:13:20,254 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:20] "POST /login HTTP/1.1" 200 -
+2025-06-21 11:13:24,198 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:24] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:13:24,221 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:13:24,231 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:13:24,237 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:13:24,278 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-13, status: ERROR
+2025-06-21 11:13:24,280 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:13:24,282 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:24] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:13:26,793 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:26] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:13:26,820 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:13:26,866 - app.api.feedback - INFO - Feedback saved with ID: 1, status: OK
+2025-06-21 11:13:26,870 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:26] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:13:33,587 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:33] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:13:33,617 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:13:33,628 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:13:33,636 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:13:33,656 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-13, status: ERROR
+2025-06-21 11:13:33,658 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:13:33,661 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:33] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:13:36,092 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:36] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:13:36,117 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:13:36,137 - app.api.feedback - WARNING - User 1 has already submitted feedback for report 1
+2025-06-21 11:13:36,141 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:13:36] "[31m[1mPOST /feedback HTTP/1.1[0m" 400 -
+2025-06-21 11:14:57,659 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:14:57] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:14:57,684 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:14:57,691 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:14:57,705 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:14:57,873 - solcx - INFO - Downloading from https://solc-bin.ethereum.org/linux-amd64/solc-linux-amd64-v0.8.0+commit.c7dfd78e
+2025-06-21 11:14:58,804 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 11:14:58,806 - solcx - INFO - solc 0.8.0 successfully installed at: /root/.solcx/solc-v0.8.0
+2025-06-21 11:14:58,811 - solcx - INFO - Using solc version 0.8.0
+2025-06-21 11:15:02,717 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 11:15:03,555 - app.modules.attack_generator - INFO - Starting complete attack strategy generation
+2025-06-21 11:15:03,557 - app.modules.attack_generator - INFO - Contract name: SimpleStorage
+2025-06-21 11:15:03,558 - app.modules.attack_generator - INFO - Using step number: 0 for model selection
+2025-06-21 11:15:03,559 - app.modules.attack_generator - INFO - 🔍 Step 1: Analyzing contracts for vulnerabilities...
+2025-06-21 11:15:03,562 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 11:15:03,563 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 11:15:03,564 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 11:15:11,362 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 11:15:11,373 - app.modules.attack_generator - INFO - Received response from OpenAI API in 7.81 seconds
+2025-06-21 11:15:11,383 - app.modules.attack_generator - INFO - Contract analysis completed in 7.81 seconds
+2025-06-21 11:15:11,386 - app.modules.attack_generator - INFO - Vulnerability assessment: Given the simplicity of the contract, there are no apparent security vulnerabilities. The contract d...
+2025-06-21 11:15:11,388 - app.modules.attack_generator - INFO - ⚔️ Step 2: Generating attack code...
+2025-06-21 11:15:11,390 - app.modules.attack_generator - INFO - [MODE] Utilisation du gros modèle (GPT-4)
+2025-06-21 11:15:11,393 - app.modules.attack_generator - INFO - Querying OpenAI GPT-4 API with temperature=0.2, max_tokens=1800
+2025-06-21 11:15:11,395 - app.modules.attack_generator - INFO - Sending request to OpenAI API...
+2025-06-21 11:15:18,601 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 11:15:18,621 - app.modules.attack_generator - INFO - Received response from OpenAI API in 7.23 seconds
+2025-06-21 11:15:18,629 - app.modules.attack_generator - INFO - Attack code generation completed in 7.23 seconds
+2025-06-21 11:15:18,634 - app.modules.attack_generator - INFO - Generated attack code of type solidity with length 533
+2025-06-21 11:15:18,638 - app.modules.attack_generator - INFO - Total attack strategy generation completed in 15.04 seconds
+2025-06-21 11:15:18,640 - app.modules.attack_generator - INFO - Attack strategy generation completed successfully
+2025-06-21 11:15:18,666 - app.api.contract - INFO - Report saved with filename: SimpleStorage_2025-06-21_11-15, status: KO
+2025-06-21 11:15:18,669 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:15:18,673 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:15:18] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:15:21,579 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:15:21] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:15:21,609 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:15:21,631 - app.api.feedback - WARNING - User 1 has already submitted feedback for report 1
+2025-06-21 11:15:21,636 - werkzeug - INFO - 192.168.144.1 - - [21/Jun/2025 11:15:21] "[31m[1mPOST /feedback HTTP/1.1[0m" 400 -
+2025-06-21 11:21:55,197 - app.app - INFO - Application started
+2025-06-21 11:21:55,210 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.160.5:8000
+2025-06-21 11:21:55,212 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-21 11:22:19,497 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:19] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:22:19,625 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:19] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:22:23,527 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:23] "OPTIONS /login HTTP/1.1" 200 -
+2025-06-21 11:22:23,976 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:23] "POST /login HTTP/1.1" 200 -
+2025-06-21 11:22:29,292 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:29] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:29,323 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:29,336 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:22:29,344 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:22:29,385 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-22, status: ERROR
+2025-06-21 11:22:29,387 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:22:29,390 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:29] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:29,405 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:29] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:22:29,429 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:29] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:22:31,313 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:31] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:22:31,341 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:31,388 - app.api.feedback - INFO - Feedback saved with ID: 2, status: OK
+2025-06-21 11:22:31,393 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:31] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:22:39,020 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:39] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:39,049 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:39,062 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:22:39,071 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:22:39,091 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-22, status: ERROR
+2025-06-21 11:22:39,092 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:22:39,095 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:39] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:39,112 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:39] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:22:39,133 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:39] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:22:40,759 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:40] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:22:40,786 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:40,816 - app.api.feedback - INFO - Feedback saved with ID: 3, status: OK
+2025-06-21 11:22:40,820 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:40] "POST /feedback HTTP/1.1" 200 -
+2025-06-21 11:22:47,334 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:47] "OPTIONS /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:47,363 - app.api.contract - INFO - Received analyze request from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:47,376 - app.api.contract - INFO - Analyzing code snippet
+2025-06-21 11:22:47,384 - app.api.contract - INFO - Starting contract analysis for user: 1
+2025-06-21 11:22:47,404 - app.api.contract - INFO - Report saved with filename: Unknown_2025-06-21_11-22, status: ERROR
+2025-06-21 11:22:47,407 - app.api.contract - INFO - Analysis completed successfully, returning report
+2025-06-21 11:22:47,410 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:47] "POST /analyze HTTP/1.1" 200 -
+2025-06-21 11:22:47,425 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:47] "OPTIONS /history HTTP/1.1" 200 -
+2025-06-21 11:22:47,447 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:47] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:22:50,101 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:50] "GET /history HTTP/1.1" 200 -
+2025-06-21 11:22:52,020 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:52] "OPTIONS /feedback HTTP/1.1" 200 -
+2025-06-21 11:22:52,046 - app.api.feedback - INFO - Received feedback submission from wallet: 0xAb5801a7D398351b8bE11C439e05C5B3259aec44
+2025-06-21 11:22:52,077 - app.api.feedback - INFO - Feedback saved with ID: 4, status: KO
+2025-06-21 11:22:52,080 - werkzeug - INFO - 192.168.160.1 - - [21/Jun/2025 11:22:52] "POST /feedback HTTP/1.1" 200 -

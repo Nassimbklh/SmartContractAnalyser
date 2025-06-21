@@ -183,10 +183,11 @@ def get_user_reports(user_id):
         list: A list of reports.
     """
     from ..models.base import SessionLocal
+    from sqlalchemy.orm import joinedload
 
     db = SessionLocal()
     try:
-        reports = db.query(Report).filter_by(user_id=user_id).order_by(Report.created_at.desc()).all()
+        reports = db.query(Report).options(joinedload(Report.feedbacks)).filter_by(user_id=user_id).order_by(Report.created_at.desc()).all()
         return reports
     finally:
         db.close()
