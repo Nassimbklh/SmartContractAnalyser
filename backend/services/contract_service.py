@@ -5,7 +5,7 @@ from web3 import Web3
 from ..models import Report, User
 from ..config import Config
 from ..modules import (
-    compile_and_deploy_all_contracts,
+    compile_contracts,
     deploy_contract,
     setup_contract,
     auto_fund_contract_for_attack,
@@ -34,7 +34,7 @@ def analyze_contract_from_code(content):
         w3 = Web3(Web3.HTTPProvider(ganache_url))
 
         # Compile the contract
-        compiled_contracts = compile_and_deploy_all_contracts(temp_path)
+        compiled_contracts = compile_contracts(temp_path)
 
         if not compiled_contracts:
             return {

@@ -6,29 +6,29 @@ Handles smart contract deployment and setup
 import openai
 from typing import List, Dict, Any, Tuple
 from web3 import Web3
-from ..utils import openai_utils
 
-
-def log(msg: str):
-    """Simple logging function"""
-    print(msg)
-
-
-def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: str = "gpt-4") -> List:
+def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: str = "gpt-4.1-nano") -> List:
     """
-    Use LLM to generate constructor/function arguments
+    Generates a valid Python array with argument values for a Solidity function call based on
+    its ABI and context. This function utilizes language model prompts to provide valid
+    argument suggestions and performs necessary type casting and validation.
 
-    Args:
-        fn_abi: Function ABI information
-        context_info: Additional context for the LLM
-        model: LLM model to use
-
-    Returns:
-        List of generated arguments
+    :param fn_abi: A dictionary representation of the function's Solidity ABI, including
+                   its name and input parameters.
+    :type fn_abi: Dict[str, Any]
+    :param context_info: Additional contextual information or instructions for tailoring the
+                         prompt sent to the language model.
+    :type context_info: str, optional
+    :param model: The name of the language model used for generating the prompt response.
+                  Defaults to "gpt-4.1-nano".
+    :type model: str, optional
+    :return: A list of Python arguments correctly cast and validated according to the Solidity
+             function's ABI input specifications.
+    :rtype: List
     """
     fn_name = fn_abi.get('name', 'constructor')
     abi_inputs = fn_abi.get('inputs', [])
-
+    
     type_map = {
         'uint256': 'int',
         'int': 'int',
@@ -38,20 +38,20 @@ def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: s
         'bool': 'bool',
         'bytes32': 'str'
     }
-
+    
     # Create clear prompt for LLM
     type_guide = ", ".join([
-        f"{inp['name']} ({inp['type']}) = {type_map.get(inp['type'], 'str')}"
+        f"{inp['name']} ({inp['type']}) = {type_map.get(inp['type'], 'str')}" 
         for inp in abi_inputs
     ])
-
+    
     prompt = (
         f"Je dois appeler la fonction '{fn_name}' d'un smart contract Solidity. "
         f"Voici les arguments attendus (type Python): {type_guide}. "
         f"Donne-moi un array Python contenant des arguments valides dans le bon ordre et le bon type, ex: [123, 'alice', '0x123...']. "
         f"Réponds uniquement par l'array Python, sans texte, sans commentaire."
     )
-
+    
     try:
         response = openai.chat.completions.create(
             model=model,
@@ -60,11 +60,11 @@ def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: s
             max_tokens=150
         )
         txt = response.choices[0].message.content
-
+        
         # Parse and cast arguments
         args = eval(txt) if "[" in txt else []
         casted = []
-
+        
         for val, inp in zip(args, abi_inputs):
             typ = inp['type']
             if typ.startswith('uint') or typ.startswith('int'):
@@ -111,9 +111,9 @@ def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: s
                 casted.append(str(val))
             else:
                 casted.append(val)
-
+        
         return casted
-
+        
     except Exception as e:
         # Fallback with default values
         return [
@@ -130,47 +130,57 @@ def prompt_llm_for_args(fn_abi: Dict[str, Any], context_info: str = "", model: s
 
 def deploy_contract(contract_info: Dict[str, Any], w3: Web3) -> Dict[str, Any]:
     """
-    Deploy a single contract
+    Deploys a smart contract on the Ethereum blockchain based on provided contract
+    information and Web3 connection. This function handles the constructor arguments
+    using an external prompt-based inference, deploys the contract, fetches the
+    transaction receipt, and updates the contract information with deployment
+    details including the contract address, transaction hash, block number, and
+    gas used.
 
-    Args:
-        contract_info: Contract compilation information
-        w3: Web3 instance
-
-    Returns:
-        Updated contract info with deployment details
+    :param contract_info: Dictionary containing the contract's ABI, bytecode, and
+        contract name. It may include any additional required metadata for the
+        deployment process.
+    :type contract_info: Dict[str, Any]
+    :param w3: Instance of Web3 used for deploying the contract and interacting
+        with the Ethereum blockchain.
+    :type w3: Web3
+    :return: Updated contract information dictionary with deployment details
+        including the deployed contract address, transaction hash (formatted as
+        hexadecimal), block number, and gas used. Returns None if deployment fails.
+    :rtype: Dict[str, Any]
     """
     try:
         abi = contract_info["abi"]
         bytecode = contract_info["bytecode"]
         contract_name = contract_info["contract_name"]
-
+        
         # Extract constructor inputs
         constructor_inputs = []
         for item in abi:
             if item.get('type') == 'constructor':
                 constructor_inputs = item.get('inputs', [])
                 break
-
+        
         # Get deployment arguments
         deploy_args = []
         if constructor_inputs:
             deploy_args = prompt_llm_for_args(
                 {'name': 'constructor', 'inputs': constructor_inputs}
             )
-            log(f"⏩⏩ Déploiement {contract_name} avec arguments auto-déduits: {deploy_args}")
-
+            print(f"⏩⏩ Déploiement {contract_name} avec arguments auto-déduits: {deploy_args}")
+        
         # Deploy contract
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
         acct = w3.eth.accounts[0]
-
+        
         if constructor_inputs:
             tx_hash = Contract.constructor(*deploy_args).transact({'from': acct})
         else:
             tx_hash = Contract.constructor().transact({'from': acct})
-
+        
         tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
         address = tx_receipt.contractAddress
-
+        
         # Update contract info with deployment details
         contract_info.update({
             "address": address,
@@ -178,70 +188,83 @@ def deploy_contract(contract_info: Dict[str, Any], w3: Web3) -> Dict[str, Any]:
             "block_number": tx_receipt.blockNumber,
             "gas_used": tx_receipt.gasUsed
         })
-
-        log(f"✅ {contract_name} déployé à {address}")
+        
+        print(f"✅ {contract_name} déployé à {address}")
         return contract_info
-
+        
     except Exception as e:
-        log(f"❌ Deploy failed for {contract_info['contract_name']}: {e}")
+        print(f"❌ Deploy failed for {contract_info['contract_name']}: {e}")
         return None
 
 
 def should_call_setup_fn(fn: Dict[str, Any], contract_state: Dict[str, Any]) -> bool:
     """
-    Determine if a setup function should be called based on contract state
+    Determines whether a setup function should be called based on its name and
+    the state of the contract.
 
-    Args:
-        fn: Function ABI
-        contract_state: Current contract state
+    The function evaluates the input `fn` dictionary and checks for specific
+    conditions in the `contract_state` dictionary to decide if the function
+    represented by `fn` is eligible for execution.
 
-    Returns:
-        True if function should be called
+    :param fn: A dictionary containing details about the function to evaluate.
+    :param contract_state: A dictionary representing the current state of the
+                           contract.
+    :return: A boolean value indicating whether the function should be called
+             (True) or not (False).
     """
     name = fn['name'].lower()
-
+    
     # Specific logic for certain functions
     if name == "set_percent_reduction":
         if not contract_state.get("bought_tokens", False):
             return False
         if contract_state.get("rounds", 1) != 0:
             return False
-
+    
     return True
 
 
 def setup_contract(contract_info: Dict[str, Any], w3: Web3):
     """
-    Call setup/initialization functions on deployed contract
+    Set up a smart contract by identifying and executing the setup/init functions defined in its ABI.
 
-    Args:
-        contract_info: Contract information with deployment details
-        w3: Web3 instance
+    This function connects to the smart contract, determines its current state by calling all
+    public getter functions and accessing public variables, and then evaluates if specific setup
+    functions should be executed based on the current state. If the setup function preconditions are
+    met, arguments for the function are generated and the function is called. Transactions are
+    monitored for success, and detailed logs are produced.
+
+    :param contract_info: A dictionary containing contract details such as its ABI, address, and contract name.
+    :param w3: The Web3 instance used to interact with the blockchain.
+    :return: None
     """
     from .contract_analyzer import get_public_getters_and_vars_state
     from .contract_compiler import find_setup_functions
-
+    
     contract = w3.eth.contract(address=contract_info["address"], abi=contract_info["abi"])
     acct = w3.eth.accounts[0]
-
+    
     # Find setup functions
     setup_fns = find_setup_functions(contract_info["abi"])
-
+    
     # Get current contract state
     contract_state = get_public_getters_and_vars_state(w3, contract_info)
-
+    
     for fn in setup_fns:
         if not should_call_setup_fn(fn, contract_state):
-            log(f"⏩ Skip setup/init {fn['name']} (pré-condition non respectée d'après state actuel)")
+            print(f"⏩ Skip setup/init {fn['name']} (pré-condition non respectée d'après state actuel)")
             continue
 
+        args = []
+        args_generated = False
         try:
             # Generate arguments for setup function
             args = prompt_llm_for_args(
                 fn,
                 context_info=f"Nom du contrat: {contract_info['contract_name']}"
             )
-
+            args_generated = True
+            
             # Call the function
             fn_obj = contract.get_function_by_signature(
                 f"{fn['name']}({','.join(i['type'] for i in fn['inputs'])})"
@@ -249,30 +272,51 @@ def setup_contract(contract_info: Dict[str, Any], w3: Web3):
             tx = fn_obj(*args).transact({'from': acct})
             w3.eth.wait_for_transaction_receipt(tx)
 
-            log(f"✅ Setup/init : Appel de {fn['name']}({args}) réussi.")
+            print(f"✅ Setup/init : Appel de {fn['name']}({args}) réussi.")
 
         except Exception as e:
-            log(f"⚠️ Setup/init {fn['name']}({args}) failed: {e}")
+            if args_generated:
+                print(f"⚠️ Setup/init {fn['name']}({args}) failed: {e}")
+            else:
+                print(f"⚠️ Setup/init {fn['name']} failed: {e}")
 
 
 def auto_fund_contract_for_attack(w3: Web3, contract_info: Dict[str, Any], eth_amount: int = 3) -> Tuple[bool, str]:
     """
-    Automatically fund contract for attack testing
+    Automatically funds a smart contract with the specified amount of Ether.
 
-    Args:
-        w3: Web3 instance
-        contract_info: Contract information
-        eth_amount: Amount of ETH to send
+    This function attempts to fund the given smart contract in two ways. First, it
+    searches for a payable function in the contract's ABI (Application Binary
+    Interface) that takes no arguments and attempts to fund the contract using
+    this function. If this approach fails, it falls back to sending Ether directly
+    to the contract's address. After the transaction, it verifies whether the
+    contract's balance increased as expected. Logs are generated throughout the
+    process to confirm the outcome of each funding attempt.
 
-    Returns:
-        Tuple of (success, log_message)
+    :param w3: Web3 instance to interact with the Ethereum blockchain.
+    :type w3: Web3
+    :param contract_info: Dictionary containing the contract's 'address' and 'abi',
+        where 'address' is the Ethereum address of the contract, and 'abi' is its
+        Application Binary Interface.
+    :type contract_info: Dict[str, Any]
+    :param eth_amount: The amount of Ether to fund the contract with. Defaults to
+        3 ETH.
+    :type eth_amount: int, optional
+    :return: A tuple where the first element is a boolean indicating whether the
+        funding was successful, and the second element is a string containing a
+        log of the funding operation.
+    :rtype: Tuple[bool, str]
     """
     contract = w3.eth.contract(address=contract_info["address"], abi=contract_info["abi"])
     acct = w3.eth.accounts[1]  # Use different account for funding
     funded = False
     funding_log = ""
 
-    # Try funding via payable functions
+    # Vérifier la balance initiale
+    initial_balance = w3.eth.get_balance(contract_info["address"])
+    funding_log += f"📊 Balance initiale du contrat: {w3.from_wei(initial_balance, 'ether')} ETH\n"
+
+    # Try funding via payable functions FIRST
     for f in contract_info["abi"]:
         if (
                 f['type'] == 'function'
@@ -282,15 +326,25 @@ def auto_fund_contract_for_attack(w3: Web3, contract_info: Dict[str, Any], eth_a
             try:
                 fn = contract.get_function_by_signature(f"{f['name']}()")
                 tx = fn().transact({'from': acct, 'value': w3.to_wei(eth_amount, 'ether')})
-                w3.eth.wait_for_transaction_receipt(tx)
-                msg = f"✅ Funded with {eth_amount} ETH via {f['name']}()"
-                log(msg)
+                receipt = w3.eth.wait_for_transaction_receipt(tx)
+
+                # Vérifier que le funding a marché
+                new_balance = w3.eth.get_balance(contract_info["address"])
+                balance_increase = new_balance - initial_balance
+
+                msg = f"✅ Funded with {eth_amount} ETH via {f['name']}() - Balance increase: {w3.from_wei(balance_increase, 'ether')} ETH"
+                print(msg)
                 funding_log += msg + "\n"
-                funded = True
-                break
+
+                if balance_increase > 0:
+                    funded = True
+                    break
+                else:
+                    funding_log += f"⚠️  WARNING: {f['name']}() succeeded but contract balance didn't increase!\n"
+
             except Exception as e:
                 msg = f"⚠️ Funding via {f['name']}() failed: {e}"
-                log(msg)
+                print(msg)
                 funding_log += msg + "\n"
 
     # Try direct ETH transfer if payable functions failed
@@ -301,39 +355,29 @@ def auto_fund_contract_for_attack(w3: Web3, contract_info: Dict[str, Any], eth_a
                 'to': contract_info["address"],
                 'value': w3.to_wei(eth_amount, 'ether')
             })
-            w3.eth.wait_for_transaction_receipt(tx_hash)
-            msg = f"✅ Native funding {eth_amount} ETH sent to {contract_info['address']}"
-            log(msg)
-            funding_log += msg + "\n"
-            funded = True
+            receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+
+            # Vérifier le funding
+            final_balance = w3.eth.get_balance(contract_info["address"])
+            balance_increase = final_balance - initial_balance
+
+            if balance_increase > 0:
+                msg = f"✅ Direct transfer: {w3.from_wei(balance_increase, 'ether')} ETH sent to {contract_info['address']}"
+                print(msg)
+                funding_log += msg + "\n"
+                funded = True
+            else:
+                msg = f"⚠️  Direct transfer failed: no balance increase"
+                print(msg)
+                funding_log += msg + "\n"
+
         except Exception as e:
-            msg = f"❗️Funding failed: can't fund contract {contract_info['contract_name']} at {contract_info['address']}. Error: {e}"
-            log(msg)
+            msg = f"❗️Direct transfer failed: {e}"
+            print(msg)
             funding_log += msg + "\n"
 
-    # Log information about non-fundable contracts
-    if not funded:
-        has_payable = any(
-            f['type'] == 'function' and f.get('stateMutability', '') == 'payable'
-            for f in contract_info["abi"]
-        )
-        has_fallback = any(
-            f['type'] in ['fallback', 'receive'] for f in contract_info["abi"]
-        )
-
-        if not has_payable and not has_fallback:
-            msg = (
-                f"ℹ️  [INFO] Contract {contract_info['contract_name']} at {contract_info['address']} "
-                f"does not accept native funding (no payable/fallback/receive, standard for ERC20 etc)."
-            )
-            log(msg)
-            funding_log += msg + "\n"
-        else:
-            msg = (
-                f"❗️Warning: No funding method found for contract {contract_info['contract_name']} "
-                f"({contract_info['address']})!"
-            )
-            log(msg)
-            funding_log += msg + "\n"
+    # Final verification
+    final_balance = w3.eth.get_balance(contract_info["address"])
+    funding_log += f"📊 Balance finale du contrat: {w3.from_wei(final_balance, 'ether')} ETH\n"
 
     return funded, funding_log
