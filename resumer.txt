@@ -1,0 +1,126 @@
+# Analyseur de Smart Contracts - Résumé de l'API et de l'Authentification
+
+## Aperçu de l'Architecture API
+
+L'Analyseur de Smart Contracts utilise une architecture API RESTful avec Flask côté backend et React côté frontend. Le système implémente une authentification basée sur des tokens en utilisant JWT (JSON Web Tokens) pour une communication sécurisée entre le client et le serveur.
+
+## Flux d'Authentification
+
+1. **Processus d'Inscription**:
+   - Point d'accès: `POST /register`
+   - Le client envoie l'adresse du portefeuille et le mot de passe
+   - Le serveur valide les données, hache le mot de passe et stocke l'utilisateur dans la base de données
+   - Renvoie un message de succès une fois terminé
+
+2. **Processus de Connexion**:
+   - Point d'accès: `POST /login`
+   - Le client envoie l'adresse du portefeuille et le mot de passe
+   - Le serveur valide les identifiants dans la base de données
+   - Si valide, génère un token JWT et le renvoie au client
+   - Le client stocke ce token dans localStorage pour les requêtes ultérieures
+
+3. **Middleware d'Authentification**:
+   - Toutes les routes protégées utilisent le décorateur `@token_required`
+   - Celui-ci extrait le token JWT de l'en-tête Authorization
+   - Valide le token et extrait l'adresse du portefeuille
+   - Rend l'adresse du portefeuille disponible pour le gestionnaire de route
+
+## Configuration CORS
+
+CORS (Cross-Origin Resource Sharing) est configuré pour permettre des requêtes cross-origin sécurisées:
+
+```python
+CORS(app, resources={r"/*": {
+    "origins": "*",  # Autorise toutes les origines pour les tests
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    "allow_headers": ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", 
+                     "Access-Control-Request-Method", "Access-Control-Request-Headers"],
+    "expose_headers": ["Content-Type", "Content-Length", "Content-Disposition", "Authorization"],
+    "supports_credentials": False,  # Doit être False quand origins est "*"
+    "max_age": 86400
+}})
+```
+
+Points clés:
+- Toutes les origines sont autorisées (à des fins de développement)
+- Toutes les méthodes HTTP nécessaires sont prises en charge
+- Les en-têtes requis sont explicitement autorisés
+- `supports_credentials` est défini sur false pour correspondre à la configuration frontend
+
+## Service API Frontend
+
+Le frontend utilise axios pour la communication API:
+
+```javascript
+const api = axios.create({
+  baseURL: BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  },
+  withCredentials: false,  // Correspond à la configuration CORS
+});
+
+// Ajoute un intercepteur de requête pour ajouter le token d'authentification aux requêtes
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+```
+
+Points clés:
+- Le token est automatiquement ajouté à toutes les requêtes via un intercepteur
+- `withCredentials` est défini sur false pour correspondre à la configuration CORS
+- Les en-têtes Content-Type et Accept sont définis par défaut
+
+## Points d'Accès API Principaux
+
+1. **Authentification**:
+   - `POST /login`: Authentifie l'utilisateur et obtient un token
+   - `POST /register`: Enregistre un nouvel utilisateur
+
+2. **Analyse de Contrat**:
+   - `POST /analyze`: Soumet le code du contrat pour analyse
+   - `GET /history`: Obtient l'historique d'analyse pour l'utilisateur
+   - `GET /report/<wallet>/<filename>`: Télécharge un rapport spécifique
+
+3. **Retour d'Information**:
+   - `POST /feedback`: Soumet un retour sur les résultats d'analyse
+
+## Gestion des Erreurs
+
+L'API implémente une gestion cohérente des erreurs:
+- Les erreurs client (niveau 400) renvoient des messages d'erreur détaillés
+- Les erreurs serveur (niveau 500) sont enregistrées avec des traces de pile
+- Les erreurs CORS sont gérées avec un gestionnaire d'erreurs personnalisé
+- Une journalisation détaillée est implémentée pour le dépannage
+
+## Améliorations Récentes
+
+1. **Configuration CORS Améliorée**:
+   - Configuration explicite des origines, méthodes et en-têtes autorisés
+   - Gestion appropriée des requêtes préliminaires
+
+2. **Gestion d'Authentification Améliorée**:
+   - Prise en charge des données JSON et des données de formulaire dans les points d'accès d'authentification
+   - Journalisation détaillée des tentatives d'authentification
+   - Meilleurs messages d'erreur pour les échecs d'authentification
+
+3. **Analyse de Contrat Robuste**:
+   - Gestion complète des erreurs avec des blocs try/except
+   - Journalisation détaillée tout au long du processus d'analyse
+   - Intégration avec Slither pour l'analyse statique
+   - Meilleure logique de détection des vulnérabilités
+
+4. **Communication Frontend-Backend**:
+   - Configuration cohérente des en-têtes
+   - Gestion appropriée des différents types de réponses
+   - Gestion des erreurs améliorée et retour d'information à l'utilisateur
+
+Ces améliorations assurent une communication fiable entre le frontend et le backend, un flux d'authentification approprié et une fonctionnalité d'analyse de contrat robuste.
