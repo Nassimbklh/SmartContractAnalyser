@@ -1,0 +1,222 @@
+2025-06-22 19:32:05,983 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:32:05,983 - __main__ - INFO - Using default configuration
+2025-06-22 19:32:05,983 - __main__ - ERROR - Training data file not found: fine_tune_data(1).jsonl
+2025-06-22 19:41:52,403 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:41:52,403 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:41:52,404 - __main__ - INFO - Training Configuration:
+2025-06-22 19:41:52,404 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:41:52,404 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:41:52,404 - __main__ - INFO -   Validation data: None
+2025-06-22 19:41:52,404 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:41:52,404 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:41:52,404 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:41:52,404 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:41:52,404 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:41:52,404 - __main__ - INFO -   Use weights: True
+2025-06-22 19:41:52,404 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:41:52,404 - __main__ - INFO -   FP16: False
+2025-06-22 19:41:52,404 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:41:52,404 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:41:55,974 - accelerate.big_modeling - WARNING - Some parameters are on the meta device because they were offloaded to the disk.
+2025-06-22 19:41:55,975 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:41:56,150 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:41:56,150 - QwenSFTTrainer - INFO - Trainable parameters: 40,370,176 (0.53%)
+2025-06-22 19:41:56,150 - QwenSFTTrainer - INFO - Total parameters: 7,655,986,688
+2025-06-22 19:41:56,152 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:41:56,152 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:41:56,157 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:41:56,158 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:41:56,158 - __main__ - ERROR - Training failed with error: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
+2025-06-22 19:43:46,863 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:43:46,863 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:43:46,863 - __main__ - INFO - Training Configuration:
+2025-06-22 19:43:46,863 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:43:46,863 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:43:46,863 - __main__ - INFO -   Validation data: None
+2025-06-22 19:43:46,863 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:43:46,863 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:43:46,863 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:43:46,863 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:43:46,863 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:43:46,863 - __main__ - INFO -   Use weights: True
+2025-06-22 19:43:46,863 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:43:46,863 - __main__ - INFO -   FP16: False
+2025-06-22 19:43:46,863 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:43:46,863 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:43:51,257 - accelerate.big_modeling - WARNING - Some parameters are on the meta device because they were offloaded to the disk.
+2025-06-22 19:43:51,261 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:43:51,441 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:43:51,441 - QwenSFTTrainer - INFO - Trainable parameters: 40,370,176 (0.53%)
+2025-06-22 19:43:51,441 - QwenSFTTrainer - INFO - Total parameters: 7,655,986,688
+2025-06-22 19:43:51,443 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:43:51,444 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:43:51,444 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:43:51,444 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:43:51,445 - __main__ - ERROR - Training failed with error: --load_best_model_at_end requires the save and eval strategy to match, but found
+- Evaluation strategy: IntervalStrategy.NO
+- Save strategy: SaveStrategy.STEPS
+2025-06-22 19:44:36,325 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:44:36,325 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:44:36,325 - __main__ - INFO - Training Configuration:
+2025-06-22 19:44:36,325 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:44:36,325 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:44:36,325 - __main__ - INFO -   Validation data: None
+2025-06-22 19:44:36,325 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:44:36,325 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:44:36,325 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:44:36,325 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:44:36,325 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:44:36,325 - __main__ - INFO -   Use weights: True
+2025-06-22 19:44:36,325 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:44:36,325 - __main__ - INFO -   FP16: False
+2025-06-22 19:44:36,325 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:44:36,325 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:44:39,544 - accelerate.big_modeling - WARNING - Some parameters are on the meta device because they were offloaded to the disk.
+2025-06-22 19:44:39,545 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:44:39,740 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:44:39,741 - QwenSFTTrainer - INFO - Trainable parameters: 40,370,176 (0.53%)
+2025-06-22 19:44:39,741 - QwenSFTTrainer - INFO - Total parameters: 7,655,986,688
+2025-06-22 19:44:39,742 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:44:39,743 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:44:39,744 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:44:39,744 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:44:39,762 - __main__ - ERROR - Training failed with error: Cannot copy out of meta tensor; no data! Please use torch.nn.Module.to_empty() instead of torch.nn.Module.to() when moving module from meta to a different device.
+2025-06-22 19:45:41,160 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:45:41,161 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:45:41,161 - __main__ - INFO - Training Configuration:
+2025-06-22 19:45:41,161 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:45:41,161 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:45:41,161 - __main__ - INFO -   Validation data: None
+2025-06-22 19:45:41,161 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:45:41,161 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:45:41,161 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:45:41,161 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:45:41,161 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:45:41,161 - __main__ - INFO -   Use weights: True
+2025-06-22 19:45:41,161 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:45:41,161 - __main__ - INFO -   FP16: False
+2025-06-22 19:45:41,161 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:45:41,161 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:46:09,069 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:46:09,496 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:46:09,496 - QwenSFTTrainer - INFO - Trainable parameters: 40,370,176 (0.53%)
+2025-06-22 19:46:09,496 - QwenSFTTrainer - INFO - Total parameters: 7,655,986,688
+2025-06-22 19:46:09,499 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:46:09,500 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:46:09,512 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:46:09,515 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:47:40,246 - __main__ - ERROR - Training failed with error: MPS backend out of memory (MPS allocated: 28.90 GB, other allocations: 5.78 MB, max allowed: 30.19 GB). Tried to allocate 2.03 GB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+2025-06-22 19:52:01,308 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:52:01,309 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:52:01,309 - __main__ - INFO - Training Configuration:
+2025-06-22 19:52:01,309 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:52:01,309 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:52:01,309 - __main__ - INFO -   Validation data: None
+2025-06-22 19:52:01,309 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:52:01,309 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:52:01,309 - __main__ - INFO -   Batch size: 1
+2025-06-22 19:52:01,309 - __main__ - INFO -   Gradient accumulation steps: 16
+2025-06-22 19:52:01,309 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:52:01,309 - __main__ - INFO -   Use weights: True
+2025-06-22 19:52:01,309 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:52:01,309 - __main__ - INFO -   FP16: True
+2025-06-22 19:52:01,309 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:52:01,309 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:52:01,825 - QwenSFTTrainer - INFO - Using 4-bit quantization for memory efficiency...
+2025-06-22 19:52:02,317 - __main__ - ERROR - Training failed with error: Using `bitsandbytes` 4-bit quantization requires the latest version of bitsandbytes: `pip install -U bitsandbytes`
+2025-06-22 19:52:15,320 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:52:15,320 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:52:15,320 - __main__ - INFO - Training Configuration:
+2025-06-22 19:52:15,320 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:52:15,320 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:52:15,320 - __main__ - INFO -   Validation data: None
+2025-06-22 19:52:15,320 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:52:15,320 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:52:15,320 - __main__ - INFO -   Batch size: 1
+2025-06-22 19:52:15,320 - __main__ - INFO -   Gradient accumulation steps: 16
+2025-06-22 19:52:15,320 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:52:15,320 - __main__ - INFO -   Use weights: True
+2025-06-22 19:52:15,320 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:52:15,320 - __main__ - INFO -   FP16: True
+2025-06-22 19:52:15,320 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:52:15,320 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:52:15,897 - QwenSFTTrainer - INFO - Using 4-bit quantization for memory efficiency...
+2025-06-22 19:52:16,089 - __main__ - ERROR - Training failed with error: Using `bitsandbytes` 4-bit quantization requires the latest version of bitsandbytes: `pip install -U bitsandbytes`
+2025-06-22 19:56:53,798 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:56:53,798 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:56:53,798 - __main__ - INFO - Training Configuration:
+2025-06-22 19:56:53,798 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:56:53,798 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:56:53,798 - __main__ - INFO -   Validation data: None
+2025-06-22 19:56:53,798 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:56:53,798 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:56:53,798 - __main__ - INFO -   Batch size: 1
+2025-06-22 19:56:53,798 - __main__ - INFO -   Gradient accumulation steps: 16
+2025-06-22 19:56:53,798 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:56:53,798 - __main__ - INFO -   Use weights: True
+2025-06-22 19:56:53,798 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:56:53,798 - __main__ - INFO -   FP16: True
+2025-06-22 19:56:53,798 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:56:53,799 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:56:54,240 - QwenSFTTrainer - WARNING - 4-bit quantization not supported on Apple Silicon, using memory optimizations instead...
+2025-06-22 19:57:07,630 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:57:07,707 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:57:07,707 - QwenSFTTrainer - INFO - Trainable parameters: 5,046,272 (0.07%)
+2025-06-22 19:57:07,707 - QwenSFTTrainer - INFO - Total parameters: 7,620,662,784
+2025-06-22 19:57:07,709 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:57:07,711 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:57:07,711 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:57:07,711 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:57:07,719 - __main__ - ERROR - Training failed with error: fp16 mixed precision requires a GPU (not 'mps').
+2025-06-22 19:57:38,752 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:57:38,752 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:57:38,752 - __main__ - INFO - Training Configuration:
+2025-06-22 19:57:38,752 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:57:38,752 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:57:38,752 - __main__ - INFO -   Validation data: None
+2025-06-22 19:57:38,752 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:57:38,752 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:57:38,752 - __main__ - INFO -   Batch size: 1
+2025-06-22 19:57:38,752 - __main__ - INFO -   Gradient accumulation steps: 16
+2025-06-22 19:57:38,752 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:57:38,752 - __main__ - INFO -   Use weights: True
+2025-06-22 19:57:38,752 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:57:38,752 - __main__ - INFO -   FP16: True
+2025-06-22 19:57:38,752 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:57:38,753 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:57:39,330 - QwenSFTTrainer - WARNING - 4-bit quantization not supported on Apple Silicon, using memory optimizations instead...
+2025-06-22 19:57:52,370 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:57:52,447 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:57:52,447 - QwenSFTTrainer - INFO - Trainable parameters: 5,046,272 (0.07%)
+2025-06-22 19:57:52,447 - QwenSFTTrainer - INFO - Total parameters: 7,620,662,784
+2025-06-22 19:57:52,448 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:57:52,448 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:57:52,449 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:57:52,449 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:57:52,456 - __main__ - ERROR - Training failed with error: fp16 mixed precision requires a GPU (not 'mps').
+2025-06-22 19:58:59,614 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:58:59,614 - __main__ - INFO - Loaded configuration from backend/qwen_config.json
+2025-06-22 19:58:59,614 - __main__ - INFO - Training Configuration:
+2025-06-22 19:58:59,614 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:58:59,614 - __main__ - INFO -   Training data: backend/fine_tune_data.jsonl
+2025-06-22 19:58:59,614 - __main__ - INFO -   Validation data: None
+2025-06-22 19:58:59,614 - __main__ - INFO -   Output directory: qwen_fine_tuned
+2025-06-22 19:58:59,614 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:58:59,614 - __main__ - INFO -   Batch size: 1
+2025-06-22 19:58:59,614 - __main__ - INFO -   Gradient accumulation steps: 16
+2025-06-22 19:58:59,614 - __main__ - INFO -   Learning rate: 0.0002
+2025-06-22 19:58:59,614 - __main__ - INFO -   Use weights: True
+2025-06-22 19:58:59,614 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:58:59,614 - __main__ - INFO -   FP16: False
+2025-06-22 19:58:59,614 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:58:59,614 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:59:00,255 - QwenSFTTrainer - WARNING - 4-bit quantization not supported on Apple Silicon, using memory optimizations instead...
+2025-06-22 19:59:25,026 - QwenSFTTrainer - INFO - Applying LoRA configuration...
+2025-06-22 19:59:25,220 - QwenSFTTrainer - INFO - LoRA applied successfully
+2025-06-22 19:59:25,226 - QwenSFTTrainer - INFO - Trainable parameters: 5,046,272 (0.07%)
+2025-06-22 19:59:25,226 - QwenSFTTrainer - INFO - Total parameters: 7,620,662,784
+2025-06-22 19:59:25,228 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:59:25,228 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from backend/fine_tune_data.jsonl
+2025-06-22 19:59:25,230 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:59:25,230 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 20:01:04,818 - __main__ - ERROR - Training failed with error: MPS backend out of memory (MPS allocated: 28.86 GB, other allocations: 5.78 MB, max allowed: 30.19 GB). Tried to allocate 2.03 GB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).

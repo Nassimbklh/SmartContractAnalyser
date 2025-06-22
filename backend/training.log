@@ -1,0 +1,62 @@
+2025-06-22 19:33:12,985 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:33:12,985 - __main__ - INFO - Using default configuration
+2025-06-22 19:33:12,985 - __main__ - INFO - Training Configuration:
+2025-06-22 19:33:12,985 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:33:12,985 - __main__ - INFO -   Training data: fine_tune_data.jsonl
+2025-06-22 19:33:12,985 - __main__ - INFO -   Validation data: None
+2025-06-22 19:33:12,985 - __main__ - INFO -   Output directory: ./models/qwen_finetuned
+2025-06-22 19:33:12,985 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:33:12,985 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:33:12,985 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:33:12,985 - __main__ - INFO -   Learning rate: 2e-05
+2025-06-22 19:33:12,985 - __main__ - INFO -   Use weights: True
+2025-06-22 19:33:12,985 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:33:12,985 - __main__ - INFO -   FP16: True
+2025-06-22 19:33:12,985 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:33:12,985 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:34:08,955 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:34:08,956 - __main__ - INFO - Using default configuration
+2025-06-22 19:34:08,956 - __main__ - ERROR - Training data file not found: backend/fine_tune_data.jsonl
+2025-06-22 19:34:19,199 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:34:19,199 - __main__ - INFO - Using default configuration
+2025-06-22 19:34:19,199 - __main__ - INFO - Training Configuration:
+2025-06-22 19:34:19,199 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:34:19,199 - __main__ - INFO -   Training data: fine_tune_data.jsonl
+2025-06-22 19:34:19,199 - __main__ - INFO -   Validation data: None
+2025-06-22 19:34:19,199 - __main__ - INFO -   Output directory: ./models/qwen_finetuned
+2025-06-22 19:34:19,199 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:34:19,199 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:34:19,200 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:34:19,200 - __main__ - INFO -   Learning rate: 2e-05
+2025-06-22 19:34:19,200 - __main__ - INFO -   Use weights: True
+2025-06-22 19:34:19,200 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:34:19,200 - __main__ - INFO -   FP16: True
+2025-06-22 19:34:19,200 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:34:19,200 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:34:49,561 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:34:49,561 - root - ERROR - Configuration file not found: config.json
+2025-06-22 19:35:02,984 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:35:02,984 - __main__ - INFO - Loaded configuration from qwen_config.json
+2025-06-22 19:35:02,984 - __main__ - ERROR - Training data file not found: fine_tune_data(1).jsonl
+2025-06-22 19:35:33,500 - __main__ - INFO - Starting QwenCoderV2 SFT training...
+2025-06-22 19:35:33,500 - __main__ - INFO - Using default configuration
+2025-06-22 19:35:33,500 - __main__ - INFO - Training Configuration:
+2025-06-22 19:35:33,500 - __main__ - INFO -   Model: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:35:33,500 - __main__ - INFO -   Training data: fine_tune_data.jsonl
+2025-06-22 19:35:33,500 - __main__ - INFO -   Validation data: None
+2025-06-22 19:35:33,500 - __main__ - INFO -   Output directory: ./models/qwen_finetuned
+2025-06-22 19:35:33,500 - __main__ - INFO -   Epochs: 3
+2025-06-22 19:35:33,500 - __main__ - INFO -   Batch size: 2
+2025-06-22 19:35:33,500 - __main__ - INFO -   Gradient accumulation steps: 8
+2025-06-22 19:35:33,500 - __main__ - INFO -   Learning rate: 2e-05
+2025-06-22 19:35:33,500 - __main__ - INFO -   Use weights: True
+2025-06-22 19:35:33,500 - __main__ - INFO -   Weight scaling: sqrt
+2025-06-22 19:35:33,500 - __main__ - INFO -   FP16: False
+2025-06-22 19:35:33,500 - __main__ - INFO -   Gradient checkpointing: True
+2025-06-22 19:35:33,500 - QwenSFTTrainer - INFO - Loading model and tokenizer: Qwen/Qwen2.5-Coder-7B-Instruct
+2025-06-22 19:39:23,210 - accelerate.big_modeling - WARNING - Some parameters are on the meta device because they were offloaded to the disk.
+2025-06-22 19:39:23,211 - QwenSFTTrainer - INFO - Model and tokenizer loaded successfully
+2025-06-22 19:39:23,211 - QwenSFTDataProcessor - INFO - Loaded 3 training examples from fine_tune_data.jsonl
+2025-06-22 19:39:23,212 - QwenSFTDataProcessor - INFO - Applied sqrt weight scaling
+2025-06-22 19:39:23,214 - QwenSFTDataProcessor - INFO - Weight stats - Min: 3.00, Max: 5.00, Mean: 4.00
+2025-06-22 19:39:23,215 - __main__ - ERROR - Training failed with error: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
