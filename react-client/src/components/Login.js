@@ -18,7 +18,7 @@ function Login() {
     e.preventDefault();
     try {
       const res = await authAPI.login(form);
-      login(res.data.data.access_token);
+      login(res.data.data.access_token, form.wallet);
       navigate("/analyze");
     } catch (error) {
       setMessage(`❌ ${handleApiError(error) || "Adresse ou mot de passe invalide"}`);
@@ -28,10 +28,10 @@ function Login() {
   return (
     <div className="d-flex justify-content-center align-items-center bg-light vh-100">
       <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "400px" }}>
-        <h2 className="text-center mb-4">🔐 Connexion</h2>
+        <h2 className="text-center mb-4"><span role="img" aria-label="cadenas">🔐</span> Connexion</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">📬 Adresse de portefeuille</label>
+            <label className="form-label"><span role="img" aria-label="boîte aux lettres">📬</span> Adresse de portefeuille</label>
             <input
               className="form-control"
               name="wallet"
@@ -42,7 +42,7 @@ function Login() {
             />
           </div>
           <div className="mb-3">
-            <label className="form-label">🔒 Mot de passe</label>
+            <label className="form-label"><span role="img" aria-label="cadenas">🔒</span> Mot de passe</label>
             <input
               type="password"
               className="form-control"
@@ -53,7 +53,7 @@ function Login() {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">➡️ Se connecter</button>
+          <button type="submit" className="btn btn-primary w-100"><span role="img" aria-label="flèche droite">➡️</span> Se connecter</button>
         </form>
         {message && <div className="alert alert-danger mt-3 text-center">{message}</div>}
       </div>

@@ -96,10 +96,10 @@ function History() {
 
   return (
     <div className="container mt-5">
-      <h2>📚 Historique des analyses</h2>
+      <h2><span role="img" aria-label="livres">📚</span> Historique des analyses</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
-      {history.length === 0 && <p>📭 Aucun rapport pour l’instant.</p>}
+      {history.length === 0 && <p><span role="img" aria-label="boîte aux lettres vide">📭</span> Aucun rapport pour l'instant.</p>}
 
       <ul className="list-group mt-3">
         {history.map((item, index) => (
@@ -112,7 +112,7 @@ function History() {
                 className="btn btn-outline-primary"
                 onClick={() => handleDownload(item.filename)}
               >
-                📥 Télécharger
+                <span role="img" aria-label="télécharger">📥</span> Télécharger
               </button>
             </div>
 
@@ -121,12 +121,16 @@ function History() {
               {item.feedback ? (
                 <div className="alert alert-info">
                   <strong>
-                    {item.feedback.status === "OK" ? "👍 OK" : "👎 KO"}
+                    {item.feedback.status === "OK" ? (
+                      <><span role="img" aria-label="pouce en l'air">👍</span> OK</>
+                    ) : (
+                      <><span role="img" aria-label="pouce en bas">👎</span> KO</>
+                    )}
                   </strong>
                   {item.feedback.comment && (
                     <span> — {item.feedback.comment}</span>
                   )}
-                  <div className="mt-1">✅ Feedback déjà envoyé</div>
+                  <div className="mt-1"><span role="img" aria-label="coche verte">✅</span> Feedback déjà envoyé</div>
                 </div>
               ) : (
                 <div className="d-flex gap-2">
@@ -135,14 +139,14 @@ function History() {
                     onClick={() => handleFeedback(item.id, "OK")}
                     disabled={submitting}
                   >
-                    👍 Correct
+                    <span role="img" aria-label="pouce en l'air">👍</span> Correct
                   </button>
                   <button
                     className="btn btn-sm btn-danger"
                     onClick={() => handleFeedback(item.id, "KO")}
                     disabled={submitting}
                   >
-                    👎 Incorrect
+                    <span role="img" aria-label="pouce en bas">👎</span> Incorrect
                   </button>
                 </div>
               )}

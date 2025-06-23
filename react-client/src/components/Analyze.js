@@ -125,10 +125,10 @@ function Analyze() {
 
   return (
     <div className="container mt-5">
-      <h2>🔍 Analyse de Smart Contract Solidity</h2>
+      <h2><span role="img" aria-label="loupe">🔍</span> Analyse de Smart Contract Solidity</h2>
 
       <form onSubmit={handleSubmit}>
-        <label className="form-label mt-3">💻 Coller le code :</label>
+        <label className="form-label mt-3"><span role="img" aria-label="ordinateur">💻</span> Coller le code :</label>
         <textarea
           className="form-control"
           placeholder={`// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Example {\n    uint256 public value;\n    function setValue(uint256 _value) public {\n        value = _value;\n    }\n}`}
@@ -142,7 +142,7 @@ function Analyze() {
 
         <div className="text-center my-3">— ou —</div>
 
-        <label className="form-label">📁 Fichier .sol :</label>
+        <label className="form-label"><span role="img" aria-label="dossier">📁</span> Fichier .sol :</label>
         <input
           type="file"
           accept=".sol"
@@ -154,7 +154,7 @@ function Analyze() {
         />
 
         <button type="submit" className="btn btn-primary mt-3" disabled={loading}>
-          🚀 Lancer l'analyse
+          <span role="img" aria-label="fusée">🚀</span> Lancer l'analyse
         </button>
       </form>
 
@@ -167,13 +167,13 @@ function Analyze() {
         </div>
       )}
 
-      {/* ❌ Message d’erreur */}
+      {/* ❌ Message d'erreur */}
       {error && <div className="alert alert-danger mt-3">{error}</div>}
 
       {/* ✅ Résultat */}
       {reportContent && (
         <div className="mt-4 mb-4 flex flex-column">
-          <h4 className="mb-2">📝 Résultat de l’analyse :</h4>
+          <h4 className="mb-2"><span role="img" aria-label="mémo">📝</span> Résultat de l'analyse :</h4>
           <pre className="bg-light p-3 rounded border max-h-96 overflow-auto">
             {reportContent}
           </pre>
@@ -185,7 +185,7 @@ function Analyze() {
                 download="rapport.txt"
                 className="btn btn-success"
               >
-                📥 Télécharger le rapport
+                <span role="img" aria-label="télécharger">📥</span> Télécharger le rapport
               </a>
             </div>
           )}
@@ -193,7 +193,7 @@ function Analyze() {
           {/* 🔄 Feedback */}
           {reportId && !feedbackSubmitted ? (
             <div className="mt-4 p-4 border rounded bg-light">
-              <h4 className="mb-3">💬 Votre avis sur ce rapport :</h4>
+              <h4 className="mb-3"><span role="img" aria-label="bulle de dialogue">💬</span> Votre avis sur ce rapport :</h4>
 
               <form onSubmit={handleFeedbackSubmit}>
                 <div className="mb-3">
@@ -203,14 +203,14 @@ function Analyze() {
                       className={`btn ${feedbackStatus === "OK" ? "btn-success" : "btn-outline-success"}`}
                       onClick={() => setFeedbackStatus("OK")}
                     >
-                      👍 Résultat valide
+                      <span role="img" aria-label="pouce en l'air">👍</span> Résultat valide
                     </button>
                     <button
                       type="button"
                       className={`btn ${feedbackStatus === "KO" ? "btn-danger" : "btn-outline-danger"}`}
                       onClick={() => setFeedbackStatus("KO")}
                     >
-                      👎 Résultat invalide
+                      <span role="img" aria-label="pouce en bas">👎</span> Résultat invalide
                     </button>
                   </div>
                 </div>
@@ -249,7 +249,7 @@ function Analyze() {
           ) : reportId && feedbackSubmitted ? (
             <div className="mt-4 p-4 border rounded bg-light">
               <div className="alert alert-success mb-0">
-                <h5 className="alert-heading">✅ Merci pour votre retour !</h5>
+                <h5 className="alert-heading"><span role="img" aria-label="coche verte">✅</span> Merci pour votre retour !</h5>
                 <p className="mb-0">Votre avis a bien été pris en compte.</p>
               </div>
             </div>

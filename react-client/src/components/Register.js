@@ -140,10 +140,10 @@ function Register() {
     return (
       <div className="d-flex justify-content-center align-items-center bg-light vh-100">
         <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "400px" }}>
-          <h2 className="text-center mb-4">📝 Inscription</h2>
+          <h2 className="text-center mb-4"><span role="img" aria-label="mémo">📝</span> Inscription</h2>
           <form onSubmit={handleCredentialsSubmit}>
             <div className="mb-3">
-              <label className="form-label">📬 Adresse de portefeuille</label>
+              <label className="form-label"><span role="img" aria-label="boîte aux lettres">📬</span> Adresse de portefeuille</label>
               <input
                 className="form-control"
                 name="wallet"
@@ -154,7 +154,7 @@ function Register() {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">🔒 Mot de passe</label>
+              <label className="form-label"><span role="img" aria-label="cadenas">🔒</span> Mot de passe</label>
               <input
                 type="password"
                 className="form-control"
@@ -182,7 +182,7 @@ function Register() {
     return (
       <div className="d-flex justify-content-center align-items-center bg-light min-vh-100 py-5">
         <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "600px" }}>
-          <h2 className="text-center mb-4">🧠 Évaluation technique</h2>
+          <h2 className="text-center mb-4"><span role="img" aria-label="cerveau">🧠</span> Évaluation technique</h2>
           <p className="text-center mb-4">Répondez aux 5 questions suivantes pour évaluer votre niveau en smart contracts Solidity et sécurité blockchain.</p>
 
           <form onSubmit={handleAssessmentSubmit}>
@@ -236,7 +236,7 @@ function Register() {
   return (
     <div className="d-flex justify-content-center align-items-center bg-light vh-100">
       <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "400px" }}>
-        <h2 className="text-center mb-4">✅ Inscription terminée</h2>
+        <h2 className="text-center mb-4"><span role="img" aria-label="coche verte">✅</span> Inscription terminée</h2>
         {message && (
           <div className={`alert alert-${messageType} mt-3 text-center`}>
             {message}
