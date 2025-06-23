@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import logo from "../img/logo.png";
 
 function Navbar() {
   const { token, logout } = useContext(AuthContext);
@@ -16,7 +17,7 @@ function Navbar() {
       <div className="container">
         {/* 🔗 Le nom du site redirige vers /analyze */}
         <Link to="/analyze" className="navbar-brand d-flex align-items-center text-decoration-none">
-          <span className="me-2" role="img" aria-label="lock">🔐</span>
+          <img src={logo} alt="Logo" className="me-2" style={{ height: '30px' }} />
           <strong className="text-dark">SmartContractAnalyser</strong>
         </Link>
 

@@ -54,6 +54,15 @@ def analyze(wallet):
         # Analyze contract
         result = analyze_contract(content, user.id)
 
+        # Check if the code contains a valid contract
+        if not result.get("is_contract", True):
+            logger.warning("No valid Solidity contract found in the provided code")
+            return jsonify({
+                "status": "ERROR",
+                "message": result.get("message", "❌ Le code fourni ne contient pas de contrat Solidity valide."),
+                "is_contract": False
+            }), 400
+
         # Save report
         report = result["report"]
         save_report(report)

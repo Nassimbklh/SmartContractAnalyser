@@ -4,6 +4,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+RUN mkdir -p public/img src/img
+RUN cp img/logo.png public/img/
+RUN cp img/logo.png src/img/
 ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 RUN npm install -g serve

@@ -70,7 +70,13 @@ function Analyze() {
       setDownloadUrl(blobUrl);
     } catch (error) {
       console.error(error);
-      setError(`❌ Erreur lors de l'analyse: ${handleApiError(error)}`);
+
+      // Check if the error is due to invalid contract
+      if (error.response && error.response.data && error.response.data.is_contract === false) {
+        setError(error.response.data.message || "❌ Le code fourni ne contient pas de contrat Solidity valide.");
+      } else {
+        setError(`❌ Le code soumis ne semble pas être un smart contract valide. Veuillez coller un contrat Solidity correct ou importer un fichier .sol.`);
+      }
     } finally {
       setLoading(false);
     }

@@ -84,9 +84,10 @@ def analyze_contract_from_code(content):
             return {
                 "status": "ERROR",
                 "attack": "Compilation Error",
-                "reasoning": "Failed to compile the contract. Please check the Solidity code for errors.",
+                "reasoning": "❌ Le code fourni ne contient pas de contrat Solidity valide.",
                 "summary": "Compilation error",
                 "code": "",
+                "is_contract": False,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -311,6 +312,16 @@ def analyze_contract(content, user_id):
     # Analyze the contract
     analysis_result = analyze_contract_from_code(content)
 
+    # Check if the code contains a valid contract
+    is_contract = analysis_result.get("is_contract", True)
+
+    # If not a valid contract, return early with the error message
+    if not is_contract:
+        return {
+            "is_contract": False,
+            "message": analysis_result.get("reasoning", "❌ Le code fourni ne contient pas de contrat Solidity valide.")
+        }
+
     # Extract information from the analysis result
     status = analysis_result.get("status", "OK")
     attack = analysis_result.get("attack")
@@ -344,6 +355,7 @@ def analyze_contract(content, user_id):
     )
 
     return {
+        "is_contract": True,
         "report": report,
         "filename": generated_filename
     }
