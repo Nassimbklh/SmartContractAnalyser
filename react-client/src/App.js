@@ -4,8 +4,10 @@ import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Analyze from "./components/Analyze";
+import EtherscanAnalyze from "./components/EtherscanAnalyze";
 import Navbar from "./components/Navbar";
 import History from "./components/History";
+import Subscription from "./components/Subscription";
 
 function ProtectedRoute({ children }) {
   const { token } = React.useContext(AuthContext);
@@ -21,7 +23,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/analyze" element={<ProtectedRoute><Analyze /></ProtectedRoute> } />
-            <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          <Route path="/analyse-etherscan" element={<ProtectedRoute><EtherscanAnalyze /></ProtectedRoute>} />
+          <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          <Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>

@@ -50,4 +50,19 @@ export const feedbackAPI = {
   submitFeedback: (feedbackData) => api.post('/feedback', feedbackData),
 };
 
+// Subscription API
+export const subscriptionAPI = {
+  // Get current user's subscription plan
+  getCurrentPlan: () => api.get('/subscription/current'),
+
+  // Subscribe to a plan
+  subscribe: (planId, paymentMethod) => api.post('/subscription/subscribe', { planId, paymentMethod }),
+
+  // Update subscription
+  updateSubscription: (planId) => api.put('/subscription/update', { planId }),
+
+  // Cancel subscription
+  cancelSubscription: () => api.delete('/subscription/cancel'),
+};
+
 export default api;

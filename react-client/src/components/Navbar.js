@@ -90,6 +90,20 @@ function Navbar() {
                 >
                   <span className="me-2" role="img" aria-label="document">📄</span> Mon historique
                 </Link>
+                <Link 
+                  to="/analyse-etherscan" 
+                  className="dropdown-item py-2 px-4 d-flex align-items-center" 
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <span className="me-2" role="img" aria-label="loupe">🔍</span> Analyse depuis Etherscan
+                </Link>
+                <Link 
+                  to="/subscription" 
+                  className="dropdown-item py-2 px-4 d-flex align-items-center" 
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <span className="me-2" role="img" aria-label="étoile">⭐</span> Abonnements
+                </Link>
                 <button 
                   className="dropdown-item py-2 px-4 d-flex align-items-center" 
                   onClick={() => {
