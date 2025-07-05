@@ -1,0 +1,162 @@
+.analysis-display {
+  font-family: sans-serif;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.progress-table h2, .final-report h2 {
+  text-align: center;
+  color: #333;
+}
+
+.progress-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.progress-table th, .progress-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.progress-table th {
+  background-color: #f0f0f0;
+}
+
+/* Status colors for progress table */
+.status-completed { color: green; }
+.status-failed { color: red; }
+.status-in-progress { color: orange; }
+.status-pending { color: blue; }
+
+
+.final-report .report-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.final-report .report-section h3 {
+  margin-top: 0;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+/* Global Info & Result Styling */
+.global-info p, .global-result p {
+  margin: 5px 0;
+}
+.status-ok {
+  border-left: 5px solid green;
+}
+.status-ko {
+  border-left: 5px solid red;
+}
+.status-ok-text {
+  color: green;
+  font-weight: bold;
+}
+.status-ko-text {
+  color: red;
+  font-weight: bold;
+}
+
+/* Analysis Summary Styling */
+.analysis-summary ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.analysis-summary li {
+  padding: 5px 0;
+}
+.critical-point {
+  color: red;
+  font-weight: bold;
+}
+
+/* Model Reasoning Styling */
+.model-reasoning .code-snippet {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+.model-reasoning pre code {
+  font-family: monospace;
+  background-color: #f0f0f0; /* Added for snippets within text */
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #333;
+}
+
+
+/* Exploit Code Styling */
+.exploit-code h3 {
+  display: flex;
+  align-items: center;
+}
+.exploit-code .code-block {
+  background-color: #2d2d2d; /* Darker grey for exploit block */
+  color: #f8f8f2; /* Light text for contrast */
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 10px;
+}
+.exploit-code .code-block code {
+  font-family: 'Courier New', Courier, monospace;
+}
+.exploit-code button {
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+.exploit-code button:hover {
+  background-color: #4cae4c;
+}
+
+
+/* Buttons */
+.restart-button, .download-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.restart-button:hover, .download-button:hover {
+  background-color: #0056b3;
+}
+
+.download-button {
+  background-color: #17a2b8;
+}
+.download-button:hover {
+  background-color: #117a8b;
+}
