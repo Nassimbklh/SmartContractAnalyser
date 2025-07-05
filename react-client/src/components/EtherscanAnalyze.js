@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { contractAPI } from "../services/api";
-import { downloadBlob } from "../utils/utils";
+import { contractAPI, feedbackAPI } from "../services/api"; // Import feedbackAPI
+import { downloadBlob, handleApiError } from "../utils/utils"; // Import handleApiError
 import AnalysisDisplay from "./AnalysisDisplay"; // Import AnalysisDisplay
 
 // 👉 Ta clé API Etherscan (évite de la laisser en dur pour la prod)
@@ -22,6 +22,14 @@ function EtherscanAnalyze() {
   const [analysisReportData, setAnalysisReportData] = useState(null);
   const [showContractModal, setShowContractModal] = useState(false);
 
+  // Feedback states
+  const [reportId, setReportId] = useState(null);
+  const [feedbackStatus, setFeedbackStatus] = useState(""); // "OK" or "KO"
+  const [feedbackComment, setFeedbackComment] = useState("");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
+
 
   const resetAnalysisState = () => {
     setError("");
@@ -29,6 +37,14 @@ function EtherscanAnalyze() {
     setAnalysisReportData(null);
     setContractSourceCode("");
     // setAddress(""); // Optionally reset address field
+
+    // Clear feedback states
+    setReportId(null);
+    setFeedbackStatus("");
+    setFeedbackComment("");
+    setFeedbackSubmitted(false);
+    setFeedbackLoading(false);
+    setFeedbackError("");
   };
 
   const handleRestartAnalysis = () => {
@@ -167,6 +183,24 @@ function EtherscanAnalyze() {
         }
       }));
 
+      // Get the latest report ID from history for feedback
+      try {
+        const historyRes = await contractAPI.getHistory();
+        if (historyRes.data && historyRes.data.data && historyRes.data.data.length > 0) {
+          const latestReport = historyRes.data.data[0];
+          setReportId(latestReport.id);
+          // Reset feedback submitted status for the new report
+          setFeedbackSubmitted(false);
+          setFeedbackStatus("");
+          setFeedbackComment("");
+          setFeedbackError("");
+        }
+      } catch (historyError) {
+        console.error("Failed to fetch report ID from history:", historyError);
+        // Set feedbackError, but don't block showing the report itself
+        setFeedbackError("Impossible de récupérer l'ID du rapport pour le feedback.");
+      }
+
     } catch (err) {
       console.error(err);
       const errorMsg = "Erreur pendant l’analyse. Vérifiez l’adresse ou la connexion.";
@@ -191,6 +225,45 @@ function EtherscanAnalyze() {
       });
     } finally {
       setAnalysisInProgress(false);
+    }
+  };
+
+  const handleFeedbackSubmit = async (e) => {
+    e.preventDefault();
+    setFeedbackError("");
+    setFeedbackLoading(true);
+
+    if (!feedbackStatus) {
+      setFeedbackError("Veuillez sélectionner une option (valide ou invalide)");
+      setFeedbackLoading(false);
+      return;
+    }
+
+    if (!reportId) {
+      setFeedbackError("Impossible d'envoyer le feedback: ID du rapport manquant");
+      setFeedbackLoading(false);
+      return;
+    }
+
+    try {
+      await feedbackAPI.submitFeedback({
+        report_id: reportId,
+        status: feedbackStatus,
+        comment: feedbackComment
+      });
+      setFeedbackSubmitted(true);
+    } catch (error) {
+      console.error("Feedback submission error:", error);
+      const errorMessage = handleApiError(error); // Use utility for error message
+
+      if (errorMessage.includes("déjà donné votre avis") || errorMessage.includes("already submitted")) {
+        setFeedbackError("Vous avez déjà donné votre avis sur ce rapport.");
+        setFeedbackSubmitted(true); // Treat as submitted to hide form
+      } else {
+        setFeedbackError(`Erreur lors de l'envoi du feedback: ${errorMessage}`);
+      }
+    } finally {
+      setFeedbackLoading(false);
     }
   };
 
@@ -268,6 +341,68 @@ function EtherscanAnalyze() {
       {/* Old report display - to be removed or integrated if AnalysisDisplay doesn't cover everything */}
       {/* {sourceCode && !analysisProgressData && !analysisReportData && ( ... ) } */}
       {/* {report && !analysisProgressData && !analysisReportData && ( ... ) } */}
+
+      {/* Feedback Section */}
+      {analysisReportData && reportId && !feedbackSubmitted && (
+        <div className="mt-4 p-4 border rounded bg-light">
+          <h4 className="mb-3"><span role="img" aria-label="bulle de dialogue">💬</span> Votre avis sur ce rapport :</h4>
+          <form onSubmit={handleFeedbackSubmit}>
+            <div className="mb-3">
+              <div className="d-flex gap-3">
+                <button
+                  type="button"
+                  className={`btn ${feedbackStatus === "OK" ? "btn-success" : "btn-outline-success"}`}
+                  onClick={() => setFeedbackStatus("OK")}
+                >
+                  <span role="img" aria-label="pouce en l'air">👍</span> Résultat valide
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${feedbackStatus === "KO" ? "btn-danger" : "btn-outline-danger"}`}
+                  onClick={() => setFeedbackStatus("KO")}
+                >
+                  <span role="img" aria-label="pouce en bas">👎</span> Résultat invalide
+                </button>
+              </div>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="etherscanFeedbackComment" className="form-label">Laissez un commentaire (optionnel) :</label>
+              <textarea
+                id="etherscanFeedbackComment"
+                className="form-control"
+                rows="3"
+                value={feedbackComment}
+                onChange={(e) => setFeedbackComment(e.target.value)}
+              ></textarea>
+            </div>
+            {feedbackError && (
+              <div className="alert alert-danger">{feedbackError}</div>
+            )}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={feedbackLoading}
+            >
+              {feedbackLoading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Envoi en cours...
+                </>
+              ) : (
+                "Envoyer mon avis"
+              )}
+            </button>
+          </form>
+        </div>
+      )}
+      {analysisReportData && reportId && feedbackSubmitted && (
+        <div className="mt-4 p-4 border rounded bg-light">
+          <div className="alert alert-success mb-0">
+            <h5 className="alert-heading"><span role="img" aria-label="coche verte">✅</span> Merci pour votre retour !</h5>
+            <p className="mb-0">Votre avis a bien été pris en compte.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
