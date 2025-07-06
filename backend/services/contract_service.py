@@ -6,6 +6,10 @@ import logging
 from web3 import Web3
 from models import Report, User
 from config import Config
+from solcx import install_solc, set_solc_version
+
+install_solc("0.8.20")
+set_solc_version("0.8.20")
 from modules import (
     compile_and_deploy_all_contracts,
     deploy_contract,
