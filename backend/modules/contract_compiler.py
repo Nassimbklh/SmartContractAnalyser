@@ -17,17 +17,18 @@ def extract_solc_version(source_code: str) -> str:
 
     The function attempts to find and return the Solidity compiler version specified
     in the pragma directive within the source code. If no version is found, it returns
-    an empty string.
+    a default version (0.8.20).
 
     :param source_code: The Solidity source code as a string.
     :type source_code: str
-    :return: The extracted Solidity compiler version or an empty string if not found.
+    :return: The extracted Solidity compiler version or a default version if not found.
     :rtype: str
     """
     match = re.search(r'pragma\s+solidity\s+(\^?)([\d\.]+)', source_code)
     if match:
         return match.group(2)
-    return ''
+    # Return a default version if no pragma directive is found
+    return '0.8.20'
 
 def clean_bytecode(bytecode: str) -> str:
     """
