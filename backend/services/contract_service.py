@@ -4,9 +4,9 @@ import tempfile
 import traceback
 import logging
 from web3 import Web3
-from ..models import Report, User
-from ..config import Config
-from ..modules import (
+from models import Report, User
+from config import Config
+from modules import (
     compile_and_deploy_all_contracts,
     deploy_contract,
     setup_contract,
@@ -26,7 +26,14 @@ def analyze_contract_from_code(content):
         content (str): The smart contract code.
 
     Returns:
-        dict: The analysis results.
+        dict: The analysis results with the following structure:
+            - status (str): The status of the analysis (OK, KO, ERROR)
+            - attack (str or None): The type of attack or vulnerability found
+            - reasoning (str): Detailed explanation of the analysis
+            - summary (str): Brief summary of the analysis
+            - code (str): Exploit code if a vulnerability was found
+            - is_contract (bool): Whether the code contains a valid Solidity contract
+            - contract_info (dict): Information about the contract (name, version, address)
     """
     # Create a temporary file for the contract code
     temp_path = None
@@ -51,6 +58,7 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to connect to Ganache: {str(e)}",
                 "summary": "Connection error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -72,6 +80,7 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to compile the contract: {str(e)}",
                 "summary": "Compilation error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -139,6 +148,7 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to deploy the contract: {str(e)}",
                 "summary": "Deployment error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -154,6 +164,7 @@ def analyze_contract_from_code(content):
                 "reasoning": "Failed to deploy the contract. Please check the Solidity code for errors.",
                 "summary": "Deployment error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -175,6 +186,7 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to build contract observation: {str(e)}",
                 "summary": "Analysis error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": deployed_contracts[0]["contract_name"] if deployed_contracts else "Unknown",
                     "solc_version": deployed_contracts[0]["solc_version"] if deployed_contracts else "Unknown",
@@ -215,6 +227,7 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to generate attack strategy: {str(e)}",
                 "summary": "Analysis error",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": deployed_contracts[0]["contract_name"],
                     "solc_version": deployed_contracts[0]["solc_version"],
@@ -231,6 +244,7 @@ def analyze_contract_from_code(content):
                 "reasoning": "No vulnerabilities detected in the contract.",
                 "summary": "The contract appears to be secure.",
                 "code": "",
+                "is_contract": True,
                 "contract_info": {
                     "contract_name": deployed_contracts[0]["contract_name"],
                     "solc_version": deployed_contracts[0]["solc_version"],
@@ -257,19 +271,16 @@ def analyze_contract_from_code(content):
         logger.info(f"Attack strategy summary: {attack_strategy.get('summary', '')}")
 
         # Prepare result
-        result = {
-            "status": "KO" if has_vulnerability else "OK",
-            "attack": "Smart Contract Vulnerability" if has_vulnerability else None,
-            "reasoning": attack_strategy.get("reasoning", ""),
-            "summary": attack_strategy.get("summary", ""),
-            "code": attack_strategy.get("code", ""),
-            "contract_info": {
+        result = {"status": "KO" if has_vulnerability else "OK",
+                  "attack": "Smart Contract Vulnerability" if has_vulnerability else None,
+                  "reasoning": attack_strategy.get("reasoning", ""), "summary": attack_strategy.get("summary", ""),
+                  "code": attack_strategy.get("code", ""), "contract_info": {
                 "contract_name": deployed_contracts[0]["contract_name"],
                 "solc_version": deployed_contracts[0]["solc_version"],
                 "address": deployed_contracts[0]["address"]
-            }
-        }
+            }, "is_contract": True}
 
+        # ✅ Rajoute explicitement
         logger.info(f"Analysis completed with status: {result['status']}")
         return result
 
@@ -282,6 +293,7 @@ def analyze_contract_from_code(content):
             "reasoning": f"An error occurred during analysis: {str(e)}",
             "summary": "Analysis error",
             "code": "",
+            "is_contract": True,
             "contract_info": {
                 "contract_name": "Unknown",
                 "solc_version": "Unknown",
@@ -300,20 +312,29 @@ def analyze_contract_from_code(content):
 
 def analyze_contract(content, user_id):
     """
-    Analyze a smart contract and store the results in the database.
+    Analyze a smart contract and prepare a Report object for database storage.
+
+    This function calls analyze_contract_from_code to perform the actual analysis,
+    then processes the results to create a Report object. Note that this function
+    does NOT save the Report object to the database; it returns it for the caller
+    to save using the save_report function.
 
     Args:
         content (str): The smart contract code.
         user_id (int): The ID of the user who submitted the contract.
 
     Returns:
-        dict: The analysis results.
+        dict: The analysis results with the following structure:
+            - is_contract (bool): Whether the code contains a valid Solidity contract
+            - report (Report, optional): The Report object if is_contract is True
+            - filename (str, optional): The generated filename if is_contract is True
+            - message (str, optional): Error message if is_contract is False
     """
     # Analyze the contract
     analysis_result = analyze_contract_from_code(content)
 
     # Check if the code contains a valid contract
-    is_contract = analysis_result.get("is_contract", True)
+    is_contract = analysis_result["is_contract"]  # This key is now guaranteed to exist
 
     # If not a valid contract, return early with the error message
     if not is_contract:
@@ -370,7 +391,7 @@ def get_user_reports(user_id):
     Returns:
         list: A list of reports.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
     from sqlalchemy.orm import joinedload
 
     db = SessionLocal()
@@ -391,7 +412,7 @@ def get_report_by_filename(user_id, filename):
     Returns:
         Report: The report.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -410,7 +431,7 @@ def get_user_by_wallet(wallet):
     Returns:
         User: The user.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -429,7 +450,7 @@ def save_report(report):
     Returns:
         Report: The saved report.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:

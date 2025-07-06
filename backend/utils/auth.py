@@ -3,15 +3,15 @@ from functools import wraps
 from flask import request, jsonify
 from datetime import datetime, timedelta, UTC
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..config import Config
+from config import Config
 
 def token_required(f):
     """
     Decorator for routes that require a valid JWT token.
-    
+
     Args:
         f (function): The function to decorate.
-        
+
     Returns:
         function: The decorated function.
     """
@@ -30,10 +30,10 @@ def token_required(f):
 def create_token(wallet):
     """
     Create a JWT token for the given wallet.
-    
+
     Args:
         wallet (str): The wallet address.
-        
+
     Returns:
         str: The JWT token.
     """
@@ -45,10 +45,10 @@ def create_token(wallet):
 def hash_password(password):
     """
     Hash a password.
-    
+
     Args:
         password (str): The password to hash.
-        
+
     Returns:
         str: The hashed password.
     """
@@ -57,11 +57,11 @@ def hash_password(password):
 def check_password(hashed_password, password):
     """
     Check if a password matches a hash.
-    
+
     Args:
         hashed_password (str): The hashed password.
         password (str): The password to check.
-        
+
     Returns:
         bool: True if the password matches the hash, False otherwise.
     """

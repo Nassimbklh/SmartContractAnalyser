@@ -1,4 +1,4 @@
-from ..models import Feedback, User, Report, SessionLocal
+from models import Feedback, User, Report, SessionLocal
 
 def save_feedback(user_id, report_id, status, comment=None):
     """

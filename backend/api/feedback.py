@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from ..services import (
+from services import (
     save_feedback, get_feedback_by_user_and_report, get_report_by_id,
     get_user_by_wallet
 )
-from ..utils import (
+from utils import (
     token_required, success_response, error_response,
     not_found_response, server_error_response
 )

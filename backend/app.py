@@ -17,9 +17,9 @@ if not hasattr(inspect, "getargspec"):
 from flask import Flask
 from flask_cors import CORS
 import logging
-from .api import register_blueprints
-from .models.base import Base, engine
-from .config import Config
+from api import register_blueprints
+from models.base import Base, engine
+from config import Config
 
 # --- Setup logging ---
 logging.basicConfig(

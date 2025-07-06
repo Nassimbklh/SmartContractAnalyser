@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
 # No system-level build dependencies required
 
 # Install py-solc-x and install solc compiler (version 0.4.26)
+RUN pip install solc-select
 RUN pip install --no-cache-dir py-solc-x && \
     python -c "from solcx import install_solc; install_solc(version='0.4.26')"
 
@@ -32,5 +33,4 @@ ENV FLASK_RUN_PORT=8000
 # Expose port
 EXPOSE 8000
 
-# Run the app
-CMD ["flask", "run"]
+CMD ["gunicorn", "--timeout", "180", "-b", "0.0.0.0:8000", "app:app"]

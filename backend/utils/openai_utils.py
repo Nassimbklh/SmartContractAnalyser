@@ -4,7 +4,7 @@ OpenAI API utilities
 
 import os
 import openai
-from ..config import Config
+from config import Config
 
 def initialize_openai():
     """
@@ -13,7 +13,7 @@ def initialize_openai():
     api_key = Config.OPENAI_API_KEY
     if not api_key:
         raise ValueError("OpenAI API key is not set in the environment variables.")
-    
+
     openai.api_key = api_key
     return api_key
 
