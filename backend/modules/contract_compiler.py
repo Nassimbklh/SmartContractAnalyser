@@ -113,14 +113,20 @@ def compile_contracts(filepath: str) -> List[Dict[str, Any]]:
         # Read source code
         source_code = read_contract_file(filepath)
 
-        # Extract and install Solidity version
-        solc_version = extract_solc_version(source_code)
+        # Force a specific Solidity version for compilation
+        forced_version = "0.8.20"
 
-        if not ensure_solc_version(solc_version):
-            raise Exception(f"❌ Cannot compile {filepath} - solc version not available")
+        # Ensure the required version of solc is installed
+        if not ensure_solc_version(forced_version):
+            raise Exception(
+                f"❌ Cannot compile {filepath} - solc {forced_version} not available"
+            )
 
-        # Set Solidity version
-        set_solc_version(solc_version)
+        # Explicitly set the solc version to the forced version
+        set_solc_version(forced_version)
+
+        # Keep track of the version used in contract info
+        solc_version = forced_version
 
         # Prepare compilation input
         file_name = os.path.basename(filepath)
