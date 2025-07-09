@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { contractAPI, feedbackAPI } from "../services/api"; // Import feedbackAPI
-import { downloadBlob, handleApiError } from "../utils/utils"; // Import handleApiError
+import { handleApiError } from "../utils/utils"; // Import handleApiError
 import AnalysisDisplay from "./AnalysisDisplay"; // Import AnalysisDisplay
 
 // 👉 Ta clé API Etherscan (évite de la laisser en dur pour la prod)

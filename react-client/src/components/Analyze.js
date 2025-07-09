@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { contractAPI, feedbackAPI } from "../services/api";
-import { downloadBlob, handleApiError } from "../utils/utils";
+import { handleApiError } from "../utils/utils";
 import AnalysisDisplay from "./AnalysisDisplay"; // Import the new component
 
 function Analyze() {
@@ -10,14 +10,12 @@ function Analyze() {
   // const [reportContent, setReportContent] = useState(""); // Replaced by analysisReportData
   // const [downloadUrl, setDownloadUrl] = useState(null); // Will be handled within AnalysisDisplay or passed to it
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Will be renamed to analysisInProgress
   const [reportId, setReportId] = useState(null);
   const [feedbackStatus, setFeedbackStatus] = useState("");
   const [feedbackComment, setFeedbackComment] = useState("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [feedbackError, setFeedbackError] = useState("");
-  const { token } = useContext(AuthContext);
 
   // State for the new AnalysisDisplay component
   const [analysisProgressData, setAnalysisProgressData] = useState(null);

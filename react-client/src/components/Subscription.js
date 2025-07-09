@@ -1,9 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import { subscriptionAPI } from "../services/api";
+import React, { useState, useEffect } from "react";
 
 function Subscription() {
-  const { token } = useContext(AuthContext);
   const [currentPlan, setCurrentPlan] = useState("free");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
