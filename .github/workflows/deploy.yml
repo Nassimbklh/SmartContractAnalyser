@@ -23,10 +23,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install sqlalchemy requests
 
+    - name: Build and start Docker containers
+      run: |
+        docker compose up -d
+        sleep 15  # attendre que tout démarre
+
     - name: Run tests
       run: |
         chmod +x test_env/run_all_tests.sh
-        ./test_env/run_all_tests.sh
+        test_env/run_all_tests.sh
 
   deploy:
     needs: test
