@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import React, { useState } from "react";
 import { contractAPI, feedbackAPI } from "../services/api";
 import { handleApiError } from "../utils/utils";
 import AnalysisDisplay from "./AnalysisDisplay"; // Import the new component
