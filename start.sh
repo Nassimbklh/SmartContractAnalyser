@@ -1,75 +1,71 @@
 #!/bin/bash
 
-# Check if .env file exists
+# Détecter la branche git actuelle
+branche=$(git rev-parse --abbrev-ref HEAD)
+
+# Vérifier si le fichier .env existe
 if [ ! -f .env ]; then
-  echo "Error: .env file not found. Please create a .env file with the required environment variables."
-  echo "You can use the following template:"
-  echo ""
-  echo "# OpenAI API Key"
-  echo "OPENAI_API_KEY=your_openai_api_key_here"
-  echo ""
-  echo "# Database Configuration"
-  echo "POSTGRES_USER=user"
-  echo "POSTGRES_PASSWORD=password"
-  echo "POSTGRES_DB=mydb"
-  echo "DATABASE_URL=postgresql://user:password@db:5432/mydb"
-  echo ""
-  echo "# Frontend Configuration"
-  echo "REACT_APP_API_URL=http://localhost:4455"
+  echo "Erreur : le fichier .env est introuvable. Veuillez en créer un avec les variables d'environnement nécessaires."
   exit 1
 fi
 
-# Check if Docker is installed
+# Charger les variables d'environnement
+export $(grep -v '^#' .env | xargs)
+
+# Vérifier Docker
 if ! command -v docker &> /dev/null; then
-  echo "Error: Docker is not installed. Please install Docker and try again."
+  echo "Erreur : Docker n'est pas installé. Veuillez l'installer et réessayer."
   exit 1
 fi
 
-# Check if Docker Compose is installed
 if ! command -v docker compose &> /dev/null; then
-  echo "Error: Docker Compose is not installed. Please install Docker Compose and try again."
+  echo "Erreur : Docker Compose n'est pas installé. Veuillez l'installer et réessayer."
   exit 1
 fi
 
-# Build and start the containers
-echo "Building and starting the containers..."
+# Construire et démarrer les conteneurs
+echo "Construction et démarrage des conteneurs sur la branche : $branche"
 docker compose down
 docker compose up --build -d
 
-# Wait for the containers to start
-echo "Waiting for the containers to start..."
+echo "Patientez, les conteneurs démarrent..."
 sleep 5
 
-# Check if the containers are running
-if [ "$(docker compose ps -q | wc -l)" -ne 5 ]; then
-  echo "Error: Not all containers are running. Please check the logs with 'docker-compose logs'."
+nb_running=$(docker compose ps -q | wc -l)
+if [ "$nb_running" -lt 5 ]; then
+  echo "Erreur : tous les conteneurs ne sont pas démarrés. Veuillez vérifier les logs avec 'docker-compose logs'."
   exit 1
 fi
 
-# Print success message
 echo ""
-echo "✅ All containers are running!"
+echo "✅ Tous les conteneurs sont démarrés sur la branche : $branche"
 echo ""
-echo "🌐 Frontend: http://localhost:4456"
-echo "🔌 Backend: http://localhost:4455"
-echo "🗄️ pgAdmin: http://localhost:4457"
-echo "   - Email: admin@admin.com"
-echo "   - Password: admin"
+
+# Affichage selon la branche
+if [ "$branche" = "main" ]; then
+  echo "🌐 Frontend : https://www.sca.ovh"
+  echo "🔌 Backend : https://www.sca.ovh/api"
+  echo "🗄️ pgAdmin : https://pgadmin.sca.ovh"
+else
+  echo "✅ Vous êtes sur la branche '$branche', voici les informations pour la base de données :"
+  echo ""
+  echo "🌐 Frontend : http://localhost:4456"
+  echo "🔌 Backend : http://localhost:4455"
+  echo "🗄️ pgAdmin : http://localhost:4457"
+  echo "   - Email : admin@admin.com"
+  echo "   - Mot de passe : admin"
+  echo "   Connexion BDD :"
+  echo "   - Host      : $POSTGRES_HOST"
+  echo "   - Port      : 5432"
+  echo "   - Base      : $POSTGRES_DB"
+  echo "   - Utilisateur : $POSTGRES_USER"
+  echo "   - Mot de passe : $POSTGRES_PASSWORD"
+  echo ""
+fi
+
+echo "📝 Pour consulter les logs :"
+echo "   docker-compose logs"
 echo ""
-echo "📊 To connect to the database in pgAdmin:"
-echo "   1. Add a new server"
-echo "   2. Name: mydb"
-echo "   3. Connection tab:"
-echo "      - Host: db"
-echo "      - Port: 5432"
-echo "      - Database: mydb"
-echo "      - Username: user"
-echo "      - Password: password"
-echo ""
-echo "📝 To view the logs:"
-echo "   - All containers: docker-compose logs"
-echo "   - Specific container: docker-compose logs [backend|frontend|db|pgadmin]"
-echo ""
-echo "🛑 To stop the containers:"
+echo "🛑 Pour arrêter les conteneurs :"
 echo "   docker-compose down"
 echo ""
