@@ -1,0 +1,32 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/favicon.ico",
+      "/images/*.{png,jpg,gif,ico}",
+      "/static/js/*",
+      "/login/static/js/*",
+      "/register/static/js/*",
+      "/static/css/*",
+      "/login/static/css/*",
+      "/register/static/css/*",
+      "/static/media/*",
+      "/login/static/media/*",
+      "/register/static/media/*",
+      "/manifest.json",
+      "/login/manifest.json",
+      "/register/manifest.json"
+    ]
+  },
+  "routes": [
+    { "route": "/login",    "allowedRoles": ["anonymous"] },
+    { "route": "/register", "allowedRoles": ["anonymous"] },
+    { "route": "/*",        "allowedRoles": ["authenticated"] }
+  ],
+  "responseOverrides": {
+    "401": { "statusCode": 302, "redirect": "/login" }
+  },
+  "databaseSettings": {
+    "mydb": { "connectionStringSettingName": "PG_CONN_STRING" }
+  }
+}

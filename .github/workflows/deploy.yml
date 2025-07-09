@@ -1,0 +1,30 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - test_azure
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 98.66.153.29 >> ~/.ssh/known_hosts
+
+    - name: Deploy on Azure VM
+      run: |
+        ssh -i ~/.ssh/id_rsa azureuser@98.66.153.29 << 'EOF'
+          cd ~/SmartContractAnalyser
+          git pull origin test_azure
+          docker compose down
+          docker compose up -d --build
+        EOF
