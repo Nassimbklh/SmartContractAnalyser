@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from ..services import register_user, authenticate_user
-from ..utils import success_response, error_response, validation_error_response
+from services import register_user, authenticate_user
+from utils import success_response, error_response, validation_error_response
 import logging
 
 logger = logging.getLogger(__name__)

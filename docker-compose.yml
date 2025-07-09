@@ -9,7 +9,7 @@ services:
     ports:
       - "4455:8000"
     environment:
-      DATABASE_URL: postgresql://user:password@db:5432/mydb
+      DATABASE_URL: ${DATABASE_URL}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       FLASK_APP: app.py
       FLASK_RUN_HOST: 0.0.0.0
@@ -25,12 +25,14 @@ services:
 
   frontend:
     build:
+      args:
+        NODE_ENV: development
       context: ./react-client
       dockerfile: Dockerfile
     ports:
       - "4456:80"
     environment:
-      REACT_APP_API_URL: http://backend:4455
+      REACT_APP_API_URL: http://98.66.153.29:4455
     depends_on:
       - backend
     restart: always

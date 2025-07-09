@@ -4,9 +4,9 @@ import tempfile
 import traceback
 import logging
 from web3 import Web3
-from ..models import Report, User
-from ..config import Config
-from ..modules import (
+from models import Report, User
+from config import Config
+from modules import (
     compile_and_deploy_all_contracts,
     deploy_contract,
     setup_contract,
@@ -370,7 +370,7 @@ def get_user_reports(user_id):
     Returns:
         list: A list of reports.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
     from sqlalchemy.orm import joinedload
 
     db = SessionLocal()
@@ -391,7 +391,7 @@ def get_report_by_filename(user_id, filename):
     Returns:
         Report: The report.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -410,7 +410,7 @@ def get_user_by_wallet(wallet):
     Returns:
         User: The user.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -429,7 +429,7 @@ def save_report(report):
     Returns:
         Report: The saved report.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:

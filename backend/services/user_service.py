@@ -1,5 +1,5 @@
-from ..models import User
-from ..utils import hash_password, check_password, create_token
+from models import User
+from utils import hash_password, check_password, create_token
 
 def register_user(wallet, password, technical_score=None, technical_level=None):
     """
@@ -17,7 +17,7 @@ def register_user(wallet, password, technical_score=None, technical_level=None):
     Raises:
         ValueError: If the wallet is already in use.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -55,7 +55,7 @@ def authenticate_user(wallet, password):
     Raises:
         ValueError: If the credentials are invalid.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
@@ -88,7 +88,7 @@ def get_user_by_wallet(wallet):
     Returns:
         User: The user.
     """
-    from ..models.base import SessionLocal
+    from models.base import SessionLocal
 
     db = SessionLocal()
     try:
