@@ -28,9 +28,9 @@ services:
       context: ./react-client
       dockerfile: Dockerfile
     ports:
-      - "4456:80"
+      - "4456:3000"
     environment:
-      REACT_APP_API_URL: http://backend:4455
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
     depends_on:
       - backend
     restart: always

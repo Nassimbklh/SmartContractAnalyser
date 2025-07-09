@@ -10,6 +10,6 @@ RUN cp img/logo.png src/img/
 ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 RUN npm install -g serve
-EXPOSE 80
+EXPOSE 3000
 # CMD ["serve", "-s", "build", "-l", "80"]
 CMD ["npm", "run", "start"]
