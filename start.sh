@@ -26,22 +26,22 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
+if ! command -v docker compose &> /dev/null; then
   echo "Error: Docker Compose is not installed. Please install Docker Compose and try again."
   exit 1
 fi
 
 # Build and start the containers
 echo "Building and starting the containers..."
-docker-compose down
-docker-compose up --build -d
+docker compose down
+docker compose up --build -d
 
 # Wait for the containers to start
 echo "Waiting for the containers to start..."
 sleep 5
 
 # Check if the containers are running
-if [ "$(docker-compose ps -q | wc -l)" -ne 5 ]; then
+if [ "$(docker compose ps -q | wc -l)" -ne 5 ]; then
   echo "Error: Not all containers are running. Please check the logs with 'docker-compose logs'."
   exit 1
 fi
