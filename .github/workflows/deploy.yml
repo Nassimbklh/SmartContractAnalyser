@@ -24,7 +24,7 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_rsa azureuser@98.66.153.29 << 'EOF'
           cd ~/SmartContractAnalyser
-          git pull origin main
+          git pull origin test_azure
           docker compose down
           docker compose up -d --build
         EOF
