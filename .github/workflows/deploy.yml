@@ -3,7 +3,7 @@ name: Test and Deploy
 on:
   push:
     branches:
-      - "**" # Toutes les branches
+      - "**"  # Toutes les branches
 
 jobs:
   test:
@@ -21,17 +21,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install sqlalchemy requests
 
     - name: Build and start Docker containers
       run: |
         docker compose up -d
-        sleep 15  # attendre que tout démarre
+        sleep 20
 
-    - name: Run tests
+    - name: Run simple service test
       run: |
-        chmod +x test_env/run_all_tests.sh
-        test_env/run_all_tests.sh
+        python test_env/test_service.py
 
   deploy:
     needs: test

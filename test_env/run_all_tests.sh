@@ -51,6 +51,7 @@ else
 fi
 
 run_test "test_frontend.py" "Test Frontend"
+run_test "test_services.py" "Test Services Rapide"
 
 # Résultat final
 print_section "Résumé final"
