@@ -69,14 +69,17 @@ def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: s
     ensure_solc_version(solc_version)
 
     # 2) Construire et lancer Slither
-    if os.path.exists(out_json):
-        os.remove(out_json)
+    # Convert paths to absolute paths if they're not already
+    abs_sol_path = os.path.abspath(sol_path)
+    abs_out_json = os.path.abspath(out_json)
+    if os.path.exists(abs_out_json):
+        os.remove(abs_out_json)
 
     cmd_json = [
         "slither",
-        sol_path,
+        abs_sol_path,
         "--json",
-        out_json,
+        abs_out_json,
         "--ignore-compile"
     ]
     print("▶ slither", " ".join(cmd_json[1:]))
@@ -84,11 +87,11 @@ def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: s
 
     cmd_txt = [
         "slither",
-        sol_path,
+        abs_sol_path,
         "--ignore-compile"
     ]
     print("▶ slither", " ".join(cmd_txt[1:]))
-    out_txt = out_json[:-5] + ".txt"
+    out_txt = abs_out_json[:-5] + ".txt"
     result_txt = subprocess.run(cmd_txt, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
     pattern = rf"--allow-paths \.,.*?{re.escape(project_root)}[\\/]"
@@ -126,7 +129,7 @@ def parse_detectors(slither_data: Dict[str, Any]) -> Tuple[Dict[str, int], list[
 
 #%%
 def slither_analyze(sol_path: str,
-                     dest_dir: str = "../data/slither") -> str:
+                     dest_dir: str = "/tmp/slither") -> str:
     """
     Run Slither on *sol_path* using the correct solc version from pragma,
     install/activate it if needed, and create raw + summary reports inside *dest_dir*.
