@@ -1,12 +1,52 @@
-name: Deploy to Azure VM
+name: Test and Deploy
 
 on:
   push:
     branches:
-      - main
+      - "**"
+
+env:  # 👈 Déclaré ici, global pour tous les jobs
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Build and start Docker containers
+      run: |
+        docker compose up -d
+        sleep 20
+
+    - name: log backend et postgresql
+      run: |
+        docker logs smartcontractanalyser-db-1
+
+    - name: Show running containers
+      run: docker ps
+
+    - name: Run simple service test
+      run: |
+        python test_env/test_services.py
+
   deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
