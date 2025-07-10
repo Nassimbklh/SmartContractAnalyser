@@ -25,7 +25,10 @@ jobs:
     - name: Build and start Docker containers
       run: |
         docker compose up -d
-        sleep 20
+        sleep 180
+
+    - name: Show running containers
+      run: docker ps
 
     - name: Run simple service test
       run: |
