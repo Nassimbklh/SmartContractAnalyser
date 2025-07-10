@@ -6,6 +6,8 @@ Script simple pour vérifier la connexion à la base et la présence des tables 
 import os
 import sys
 from sqlalchemy import create_engine, inspect
+# Importer les modules nécessaires
+
 
 # Couleurs terminal
 GREEN = '\033[92m'

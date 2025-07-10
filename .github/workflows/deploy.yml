@@ -25,7 +25,12 @@ jobs:
     - name: Build and start Docker containers
       run: |
         docker compose up -d
-        sleep 180
+        sleep 20
+
+    - name: log backend et postgresql
+      run: |
+        docker logs smartcontractanalyser-backend-1
+        docker logs smartcontractanalyser-db-1
 
     - name: Show running containers
       run: docker ps
