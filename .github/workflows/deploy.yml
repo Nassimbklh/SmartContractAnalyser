@@ -5,17 +5,15 @@ on:
     branches:
       - "**"
 
+env:  # 👈 Déclaré ici, global pour tous les jobs
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    env:
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
     steps:
     - name: Checkout code
