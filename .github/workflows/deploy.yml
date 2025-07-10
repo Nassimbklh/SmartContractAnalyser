@@ -30,6 +30,12 @@ jobs:
         echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
         echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
+    - name: Upload .env as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: env-file
+        path: .env
+
     - name: Clean Docker before build
       run: |
         docker compose down || true
@@ -47,9 +53,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Download .env artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: env-file
+
     - name: Start Docker containers
       run: |
-        docker compose up -d
+        docker compose --env-file .env up -d
         sleep 20
 
     - name: Log backend and PostgreSQL
