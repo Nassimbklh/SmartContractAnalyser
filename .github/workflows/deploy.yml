@@ -32,15 +32,6 @@ jobs:
         echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
         echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
 
-    - name: Print used environment variables (safe)
-      run: |
-        echo "✅ Variables utilisées dans ce job :"
-        echo "POSTGRES_USER"
-        echo "POSTGRES_PASSWORD"
-        echo "POSTGRES_DB"
-        echo "DATABASE_URL"
-        echo "POSTGRES_HOST"
-
     - name: Clean Docker before build
       run: |
         docker compose down || true
