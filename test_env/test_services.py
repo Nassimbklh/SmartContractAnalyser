@@ -6,10 +6,7 @@ RED = '\033[91m'
 RESET = '\033[0m'
 
 def get_db_host():
-    # Exemple simple : si on a une variable d'environnement USE_DOCKER, on met "db"
-    if os.environ.get("USE_DOCKER") == "true":
-        return "db"
-    return "localhost"
+    return os.environ.get("POSTGRES_HOST", "localhost")
 
 services = [
     ("Backend", "localhost", 4455),

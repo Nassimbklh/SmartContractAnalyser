@@ -5,15 +5,10 @@ on:
     branches:
       - "**"
 
-env:  # 👈 Déclaré ici, global pour tous les jobs
-  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
     steps:
     - name: Checkout code
@@ -28,14 +23,30 @@ jobs:
       run: |
         python -m pip install --upgrade pip
 
+    - name: Write .env file
+      run: |
+        set -e
+        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+        echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+        echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> .env
+        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+
+    - name: Clean Docker before build
+      run: |
+        docker compose down || true
+        docker system prune -f
+
     - name: Build and start Docker containers
       run: |
         docker compose up -d
         sleep 20
 
-    - name: log backend et postgresql
+    - name: Log backend and PostgreSQL
       run: |
         docker logs smartcontractanalyser-db-1
+        docker logs smartcontractanalyser-backend-1
 
     - name: Show running containers
       run: docker ps
@@ -48,6 +59,7 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment: prod
 
     steps:
     - name: Checkout code
