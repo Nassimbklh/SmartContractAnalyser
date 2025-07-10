@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-import socket, sys
+import socket, sys, os
 
-# Couleurs
 GREEN = '\033[92m'
 RED = '\033[91m'
 RESET = '\033[0m'
 
+def get_db_host():
+    # Exemple simple : si on a une variable d'environnement USE_DOCKER, on met "db"
+    if os.environ.get("USE_DOCKER") == "true":
+        return "db"
+    return "localhost"
+
 services = [
     ("Backend", "localhost", 4455),
     ("Frontend", "localhost", 4456),
-    ("PostgreSQL", "localhost", 5432),
+    ("PostgreSQL", get_db_host(), 5432),
 ]
 
 def check(host, port, name):
