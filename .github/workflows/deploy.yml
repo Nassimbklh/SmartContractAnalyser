@@ -3,7 +3,7 @@ name: Test and Deploy
 on:
   push:
     branches:
-      - "**"  # Toutes les branches
+      - "**"
 
 jobs:
   test:
@@ -37,7 +37,6 @@ jobs:
 
     - name: log backend et postgresql
       run: |
-        docker logs smartcontractanalyser-backend-1
         docker logs smartcontractanalyser-db-1
 
     - name: Show running containers
