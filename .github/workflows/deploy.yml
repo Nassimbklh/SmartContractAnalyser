@@ -5,15 +5,16 @@ on:
     branches:
       - "**"
 
-env:  # 👈 Déclaré ici, global pour tous les jobs
-  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
     - name: Checkout code
@@ -36,6 +37,7 @@ jobs:
     - name: log backend et postgresql
       run: |
         docker logs smartcontractanalyser-db-1
+        docker logs smartcontractanalyser-backend-1
 
     - name: Show running containers
       run: docker ps
