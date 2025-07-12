@@ -83,7 +83,7 @@ def analyze(wallet):
             "attack": report.attack,
             "summary": report.summary,
             "reasoning": report.reasoning,
-            "code": report.code,
+            "code": report.exploit_code,
             "is_service_error": False,  # Assuming no service error if we get here
             "created_at": report.created_at.isoformat()
         }
