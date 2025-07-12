@@ -123,36 +123,19 @@ function Analyze() {
       }));
 
 
-      // Parse the response data to extract structured information
-      // Extract contract info
-      const contractName = res.data.contract_info?.contract_name || "Contract";
-      const deployedAddress = res.data.contract_info?.address || "N/A";
-      const compilerVersion = res.data.contract_info?.solc_version || "N/A";
+      // The backend now returns a structured JSON object.
+      // We can use this data directly to build the report.
+      const reportData = res.data;
 
-      // Determine vulnerability type from the attack field or reasoning
-      let vulnerabilityType = res.data.attack || null;
-      if (vulnerabilityType === "Smart Contract Vulnerability" && res.data.reasoning) {
-        // Try to extract more specific vulnerability type from reasoning
-        if (res.data.reasoning.toLowerCase().includes("reentrancy")) {
-          vulnerabilityType = "Reentrancy";
-        } else if (res.data.reasoning.toLowerCase().includes("overflow") || res.data.reasoning.toLowerCase().includes("underflow")) {
-          vulnerabilityType = "Integer Overflow/Underflow";
-        } else if (res.data.reasoning.toLowerCase().includes("access control")) {
-          vulnerabilityType = "Access Control";
-        } else if (res.data.reasoning.toLowerCase().includes("front-running")) {
-          vulnerabilityType = "Front-Running";
-        }
-      }
-
-      // Parse the summary into structured points
+      // Parse the summary into structured points.
+      // The summary is now a single block of text.
       const summaryPoints = [];
-      if (res.data.summary) {
-        // Split the summary by sentences or bullet points
-        const summaryText = res.data.summary;
-        const sentences = summaryText.split(/(?<=\.|\!|\?)\s+/);
+      if (reportData.summary) {
+        const summaryText = reportData.summary;
+        // Simple split by newline for now, can be improved.
+        const sentences = summaryText.split('\n').filter(s => s.trim() !== '');
 
         sentences.forEach(sentence => {
-          if (sentence.trim()) {
             const isCritical = 
               sentence.toLowerCase().includes("vulnerability") || 
               sentence.toLowerCase().includes("critical") ||
@@ -163,49 +146,44 @@ function Analyze() {
               point: sentence.trim(),
               isCritical
             });
-          }
         });
       }
-
-      // If no summary points were extracted, create a default one
-      if (summaryPoints.length === 0) {
+       if (summaryPoints.length === 0) {
         summaryPoints.push({
-          point: res.data.status === "OK" 
-            ? "No vulnerabilities were detected in the contract." 
-            : "Potential vulnerability detected in the contract.",
-          isCritical: res.data.status !== "OK"
+          point: reportData.status === "OK"
+            ? "Aucune vulnérabilité n'a été détectée dans le contrat."
+            : "Une vulnérabilité potentielle a été détectée dans le contrat.",
+          isCritical: reportData.status !== "OK"
         });
       }
 
-      // Format the reasoning for better readability
-      let formattedReasoning = "";
-      if (res.data.reasoning) {
-        // Remove any temporary file paths
-        const cleanedReasoning = res.data.reasoning.replace(/\/tmp\/[a-zA-Z0-9_]+\.sol/g, "contract.sol");
 
-        // Convert markdown to HTML
+      // Format the reasoning for better readability (Markdown to HTML)
+      let formattedReasoning = "";
+      if (reportData.reasoning) {
+        const cleanedReasoning = reportData.reasoning.replace(/\/tmp\/[a-zA-Z0-9_]+\.sol/g, "contract.sol");
         formattedReasoning = cleanedReasoning
           .replace(/\n\n/g, "</p><p>")
           .replace(/\n/g, "<br/>")
-          .replace(/```([^`]+)```/g, (match, code) => `<pre><code>${code}</code></pre>`)
+          .replace(/```solidity\n([^`]+)```/g, (match, code) => `<pre class="code-block-solidity"><code>${code.trim()}</code></pre>`)
+          .replace(/```([^`]+)```/g, (match, code) => `<pre><code>${code.trim()}</code></pre>`)
           .replace(/`([^`]+)`/g, (match, code) => `<code>${code}</code>`);
-
         formattedReasoning = `<p>${formattedReasoning}</p>`;
       }
 
-      // Create the structured report object
+      // Create the structured report object for the AnalysisDisplay component
       const parsedReport = {
         fileName: file ? file.name : "Code Snippet",
-        contractName: contractName,
-        deployedAddress: deployedAddress,
-        compilerVersion: compilerVersion,
-        analysisDate: new Date().toLocaleDateString(),
-        globalStatus: res.data.status || "OK",
-        vulnerabilityType: vulnerabilityType,
+        contractName: reportData.contract_name || "N/A",
+        deployedAddress: "N/A", // This info is not in the new response, might need adjustment
+        compilerVersion: reportData.solc_version || "N/A",
+        analysisDate: new Date(reportData.created_at).toLocaleDateString(),
+        globalStatus: reportData.status || "OK",
+        vulnerabilityType: reportData.attack || null,
         analysisSummary: summaryPoints,
         modelReasoning: formattedReasoning,
-        exploitCode: res.data.code || null,
-        rawReport: res.data // Keep the raw report if needed
+        exploitCode: reportData.code || null,
+        rawReport: reportData
       };
       setAnalysisReportData(parsedReport);
       setAnalysisProgressData(prev => ({ // Mark final step as complete

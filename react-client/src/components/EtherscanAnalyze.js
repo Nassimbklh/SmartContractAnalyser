@@ -156,23 +156,51 @@ function EtherscanAnalyze() {
         }
       }));
 
-      // Parse result.data into the structure expected by AnalysisDisplay
-      // This is a placeholder, actual parsing logic is needed here
+      // The backend now returns a structured JSON object.
+      const reportData = result.data;
+
+      // Parse the summary into structured points
+      const summaryPoints = [];
+      if (reportData.summary) {
+        const summaryText = reportData.summary;
+        const sentences = summaryText.split('\n').filter(s => s.trim() !== '');
+        sentences.forEach(sentence => {
+          const isCritical = sentence.toLowerCase().includes("vulnerability") || sentence.toLowerCase().includes("critical");
+          summaryPoints.push({ point: sentence.trim(), isCritical });
+        });
+      }
+      if (summaryPoints.length === 0) {
+        summaryPoints.push({
+          point: reportData.status === "OK" ? "No vulnerabilities detected." : "Potential vulnerability detected.",
+          isCritical: reportData.status !== "OK"
+        });
+      }
+
+      // Format reasoning from Markdown to HTML
+      let formattedReasoning = "";
+      if (reportData.reasoning) {
+        formattedReasoning = reportData.reasoning
+          .replace(/\n\n/g, "</p><p>")
+          .replace(/\n/g, "<br/>")
+          .replace(/```solidity\n([^`]+)```/g, (match, code) => `<pre class="code-block-solidity"><code>${code.trim()}</code></pre>`)
+          .replace(/```([^`]+)```/g, (match, code) => `<pre><code>${code.trim()}</code></pre>`)
+          .replace(/`([^`]+)`/g, (match, code) => `<code>${code}</code>`);
+        formattedReasoning = `<p>${formattedReasoning}</p>`;
+      }
+
+      // Create the structured report object
       const parsedReport = {
         fileName: `Etherscan: ${address}`,
-        contractName: contract.ContractName || "Unknown Contract",
+        contractName: reportData.contract_name || "Unknown Contract",
         deployedAddress: address,
-        compilerVersion: contract.CompilerVersion || "N/A",
-        analysisDate: new Date().toLocaleDateString(),
-        globalStatus: result.data.includes("Vulnerability") ? "KO" : "OK", // Basic check
-        vulnerabilityType: result.data.includes("Reentrancy") ? "Reentrancy" : (result.data.includes("Vulnerability") ? "Unknown Vulnerability" : null),
-        analysisSummary: [
-          { point: "Summary from Etherscan contract analysis...", isCritical: result.data.includes("Vulnerability") },
-        ],
-        modelReasoning: `<p>Model reasoning based on Etherscan contract...</p><pre><code>${result.data.substring(0,100)}...</code></pre>`,
-        exploitCode: result.data.includes("Vulnerability") ? `// Exploit code for ${contract.ContractName}\nfunction exploit() public payable {}` : null,
-        rawReport: result.data,
-        // downloadUrl: URL.createObjectURL(new Blob([result.data], { type: "text/plain" })) // Example for download
+        compilerVersion: reportData.solc_version || "N/A",
+        analysisDate: new Date(reportData.created_at).toLocaleDateString(),
+        globalStatus: reportData.status || "OK",
+        vulnerabilityType: reportData.attack || null,
+        analysisSummary: summaryPoints,
+        modelReasoning: formattedReasoning,
+        exploitCode: reportData.code || null,
+        rawReport: reportData,
       };
       setAnalysisReportData(parsedReport);
       setAnalysisProgressData(prev => ({
