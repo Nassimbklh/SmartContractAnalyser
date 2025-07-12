@@ -123,23 +123,88 @@ function Analyze() {
       }));
 
 
-      // This is where you would parse the 'res.data' (report text)
-      // and transform it into the structured 'analysisReportData' object.
-      // For now, let's use a placeholder.
+      // Parse the response data to extract structured information
+      // Extract contract info
+      const contractName = res.data.contract_info?.contract_name || "Contract";
+      const deployedAddress = res.data.contract_info?.address || "N/A";
+      const compilerVersion = res.data.contract_info?.solc_version || "N/A";
+
+      // Determine vulnerability type from the attack field or reasoning
+      let vulnerabilityType = res.data.attack || null;
+      if (vulnerabilityType === "Smart Contract Vulnerability" && res.data.reasoning) {
+        // Try to extract more specific vulnerability type from reasoning
+        if (res.data.reasoning.toLowerCase().includes("reentrancy")) {
+          vulnerabilityType = "Reentrancy";
+        } else if (res.data.reasoning.toLowerCase().includes("overflow") || res.data.reasoning.toLowerCase().includes("underflow")) {
+          vulnerabilityType = "Integer Overflow/Underflow";
+        } else if (res.data.reasoning.toLowerCase().includes("access control")) {
+          vulnerabilityType = "Access Control";
+        } else if (res.data.reasoning.toLowerCase().includes("front-running")) {
+          vulnerabilityType = "Front-Running";
+        }
+      }
+
+      // Parse the summary into structured points
+      const summaryPoints = [];
+      if (res.data.summary) {
+        // Split the summary by sentences or bullet points
+        const summaryText = res.data.summary;
+        const sentences = summaryText.split(/(?<=\.|\!|\?)\s+/);
+
+        sentences.forEach(sentence => {
+          if (sentence.trim()) {
+            const isCritical = 
+              sentence.toLowerCase().includes("vulnerability") || 
+              sentence.toLowerCase().includes("critical") ||
+              sentence.toLowerCase().includes("severe") ||
+              sentence.toLowerCase().includes("exploit");
+
+            summaryPoints.push({
+              point: sentence.trim(),
+              isCritical
+            });
+          }
+        });
+      }
+
+      // If no summary points were extracted, create a default one
+      if (summaryPoints.length === 0) {
+        summaryPoints.push({
+          point: res.data.status === "OK" 
+            ? "No vulnerabilities were detected in the contract." 
+            : "Potential vulnerability detected in the contract.",
+          isCritical: res.data.status !== "OK"
+        });
+      }
+
+      // Format the reasoning for better readability
+      let formattedReasoning = "";
+      if (res.data.reasoning) {
+        // Remove any temporary file paths
+        const cleanedReasoning = res.data.reasoning.replace(/\/tmp\/[a-zA-Z0-9_]+\.sol/g, "contract.sol");
+
+        // Convert markdown to HTML
+        formattedReasoning = cleanedReasoning
+          .replace(/\n\n/g, "</p><p>")
+          .replace(/\n/g, "<br/>")
+          .replace(/```([^`]+)```/g, (match, code) => `<pre><code>${code}</code></pre>`)
+          .replace(/`([^`]+)`/g, (match, code) => `<code>${code}</code>`);
+
+        formattedReasoning = `<p>${formattedReasoning}</p>`;
+      }
+
+      // Create the structured report object
       const parsedReport = {
         fileName: file ? file.name : "Code Snippet",
-        contractName: "MyContract", // Placeholder - extract from report or user input
-        deployedAddress: "N/A", // Placeholder
-        compilerVersion: "0.8.x", // Placeholder - extract from report
+        contractName: contractName,
+        deployedAddress: deployedAddress,
+        compilerVersion: compilerVersion,
         analysisDate: new Date().toLocaleDateString(),
-        globalStatus: res.data.includes("Vulnerability") ? "KO" : "OK", // Basic check
-        vulnerabilityType: res.data.includes("Reentrancy") ? "Reentrancy" : (res.data.includes("Vulnerability") ? "Unknown Vulnerability" : null), // Placeholder
-        analysisSummary: [ // Placeholder - extract and structure from report
-          { point: "Function X seems safe.", isCritical: false },
-          { point: "Potential reentrancy in function Y.", isCritical: true },
-        ],
-        modelReasoning: `<p>The model analyzed the contract structure...</p><pre><code>${res.data.substring(0,100)}...</code></pre>`, // Placeholder
-        exploitCode: res.data.includes("Vulnerability") ? `// Exploit code for ${"MyContract"}\nfunction exploit() public payable {}` : null, // Placeholder
+        globalStatus: res.data.status || "OK",
+        vulnerabilityType: vulnerabilityType,
+        analysisSummary: summaryPoints,
+        modelReasoning: formattedReasoning,
+        exploitCode: res.data.code || null,
         rawReport: res.data // Keep the raw report if needed
       };
       setAnalysisReportData(parsedReport);
@@ -167,12 +232,58 @@ function Analyze() {
     } catch (error) {
       console.error(error);
       let errorMsg = "❌ Une erreur est survenue lors de l'analyse.";
-      if (error.response && error.response.data && error.response.data.is_contract === false) {
-        errorMsg = error.response.data.message || "❌ Le code fourni ne contient pas de contrat Solidity valide.";
+      let errorType = "generic";
+
+      if (error.response && error.response.data) {
+        if (error.response.data.is_contract === false) {
+          errorMsg = error.response.data.message || "❌ Le code fourni ne contient pas de contrat Solidity valide.";
+          errorType = "invalid_contract";
+        } else if (error.response.data.status === "ERROR") {
+          // Handle specific backend error messages
+          if (error.response.data.reasoning && error.response.data.reasoning.includes("Runpod indisponible")) {
+            errorMsg = "❌ Analyse non terminée — Runpod indisponible";
+            errorType = "runpod_unavailable";
+          } else if (error.response.data.reasoning && error.response.data.reasoning.includes("LLM backend unreachable")) {
+            errorMsg = "❌ Erreur critique — LLM backend unreachable";
+            errorType = "llm_unavailable";
+          } else if (error.response.data.reasoning && error.response.data.reasoning.includes("Slither analysis failed")) {
+            errorMsg = "❌ Erreur d'analyse — L'analyse Slither a échoué";
+            errorType = "slither_failed";
+          } else {
+            errorMsg = error.response.data.reasoning || "❌ Une erreur est survenue lors de l'analyse.";
+          }
+        }
       } else if (error.response && error.response.status === 400) {
-         errorMsg = `❌ Le code soumis ne semble pas être un smart contract valide. Veuillez coller un contrat Solidity correct ou importer un fichier .sol.`;
+        errorMsg = `❌ Le code soumis ne semble pas être un smart contract valide. Veuillez coller un contrat Solidity correct ou importer un fichier .sol.`;
+        errorType = "invalid_contract";
+      } else if (error.response && error.response.status >= 500) {
+        errorMsg = "❌ Erreur serveur — Le service d'analyse est temporairement indisponible";
+        errorType = "server_error";
       }
+
       setError(errorMsg);
+
+      // Create a special error report for critical service errors
+      if (["runpod_unavailable", "llm_unavailable", "slither_failed", "server_error"].includes(errorType)) {
+        setAnalysisReportData({
+          fileName: file ? file.name : "Code Snippet",
+          contractName: "N/A",
+          deployedAddress: "N/A",
+          compilerVersion: "N/A",
+          analysisDate: new Date().toLocaleDateString(),
+          globalStatus: "ERROR",
+          vulnerabilityType: null,
+          analysisSummary: [
+            { point: errorMsg, isCritical: true }
+          ],
+          modelReasoning: `<p>${errorMsg}</p>`,
+          exploitCode: null,
+          rawReport: errorMsg,
+          errorType: errorType,
+          isServiceError: true
+        });
+      }
+
       // Update progress to show failure
       setAnalysisProgressData(prev => {
         const newSteps = { ...prev.steps };

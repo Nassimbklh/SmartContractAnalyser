@@ -11,6 +11,24 @@ import openai
 import requests
 from decimal import Decimal
 
+def check_runpod_health() -> Tuple[bool, int]:
+    """
+    Check the health of the Runpod endpoint.
+
+    Returns:
+        Tuple[bool, int]: A tuple containing a boolean indicating if the endpoint is healthy
+                         and the HTTP status code.
+    """
+    POD_ID = "i12bxlubhy2mjp"
+    HEALTH_URL = f"https://{POD_ID}-80.proxy.runpod.net/health"
+
+    try:
+        response = requests.get(HEALTH_URL, timeout=5)
+        return response.status_code == 200, response.status_code
+    except Exception as e:
+        print(f"Error checking Runpod health: {e}")
+        return False, 500
+
 def log(msg: str):
     """
     Logs a given message to the console.
@@ -219,12 +237,11 @@ def parse_attack_code_response(llm_response: str) -> Tuple[str, str]:
     return code, code_type
 
 def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
-    POD_ID = "i12bxlubhy2mjp"
-    VLLM_URL = f"https://{POD_ID}-80.proxy.runpod.net/generate"
     """
     Query the VLLM endpoint to generate a response for a given prompt and measure the
-    time taken to produce the response. Handles exceptions and logs error information if
-    the request fails.
+    time taken to produce the response. Checks if the Runpod is healthy before making
+    the request and raises an exception if it's not. Also handles 5xx errors in the
+    response and raises an exception.
 
     :param prompt: The input prompt to send to the VLLM model.
     :type prompt: str
@@ -233,7 +250,16 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     :return: A tuple containing the model's response as a string and the time taken
         to generate the response in seconds.
     :rtype: Tuple[str, float]
+    :raises Exception: If the Runpod is not healthy or if a 5xx error is received.
     """
+    POD_ID = "i12bxlubhy2mjp"
+    VLLM_URL = f"https://{POD_ID}-80.proxy.runpod.net/generate"
+
+    # Check if Runpod is healthy
+    is_healthy, runpod_status = check_runpod_health()
+    if not is_healthy:
+        raise Exception(f"Runpod backend not reachable, aborting analysis. Status code: {runpod_status}")
+
     t0 = time.time()
     data = {
         "prompt": prompt,
@@ -243,16 +269,29 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     try:
         response = requests.post(VLLM_URL, json=data)
         duration = time.time() - t0
+
+        # Check for 5xx errors
+        if response.status_code >= 500:
+            raise Exception(f"Runpod backend returned error {response.status_code}, aborting analysis.")
+
         if response.ok:
             result = response.json()
             # Adapt here if your API returns differently
             out = result["choices"][0]["text"]
+
+            # Check if the response contains a 502 error
+            if "502" in out:
+                raise Exception("LLM backend unreachable, aborting analysis.")
+
             return out, duration
         else:
             log(f"Error querying VLLM: {response.status_code} {response.text}")
             return f"ERROR: {response.status_code} {response.text}", duration
     except Exception as e:
         log(f"Exception querying VLLM: {e}")
+        if "Runpod backend" in str(e) or "LLM backend" in str(e):
+            # Re-raise the exception for Runpod/LLM backend errors
+            raise
         return f"ERROR: {e}", time.time() - t0
 
 def query_gpt4_openai_api(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
