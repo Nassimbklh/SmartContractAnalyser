@@ -37,7 +37,8 @@ export const contractAPI = {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    responseType: 'text',
+    // The backend now returns JSON directly
+    responseType: 'json',
   }),
   getHistory: () => api.get('/history'),
   getReport: (wallet, filename) => api.get(`/report/${wallet}/${filename}`, {

@@ -20,6 +20,7 @@ Ce dossier contient les définitions des routes API (endpoints) de l'application
 
 - `auth.py` : Routes liées à l'authentification (login, register, etc.)
 - `contract.py` : Routes liées aux opérations sur les smart contracts
+- `feedback.py` : Routes liées à la soumission et gestion des retours utilisateurs sur les rapports d'analyse
 
 ### `/models`
 
@@ -28,6 +29,8 @@ Ce dossier contient les définitions des modèles de données utilisés par l'ap
 - `base.py` : Classe de base pour les modèles et configuration de la connexion à la base de données
 - `user.py` : Modèle pour les utilisateurs
 - `report.py` : Modèle pour les rapports d'analyse de smart contracts
+- `feedback.py` : Modèle pour les retours utilisateurs sur les rapports d'analyse
+- `analysis_status.py` : Modèle pour suivre l'état d'avancement des analyses de contrats
 
 ### `/services`
 
@@ -35,6 +38,7 @@ Ce dossier contient la logique métier de l'application, séparée des routes AP
 
 - `user_service.py` : Services liés aux opérations sur les utilisateurs
 - `contract_service.py` : Services liés aux opérations sur les smart contracts
+- `feedback_service.py` : Services liés à la gestion des retours utilisateurs sur les rapports d'analyse
 
 ### `/modules`
 
@@ -47,6 +51,9 @@ Ce dossier contient les modules spécialisés pour l'analyse des smart contracts
 - `attack_executor.py` : Exécution des attaques
 - `attack_evaluator.py` : Évaluation des résultats d'attaque
 - `results_manager.py` : Gestion et sauvegarde des résultats
+- `qwen_sft_trainer.py` : Entraînement du modèle Qwen pour l'analyse des contrats
+- `slither_scan.py` : Intégration avec l'outil Slither pour l'analyse statique des contrats
+- `slither_scan.ipynb` : Notebook Jupyter pour l'analyse interactive avec Slither
 
 ### `/utils`
 
@@ -67,6 +74,12 @@ Ce dossier contient la configuration de l'application.
 - `app.py` : Point d'entrée principal de l'application Flask
 - `requirements.txt` : Liste des dépendances Python
 - `Dockerfile` : Instructions pour créer l'image Docker du backend
+- `__init__.py` : Fichier d'initialisation du package Python
+- `fine_tune_data.jsonl` : Données pour le fine-tuning des modèles d'IA
+- `qwen_config.json` : Configuration pour le modèle Qwen
+- `test_single_pipeline.py` : Script de test pour le pipeline d'analyse complet
+- `train_qwen.py` : Script pour l'entraînement du modèle Qwen
+- `training.log` : Journal des sessions d'entraînement du modèle
 
 ## Flux d'exécution
 

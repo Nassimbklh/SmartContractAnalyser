@@ -123,24 +123,67 @@ function Analyze() {
       }));
 
 
-      // This is where you would parse the 'res.data' (report text)
-      // and transform it into the structured 'analysisReportData' object.
-      // For now, let's use a placeholder.
+      // The backend now returns a structured JSON object.
+      // We can use this data directly to build the report.
+      const reportData = res.data;
+
+      // Parse the summary into structured points.
+      // The summary is now a single block of text.
+      const summaryPoints = [];
+      if (reportData.summary) {
+        const summaryText = reportData.summary;
+        // Simple split by newline for now, can be improved.
+        const sentences = summaryText.split('\n').filter(s => s.trim() !== '');
+
+        sentences.forEach(sentence => {
+            const isCritical = 
+              sentence.toLowerCase().includes("vulnerability") || 
+              sentence.toLowerCase().includes("critical") ||
+              sentence.toLowerCase().includes("severe") ||
+              sentence.toLowerCase().includes("exploit");
+
+            summaryPoints.push({
+              point: sentence.trim(),
+              isCritical
+            });
+        });
+      }
+       if (summaryPoints.length === 0) {
+        summaryPoints.push({
+          point: reportData.status === "OK"
+            ? "Aucune vulnérabilité n'a été détectée dans le contrat."
+            : "Une vulnérabilité potentielle a été détectée dans le contrat.",
+          isCritical: reportData.status !== "OK"
+        });
+      }
+
+
+      // Format the reasoning for better readability (Markdown to HTML)
+      let formattedReasoning = "";
+      if (reportData.reasoning) {
+        const cleanedReasoning = reportData.reasoning.replace(/\/tmp\/[a-zA-Z0-9_]+\.sol/g, "contract.sol");
+        formattedReasoning = cleanedReasoning
+          .replace(/\n\n/g, "</p><p>")
+          .replace(/\n/g, "<br/>")
+          .replace(/```solidity\n([^`]+)```/g, (match, code) => `<pre class="code-block-solidity"><code>${code.trim()}</code></pre>`)
+          .replace(/```([^`]+)```/g, (match, code) => `<pre><code>${code.trim()}</code></pre>`)
+          .replace(/`([^`]+)`/g, (match, code) => `<code>${code}</code>`);
+        formattedReasoning = `<p>${formattedReasoning}</p>`;
+      }
+
+      // Create the structured report object for the AnalysisDisplay component
       const parsedReport = {
         fileName: file ? file.name : "Code Snippet",
-        contractName: "MyContract", // Placeholder - extract from report or user input
-        deployedAddress: "N/A", // Placeholder
-        compilerVersion: "0.8.x", // Placeholder - extract from report
-        analysisDate: new Date().toLocaleDateString(),
-        globalStatus: res.data.includes("Vulnerability") ? "KO" : "OK", // Basic check
-        vulnerabilityType: res.data.includes("Reentrancy") ? "Reentrancy" : (res.data.includes("Vulnerability") ? "Unknown Vulnerability" : null), // Placeholder
-        analysisSummary: [ // Placeholder - extract and structure from report
-          { point: "Function X seems safe.", isCritical: false },
-          { point: "Potential reentrancy in function Y.", isCritical: true },
-        ],
-        modelReasoning: `<p>The model analyzed the contract structure...</p><pre><code>${res.data.substring(0,100)}...</code></pre>`, // Placeholder
-        exploitCode: res.data.includes("Vulnerability") ? `// Exploit code for ${"MyContract"}\nfunction exploit() public payable {}` : null, // Placeholder
-        rawReport: res.data // Keep the raw report if needed
+        contractName: reportData.contract_name || "N/A",
+        deployedAddress: "N/A", // This info is not in the new response, might need adjustment
+        compilerVersion: reportData.solc_version || "N/A",
+        analysisDate: new Date(reportData.created_at).toLocaleDateString(),
+        globalStatus: reportData.status || "OK",
+        vulnerabilityType: reportData.attack || null,
+        analysisSummary: summaryPoints,
+        modelReasoning: formattedReasoning,
+        exploitCode: reportData.code || null,
+        rawReport: reportData
       };
       setAnalysisReportData(parsedReport);
       setAnalysisProgressData(prev => ({ // Mark final step as complete
@@ -167,12 +210,58 @@ function Analyze() {
     } catch (error) {
       console.error(error);
       let errorMsg = "❌ Une erreur est survenue lors de l'analyse.";
-      if (error.response && error.response.data && error.response.data.is_contract === false) {
-        errorMsg = error.response.data.message || "❌ Le code fourni ne contient pas de contrat Solidity valide.";
+      let errorType = "generic";
+
+      if (error.response && error.response.data) {
+        if (error.response.data.is_contract === false) {
+          errorMsg = error.response.data.message || "❌ Le code fourni ne contient pas de contrat Solidity valide.";
+          errorType = "invalid_contract";
+        } else if (error.response.data.status === "ERROR") {
+          // Handle specific backend error messages
+          if (error.response.data.reasoning && error.response.data.reasoning.includes("Runpod indisponible")) {
+            errorMsg = "❌ Analyse non terminée — Runpod indisponible";
+            errorType = "runpod_unavailable";
+          } else if (error.response.data.reasoning && error.response.data.reasoning.includes("LLM backend unreachable")) {
+            errorMsg = "❌ Erreur critique — LLM backend unreachable";
+            errorType = "llm_unavailable";
+          } else if (error.response.data.reasoning && error.response.data.reasoning.includes("Slither analysis failed")) {
+            errorMsg = "❌ Erreur d'analyse — L'analyse Slither a échoué";
+            errorType = "slither_failed";
+          } else {
+            errorMsg = error.response.data.reasoning || "❌ Une erreur est survenue lors de l'analyse.";
+          }
+        }
       } else if (error.response && error.response.status === 400) {
-         errorMsg = `❌ Le code soumis ne semble pas être un smart contract valide. Veuillez coller un contrat Solidity correct ou importer un fichier .sol.`;
+        errorMsg = `❌ Le code soumis ne semble pas être un smart contract valide. Veuillez coller un contrat Solidity correct ou importer un fichier .sol.`;
+        errorType = "invalid_contract";
+      } else if (error.response && error.response.status >= 500) {
+        errorMsg = "❌ Erreur serveur — Le service d'analyse est temporairement indisponible";
+        errorType = "server_error";
       }
+
       setError(errorMsg);
+
+      // Create a special error report for critical service errors
+      if (["runpod_unavailable", "llm_unavailable", "slither_failed", "server_error"].includes(errorType)) {
+        setAnalysisReportData({
+          fileName: file ? file.name : "Code Snippet",
+          contractName: "N/A",
+          deployedAddress: "N/A",
+          compilerVersion: "N/A",
+          analysisDate: new Date().toLocaleDateString(),
+          globalStatus: "ERROR",
+          vulnerabilityType: null,
+          analysisSummary: [
+            { point: errorMsg, isCritical: true }
+          ],
+          modelReasoning: `<p>${errorMsg}</p>`,
+          exploitCode: null,
+          rawReport: errorMsg,
+          errorType: errorType,
+          isServiceError: true
+        });
+      }
+
       // Update progress to show failure
       setAnalysisProgressData(prev => {
         const newSteps = { ...prev.steps };

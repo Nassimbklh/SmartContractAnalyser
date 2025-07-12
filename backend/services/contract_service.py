@@ -190,24 +190,83 @@ def analyze_contract_from_code(content):
             logger.info("Running Slither analysis...")
             try:
                 slith_result = slither_analyze(temp_path)
+                if not slith_result:
+                    raise Exception("Slither analysis returned empty result")
                 logger.info("Slither analysis completed successfully")
             except Exception as e:
-                logger.warning(f"Failed to run Slither analysis: {str(e)}")
-                logger.warning(traceback.format_exc())
-                # Continue with empty Slither results if analysis fails
-                slith_result = ""
+                logger.error(f"Failed to run Slither analysis: {str(e)}")
+                logger.error(traceback.format_exc())
+                # Don't continue with empty Slither results if analysis fails
+                return {
+                    "status": "ERROR",
+                    "attack": "Analysis Error",
+                    "reasoning": f"Slither analysis failed: {str(e)}",
+                    "summary": "Slither analysis error",
+                    "code": "",
+                    "contract_info": {
+                        "contract_name": deployed_contracts[0]["contract_name"] if deployed_contracts else "Unknown",
+                        "solc_version": deployed_contracts[0]["solc_version"] if deployed_contracts else "Unknown",
+                        "address": deployed_contracts[0]["address"] if deployed_contracts else "Unknown"
+                    }
+                }
 
             # Generate attack strategy with Slither results and observation
-            attack_strategy = generate_complete_attack_strategy(slith_result, observation)
-            logger.info(f"Attack strategy generated successfully: {attack_strategy}")
+            try:
+                attack_strategy = generate_complete_attack_strategy(slith_result, observation)
+                logger.info(f"Attack strategy generated successfully: {attack_strategy}")
 
-            # Log detailed information about the attack strategy
-            logger.debug(f"Attack strategy details:")
-            logger.debug(f"  Summary: {attack_strategy.get('summary', 'None')}")
-            logger.debug(f"  Reasoning: {attack_strategy.get('reasoning', 'None')}")
-            logger.debug(f"  Code: {attack_strategy.get('code', 'None')}")
+                # Log detailed information about the attack strategy
+                logger.debug(f"Attack strategy details:")
+                logger.debug(f"  Summary: {attack_strategy.get('summary', 'None')}")
+                logger.debug(f"  Reasoning: {attack_strategy.get('reasoning', 'None')}")
+                logger.debug(f"  Code: {attack_strategy.get('code', 'None')}")
+            except Exception as e:
+                logger.error(f"Failed to generate attack strategy: {str(e)}")
+                logger.error(traceback.format_exc())
+
+                # Check for specific Runpod/LLM backend errors
+                error_message = str(e)
+                if "Runpod backend not reachable" in error_message:
+                    return {
+                        "status": "ERROR",
+                        "attack": "Service Unavailable",
+                        "reasoning": "Analyse non terminée — Runpod indisponible",
+                        "summary": "Runpod backend not reachable",
+                        "code": "",
+                        "contract_info": {
+                            "contract_name": deployed_contracts[0]["contract_name"],
+                            "solc_version": deployed_contracts[0]["solc_version"],
+                            "address": deployed_contracts[0]["address"]
+                        }
+                    }
+                elif "LLM backend unreachable" in error_message or "502" in error_message:
+                    return {
+                        "status": "ERROR",
+                        "attack": "Service Unavailable",
+                        "reasoning": "Erreur critique — LLM backend unreachable",
+                        "summary": "LLM backend unreachable",
+                        "code": "",
+                        "contract_info": {
+                            "contract_name": deployed_contracts[0]["contract_name"],
+                            "solc_version": deployed_contracts[0]["solc_version"],
+                            "address": deployed_contracts[0]["address"]
+                        }
+                    }
+                else:
+                    return {
+                        "status": "ERROR",
+                        "attack": "Analysis Error",
+                        "reasoning": f"Failed to generate attack strategy: {str(e)}",
+                        "summary": "Analysis error",
+                        "code": "",
+                        "contract_info": {
+                            "contract_name": deployed_contracts[0]["contract_name"],
+                            "solc_version": deployed_contracts[0]["solc_version"],
+                            "address": deployed_contracts[0]["address"]
+                        }
+                    }
         except Exception as e:
-            logger.error(f"Failed to generate attack strategy: {str(e)}")
+            logger.error(f"Unexpected error during attack strategy generation: {str(e)}")
             logger.error(traceback.format_exc())
             return {
                 "status": "ERROR",
@@ -245,8 +304,9 @@ def analyze_contract_from_code(content):
         logger.info(f"Has exploit code: {has_code}")
         logger.info(f"No vulnerabilities mentioned: {no_vulnerabilities_mentioned}")
 
-        # A vulnerability is found if there is exploit code AND the summary doesn't say "no vulnerabilities"
-        has_vulnerability = has_code and not no_vulnerabilities_mentioned
+        # A vulnerability is found if there is exploit code OR if the summary mentions vulnerabilities
+        # (and doesn't explicitly say "no vulnerabilities")
+        has_vulnerability = has_code or not no_vulnerabilities_mentioned
 
         # If the summary explicitly says no vulnerabilities, force status to OK regardless of code
         if no_vulnerabilities_mentioned:

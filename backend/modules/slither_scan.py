@@ -1,4 +1,3 @@
-#%%
 import datetime
 import json
 import os
@@ -7,14 +6,11 @@ import subprocess
 from collections import defaultdict
 from typing import Any, Dict, Tuple
 
-#%%
 #file_path = '../data/val/ReentrancyVulnerable2.sol'
 
-#%%
 def timestamp() -> str:
     return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-#%%
 def extract_solc_version(sol_path: str) -> str:
     """
     Lit le fichier Solidity et renvoie la version indiquée par pragma solidity,
@@ -28,7 +24,6 @@ def extract_solc_version(sol_path: str) -> str:
                 return m.group("ver")
     raise ValueError(f"Aucune pragma solidity trouvée dans {sol_path}")
 
-#%%
 def ensure_solc_version(version: str) -> None:
     """
     Vérifie si `version` est installée avec solc-select, l'installe si besoin, puis l'active.
@@ -58,8 +53,8 @@ def ensure_solc_version(version: str) -> None:
     elif version not in installed:
         print(f"▶ Installation de solc {version}…")
         subprocess.run(["solc-select", "install", version], check=True)
+        subprocess.run(["solc-select", "use", version], check=True)
 
-#%%
 def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: str = "audits_smart_contracts") -> str:
     """
     Appelle extract_solc_version + ensure_solc_version avant d'exécuter Slither
@@ -69,17 +64,14 @@ def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: s
     ensure_solc_version(solc_version)
 
     # 2) Construire et lancer Slither
-    # Convert paths to absolute paths if they're not already
-    abs_sol_path = os.path.abspath(sol_path)
-    abs_out_json = os.path.abspath(out_json)
-    if os.path.exists(abs_out_json):
-        os.remove(abs_out_json)
+    if os.path.exists(out_json):
+        os.remove(out_json)
 
     cmd_json = [
         "slither",
-        abs_sol_path,
+        sol_path,
         "--json",
-        abs_out_json,
+        out_json,
         "--ignore-compile"
     ]
     print("▶ slither", " ".join(cmd_json[1:]))
@@ -87,11 +79,11 @@ def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: s
 
     cmd_txt = [
         "slither",
-        abs_sol_path,
+        sol_path,
         "--ignore-compile"
     ]
     print("▶ slither", " ".join(cmd_txt[1:]))
-    out_txt = abs_out_json[:-5] + ".txt"
+    out_txt = out_json[:-5] + ".txt"
     result_txt = subprocess.run(cmd_txt, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
     pattern = rf"--allow-paths \.,.*?{re.escape(project_root)}[\\/]"
@@ -108,7 +100,7 @@ def run_slither(sol_path: str, out_json: str, solc_version: str, project_root: s
         raise subprocess.CalledProcessError(result_txt.returncode, cmd_txt)
 
     return result
-#%%
+
 def parse_detectors(slither_data: Dict[str, Any]) -> Tuple[Dict[str, int], list[str]]:
     """Return (severity_counts, highlights) extracted from Slither JSON."""
     detectors = slither_data.get("results", {}).get("detectors", [])
@@ -127,9 +119,8 @@ def parse_detectors(slither_data: Dict[str, Any]) -> Tuple[Dict[str, int], list[
 
     return severity_counts, highlights
 
-#%%
 def slither_analyze(sol_path: str,
-                     dest_dir: str = "/tmp/slither") -> str:
+                     dest_dir: str = "../data/slither") -> str:
     """
     Run Slither on *sol_path* using the correct solc version from pragma,
     install/activate it if needed, and create raw + summary reports inside *dest_dir*.
@@ -155,5 +146,5 @@ def slither_analyze(sol_path: str,
     slither_result = run_slither(sol_path, json_path, solc_version)
 
     return slither_result
-#%%
+
 #print(slither_analyze(file_path))

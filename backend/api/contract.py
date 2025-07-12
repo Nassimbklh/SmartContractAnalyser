@@ -68,14 +68,36 @@ def analyze(wallet):
         save_report(report)
         logger.info(f"Report saved with filename: {report.filename}, status: {report.status}")
 
-        # Generate markdown report
-        markdown = generate_report_markdown(report)
-        logger.info("Analysis completed successfully, returning report")
+        # Return the structured report as JSON
+        # The frontend will now be responsible for rendering this data.
+        logger.info("Analysis completed successfully, returning structured report")
 
-        return markdown, 200, {'Content-Type': 'text/markdown; charset=utf-8'}
+        # We need to convert the SQLAlchemy Report object to a dict
+        report_data = {
+            "id": report.id,
+            "user_id": report.user_id,
+            "filename": report.filename,
+            "contract_name": report.contract_name,
+            "solc_version": report.solc_version,
+            "status": report.status,
+            "attack": report.attack,
+            "summary": report.summary,
+            "reasoning": report.reasoning,
+            "code": report.exploit_code,
+            "is_service_error": False,  # Assuming no service error if we get here
+            "created_at": report.created_at.isoformat()
+        }
+
+        return jsonify(report_data), 200
     except Exception as e:
         logger.error(f"Error during contract analysis: {str(e)}", exc_info=True)
-        return server_error_response(str(e))
+        # Return a JSON error response as well
+        return jsonify({
+            "status": "ERROR",
+            "message": "An internal server error occurred.",
+            "reasoning": str(e),
+            "is_service_error": True
+        }), 500
 
 @contract_bp.route("/history", methods=["GET"])
 @token_required

@@ -9,25 +9,38 @@ import time
 from typing import Dict, Any, Tuple
 import openai
 import requests
-import logging
 from decimal import Decimal
 
-# Set up logger
-logger = logging.getLogger(__name__)
+def check_runpod_health() -> Tuple[bool, int]:
+    """
+    Check the health of the Runpod endpoint.
+
+    Returns:
+        Tuple[bool, int]: A tuple containing a boolean indicating if the endpoint is healthy
+                         and the HTTP status code.
+    """
+    POD_ID = "i12bxlubhy2mjp"
+    HEALTH_URL = f"https://{POD_ID}-80.proxy.runpod.net/health"
+
+    try:
+        response = requests.get(HEALTH_URL, timeout=5)
+        return response.status_code == 200, response.status_code
+    except Exception as e:
+        print(f"Error checking Runpod health: {e}")
+        return False, 500
 
 def log(msg: str):
     """
-    Logs a given message to the console and to the logger.
+    Logs a given message to the console.
 
-    This function takes a string message as input, prints it to the console
-    output, and also logs it using the logger. It provides dual logging functionality.
+    This function takes a string message as input and prints it to the console
+    output. It does not perform any additional processing on the message.
 
-    :param msg: The message that needs to be logged.
+    :param msg: The message that needs to be logged to the console.
     :type msg: str
     :return: None
     """
     print(msg)
-    logger.info(msg)
 
 
 class DecimalEncoder(json.JSONEncoder):
@@ -38,7 +51,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(obj)
 
 
-def build_contract_analysis_prompt(slith: str, observation: Dict[str, Any]) -> str:
+def build_contract_analysis_prompt(slith, observation: Dict[str, Any]) -> str:
     """
     Builds a detailed prompt for a world-class smart contract security auditor.
 
@@ -48,8 +61,7 @@ def build_contract_analysis_prompt(slith: str, observation: Dict[str, Any]) -> s
     standard utility contracts. It also provides required criteria for analysis, including types
     of vulnerabilities to detect and the format for reporting the analysis.
 
-    :param slith: The slither analysis results to include in the prompt.
-    :type slith: str
+    :param slith:
     :param observation: The context for the contracts as a dictionary, which includes
         details required for the analysis.
     :type observation: Dict[str, Any]
@@ -72,7 +84,7 @@ Your task is to analyze the contracts and identify vulnerabilities:
 The slither analyze : {slith} 
 
 Contracts context (JSON):
-{json.dumps(observation, indent=2, cls=DecimalEncoder)}
+{json.dumps(observation, indent=2,cls=DecimalEncoder)}
 
 Response format:
 1. Contract Analysis: ...
@@ -143,18 +155,18 @@ def parse_analysis_response(llm_response: str) -> Tuple[str, str, str]:
 
     try:
         analysis_match = re.search(
-            r'Contract Analysis.*?:([\s\S]+?)Vulnerability Assessment:', 
-            llm_response, 
+            r'Contract Analysis.*?:([\s\S]+?)Vulnerability Assessment:',
+            llm_response,
             re.IGNORECASE
         )
         vulnerability_match = re.search(
-            r'Vulnerability Assessment.*?:([\s\S]+?)Exploitation Requirements:', 
-            llm_response, 
+            r'Vulnerability Assessment.*?:([\s\S]+?)Exploitation Requirements:',
+            llm_response,
             re.IGNORECASE
         )
         requirements_match = re.search(
-            r'Exploitation Requirements.*?:([\s\S]+?)(?:---|$)', 
-            llm_response, 
+            r'Exploitation Requirements.*?:([\s\S]+?)(?:---|$)',
+            llm_response,
             re.IGNORECASE
         )
 
@@ -191,8 +203,8 @@ def parse_attack_code_response(llm_response: str) -> Tuple[str, str]:
     try:
         # Look for Solidity code blocks
         code_match = re.search(
-            r'```(?:solidity)?\n([\s\S]+?)```', 
-            llm_response, 
+            r'```solidity\n([\s\S]+?)```', #r'```(?:solidity)?\n([\s\S]+?)```',
+            llm_response,
             re.IGNORECASE
         )
 
@@ -224,8 +236,65 @@ def parse_attack_code_response(llm_response: str) -> Tuple[str, str]:
 
     return code, code_type
 
-
 def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
+    """
+    Query the VLLM endpoint to generate a response for a given prompt and measure the
+    time taken to produce the response. Checks if the Runpod is healthy before making
+    the request and raises an exception if it's not. Also handles 5xx errors in the
+    response and raises an exception.
+
+    :param prompt: The input prompt to send to the VLLM model.
+    :type prompt: str
+    :param temperature: A float value controlling the randomness of the model's output.
+    :type temperature: float, optional
+    :return: A tuple containing the model's response as a string and the time taken
+        to generate the response in seconds.
+    :rtype: Tuple[str, float]
+    :raises Exception: If the Runpod is not healthy or if a 5xx error is received.
+    """
+    POD_ID = "i12bxlubhy2mjp"
+    VLLM_URL = f"https://{POD_ID}-80.proxy.runpod.net/generate"
+
+    # Check if Runpod is healthy
+    is_healthy, runpod_status = check_runpod_health()
+    if not is_healthy:
+        raise Exception(f"Runpod backend not reachable, aborting analysis. Status code: {runpod_status}")
+
+    t0 = time.time()
+    data = {
+        "prompt": prompt,
+        "max_tokens": 1024,
+        "temperature": temperature,
+    }
+    try:
+        response = requests.post(VLLM_URL, json=data)
+        duration = time.time() - t0
+
+        # Check for 5xx errors
+        if response.status_code >= 500:
+            raise Exception(f"Runpod backend returned error {response.status_code}, aborting analysis.")
+
+        if response.ok:
+            result = response.json()
+            # Adapt here if your API returns differently
+            out = result["choices"][0]["text"]
+
+            # Check if the response contains a 502 error
+            if "502" in out:
+                raise Exception("LLM backend unreachable, aborting analysis.")
+
+            return out, duration
+        else:
+            log(f"Error querying VLLM: {response.status_code} {response.text}")
+            return f"ERROR: {response.status_code} {response.text}", duration
+    except Exception as e:
+        log(f"Exception querying VLLM: {e}")
+        if "Runpod backend" in str(e) or "LLM backend" in str(e):
+            # Re-raise the exception for Runpod/LLM backend errors
+            raise
+        return f"ERROR: {e}", time.time() - t0
+
+def query_gpt4_openai_api(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     """
     Query the GPT-4 model to generate a response for a given prompt and measure the
     time taken to produce the response. The function sends a prompt to OpenAI's GPT-4
@@ -244,15 +313,9 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     """
     t0 = time.time()
 
-    # Log the API call
-    logger.info(f"Querying OpenAI GPT-4 API with temperature={temperature}, max_tokens=1800")
-    # Log a truncated version of the prompt to avoid excessive logging
-    logger.debug(f"Prompt (truncated): {prompt[:200]}...")
-
     try:
-        logger.info("Sending request to OpenAI API...")
         response = openai.chat.completions.create(
-            model="gpt-4.1-mini",  # Using GPT-4.1-mini model
+            model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=temperature,
             max_tokens=1800,
@@ -260,17 +323,10 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
         )
         out = response.choices[0].message.content
         duration = time.time() - t0
-
-        # Log the response
-        logger.info(f"Received response from OpenAI API in {duration:.2f} seconds")
-        logger.debug(f"Response (truncated): {out[:200]}...")
-
         return out, duration
 
     except Exception as e:
-        error_msg = f"Error querying GPT-4: {e}"
-        logger.error(error_msg, exc_info=True)
-        log(error_msg)  # This will both print and log
+        log(f"Error querying GPT-4: {e}")
         return f"ERROR: {e}", time.time() - t0
 
 
@@ -300,28 +356,15 @@ def query_codestral_ollama(prompt: str, model: str = "codestral", temperature: f
         "stream": False
     }
 
-    # Log the API call
-    logger.info(f"Querying Ollama API with model={model}, temperature={temperature}")
-    logger.debug(f"Prompt (truncated): {prompt[:200]}...")
-
     t0 = time.time()
     try:
-        logger.info(f"Sending request to Ollama API at {url}...")
         res = requests.post(url, json=data)
         res.raise_for_status()
         out = res.json().get('response', "")
-
-        # Log the response
-        duration = time.time() - t0
-        logger.info(f"Received response from Ollama API in {duration:.2f} seconds")
-        logger.debug(f"Response (truncated): {out[:200]}...")
     except Exception as e:
-        error_msg = f"Error querying Ollama: {e}"
-        logger.error(error_msg, exc_info=True)
-        log(error_msg)  # This will both print and log
         out = f"ERROR: {e}"
-        duration = time.time() - t0
 
+    duration = time.time() - t0
     return out, duration
 
 
@@ -345,21 +388,19 @@ def query_policy_model(prompt: str, step: int, big_model_threshold: int = 1000) 
     :rtype: Tuple[str, float]
     """
     if step < big_model_threshold:
-        log("[MODE] Utilisation du gros modèle (GPT-4)")
+        log("[MODE] Utilisation du modèle vLLM runpod") #gros modèle (GPT-4)")
         return query_gpt4(prompt)
     else:
         log("[MODE] Utilisation du modèle local (Codestral)")
         return query_codestral_ollama(prompt)
 
 
-def analyze_contracts(slith: str, observation: Dict[str, Any], step: int = 0) -> Dict[str, Any]:
+def analyze_contracts(slith, observation: Dict[str, Any], step: int = 0) -> Dict[str, Any]:
     """
     Analyzes smart contracts using a language model to provide detailed insights on potential vulnerabilities,
     contract functionality, and exploitation requirements. The function constructs a prompt from the observation,
     queries a pre-trained policy language model for an analysis, and parses the response to return relevant details.
 
-    :param slith: The slither analysis results to include in the prompt.
-    :type slith: str
     :param observation:
         The input data required for the smart contract analysis.
         The dictionary should include human-readable information related to the target contracts.
@@ -421,6 +462,10 @@ Contract Analysis: {analysis_result['contract_analysis']}
 Vulnerability Assessment: {analysis_result['vulnerability_assessment']}
 
 Exploitation Requirements: {analysis_result['exploitation_requirements']}
+
+THE OUTPUT MUST BE A SINGLE CODE CELL CONTAINING ONLY SOLIDITY CODE. 
+IT MUST START WITH ```solidity, INCLUDE THE COMPLETE SOLIDITY CODE, AND END WITH ```. 
+DO NOT INCLUDE ANY EXPLANATIONS OR ADDITIONAL INFORMATION.
 """
 
     # Build attack code prompt
@@ -428,6 +473,7 @@ Exploitation Requirements: {analysis_result['exploitation_requirements']}
 
     # Query LLM for attack code
     llm_response, duration = query_policy_model(prompt, step)
+    print("THE LLM RESPONSE", llm_response)
 
     # Parse attack code response
     code, code_type = parse_attack_code_response(llm_response)
@@ -449,8 +495,6 @@ def generate_complete_attack_strategy(slith: str, observation: Dict[str, Any], s
     returns a dictionary containing analysis results, attack code details, and additional legacy fields
     as required by existing pipelines.
 
-    :param slith: The slither analysis results to include in the prompt.
-    :type slith: str
     :param observation: A dictionary containing the current state of the contracts or systems undergoing
         analysis. This serves as the input context for vulnerability detection and attack strategy
         generation.
@@ -470,38 +514,18 @@ def generate_complete_attack_strategy(slith: str, observation: Dict[str, Any], s
         - `duration`: Total duration (in time) spent during analysis and attack code generation.
     :rtype: Dict[str, Any]
     """
-    logger.info("Starting complete attack strategy generation")
-    logger.info(f"Contract name: {observation['contracts'][0]['contract_name'] if observation['contracts'] else 'Unknown'}")
-    logger.info(f"Using step number: {step} for model selection")
-
     # Step 1: Analyze contracts
     log("🔍 Step 1: Analyzing contracts for vulnerabilities...")
-    analysis_start_time = time.time()
     analysis_result = analyze_contracts(slith, observation, step)
-    logger.info(f"Contract analysis completed in {analysis_result['analysis_duration']:.2f} seconds")
-
-    # Log analysis results
-    if analysis_result["vulnerability_assessment"]:
-        logger.info(f"Vulnerability assessment: {analysis_result['vulnerability_assessment'][:100]}...")
-    else:
-        logger.info("No vulnerabilities found in the contract")
 
     # Step 2: Generate attack code
     log("⚔️ Step 2: Generating attack code...")
     attack_result = generate_attack_code(observation, analysis_result, step)
-    logger.info(f"Attack code generation completed in {attack_result['attack_duration']:.2f} seconds")
-
-    # Log attack results
-    if attack_result["code"]:
-        logger.info(f"Generated attack code of type {attack_result['code_type']} with length {len(attack_result['code'])}")
-    else:
-        logger.info("No attack code was generated")
 
     # Combine results
     total_duration = analysis_result["analysis_duration"] + attack_result["attack_duration"]
-    logger.info(f"Total attack strategy generation completed in {total_duration:.2f} seconds")
 
-    result = {
+    return {
         # Analysis results
         "analysis": analysis_result,
 
@@ -517,6 +541,3 @@ def generate_complete_attack_strategy(slith: str, observation: Dict[str, Any], s
         "code_type": attack_result["code_type"],
         "duration": total_duration
     }
-
-    logger.info("Attack strategy generation completed successfully")
-    return result
