@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './AnalysisDisplay.css';
+import {downloadBlob, getUserFromToken, handleApiError} from "../utils/utils";
+import {contractAPI} from "../services/api";
+import {AuthContext} from "../contexts/AuthContext";
+
+
 
 const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnalysis }) => {
+    const { token } = useContext(AuthContext);
+    const handleReportDownload = (filename) => {
+        const userData = getUserFromToken(token);
+        if (!userData || !userData.wallet) {
+          alert("Erreur: Impossible d'extraire les informations utilisateur du token");
+          return;
+        }
 
+        contractAPI.getReport(userData.wallet, filename)
+          .then(res => {
+            downloadBlob(res.data, `${filename}.txt`);
+          })
+          .catch(error => {
+            alert(`Erreur lors du téléchargement: ${handleApiError(error)}`);
+          });
+    };
   // const progressSteps = [ // This can be removed as Analyze.js sends the full list of steps and their states
   //   { name: 'Vérification du format Solidity', status: 'pending', icon: '⏳' },
   //   { name: 'Compilation du contrat', status: 'pending', icon: '⏳' },
@@ -83,7 +103,7 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
                 <h3>Informations globales</h3>
                 <p><strong>Nom du fichier:</strong> {reportData.fileName}</p>
                 <p><strong>Nom du contrat:</strong> {reportData.contractName}</p>
-                <p><strong>Adresse déployée:</strong> {reportData.deployedAddress}</p>
+                <p><strong>Adresse déployée:</strong> {reportData.contractAddress}</p>
                 <p><strong>Version du compilateur Solidity:</strong> {reportData.compilerVersion}</p>
                 <p><strong>Date d'analyse:</strong> {reportData.analysisDate}</p>
                 <p><strong>Statut global:</strong> <span className={reportData.globalStatus === 'OK' ? 'status-ok-text' : 'status-ko-text'}>{reportData.globalStatus}</span></p>
@@ -230,7 +250,11 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
           <button onClick={onRestartAnalysis} className="restart-button">Relancer l'analyse</button>
           {/* Download button - disabled for service errors */}
           {!reportData.isServiceError ? (
-            <button className="download-button">Télécharger le rapport</button>
+
+            <button onClick={() => {
+                console.log(reportData, analysisData);
+                handleReportDownload(reportData.rawReport.filename);
+            }} className="download-button">Télécharger le rapport</button>
           ) : (
             <button className="download-button" disabled title="Téléchargement indisponible en raison d'une erreur de service">
               Télécharger le rapport

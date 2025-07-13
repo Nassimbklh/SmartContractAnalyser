@@ -173,9 +173,9 @@ function Analyze() {
 
       // Create the structured report object for the AnalysisDisplay component
       const parsedReport = {
-        fileName: file ? file.name : "Code Snippet",
+        fileName: reportData.filename || "Code Snippet",
         contractName: reportData.contract_name || "N/A",
-        deployedAddress: "N/A", // This info is not in the new response, might need adjustment
+        contractAddress: reportData.contract_address || "N/A",
         compilerVersion: reportData.solc_version || "N/A",
         analysisDate: new Date(reportData.created_at).toLocaleDateString(),
         globalStatus: reportData.status || "OK",
@@ -246,7 +246,7 @@ function Analyze() {
         setAnalysisReportData({
           fileName: file ? file.name : "Code Snippet",
           contractName: "N/A",
-          deployedAddress: "N/A",
+          contractAddress: "N/A",
           compilerVersion: "N/A",
           analysisDate: new Date().toLocaleDateString(),
           globalStatus: "ERROR",

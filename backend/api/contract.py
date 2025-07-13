@@ -180,6 +180,6 @@ def download_report(token_wallet, wallet, filename):
         # Generate markdown
         markdown = generate_report_markdown(report)
 
-        return markdown, 200, {'Content-Type': 'text/markdown; charset=utf-8'}
+        return markdown, 200, {'Content-Type': 'text/plain; charset=utf-8'}
     except Exception as e:
         return server_error_response(str(e))
