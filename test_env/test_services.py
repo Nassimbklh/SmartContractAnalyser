@@ -12,6 +12,10 @@ services = [
     ("Backend", "localhost", 4455),
     ("Frontend", "localhost", 4456),
     ("PostgreSQL", get_db_host(), 5432),
+    ("PGAdmin", "localhost", 4457),
+    ("Ganache", "localhost", 8545),
+    ("Elasticsearch", "localhost", 9200),
+    ("Kibana", "localhost", 5601),
 ]
 
 def check(host, port, name):
