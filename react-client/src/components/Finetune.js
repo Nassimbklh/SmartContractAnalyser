@@ -4,7 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { finetuneAPI } from "../services/api";
 import axios from 'axios';
 
-const POD_ID = "r3etcvinyjvth2";
+const POD_ID = process.env.REACT_APP_RUNPOD_ID || "r3etcvinyjvth2";
 const FINETUNE_URL = `https://${POD_ID}-80.proxy.runpod.net/finetune-feedback`;
 
 function Finetune() {
