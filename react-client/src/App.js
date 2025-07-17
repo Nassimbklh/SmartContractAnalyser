@@ -8,6 +8,7 @@ import EtherscanAnalyze from "./components/EtherscanAnalyze";
 import Navbar from "./components/Navbar";
 import History from "./components/History";
 import Subscription from "./components/Subscription";
+import BlockchainBackground from "./components/BlockchainBackground";
 
 function ProtectedRoute({ children }) {
   const { token } = React.useContext(AuthContext);
@@ -18,6 +19,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <BlockchainBackground /> {/* Animated blockchain background */}
         <Navbar /> {/* ⬅️ Affiché en haut */}
         <Routes>
           <Route path="/login" element={<Login />} />

@@ -1,0 +1,97 @@
+.blockchain-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background-color: rgba(10, 14, 23, 0.9); /* Semi-transparent dark blue background */
+}
+
+.blockchain-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.blockchain-element {
+  position: absolute;
+  opacity: 0;
+  animation: fadeInOut 10s infinite ease-in-out;
+}
+
+.block {
+  width: 60px;
+  height: 40px;
+  background-color: rgba(0, 123, 255, 0.1);
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.block:hover {
+  transform: scale(1.1);
+  background-color: rgba(0, 123, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+.hash {
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(0, 123, 255, 0.7);
+}
+
+.blockchain-connection {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.5), transparent);
+  opacity: 0;
+  animation: connectionPulse 8s infinite ease-in-out;
+}
+
+/* Animation for blocks fading in and out */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translateY(20px); }
+  20%, 80% { opacity: 0.4; transform: translateY(0); } /* Reduced opacity from 0.7 to 0.4 */
+}
+
+/* Animation for connection lines */
+@keyframes connectionPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.3; } /* Reduced opacity from 0.5 to 0.3 */
+}
+
+/* Add floating animation for blocks */
+.blockchain-element {
+  animation: fadeInOut 10s infinite ease-in-out, float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(10px, 10px); }
+  50% { transform: translate(0, 15px); }
+  75% { transform: translate(-10px, 5px); }
+}
+
+/* Add some particles in the background */
+.blockchain-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at center, rgba(0, 123, 255, 0.05) 0%, transparent 70%);
+  background-size: 15px 15px;
+  animation: particleMove 60s infinite linear;
+}
+
+@keyframes particleMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 1000px 1000px; }
+}

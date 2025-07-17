@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #f8f9fa; /* Light text color for better contrast with dark background */
 }
 
 code {
@@ -15,18 +16,24 @@ code {
 /* Styles for markdown report */
 .markdown-report {
   line-height: 1.6;
-  color: #333;
+  color: #f8f9fa; /* Light text color for better contrast with dark background */
+  background-color: rgba(33, 37, 41, 0.8); /* Semi-transparent dark background */
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
 .markdown-report pre {
-  background-color: #f5f5f5;
+  background-color: rgba(0, 0, 0, 0.5); /* Darker background for code blocks */
   padding: 0.5rem;
   border-radius: 4px;
   overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .markdown-report pre code {
   white-space: pre;
+  color: #e9ecef; /* Light color for code text */
 }
 
 /* Style markdown headings */
@@ -39,20 +46,22 @@ code {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   font-weight: 600;
+  color: #ffffff; /* White color for headings */
 }
 
 /* Style markdown lists */
 .markdown-report ul, 
 .markdown-report ol {
   padding-left: 2rem;
+  color: #f8f9fa; /* Light text color for list items */
 }
 
 /* Style markdown blockquotes */
 .markdown-report blockquote {
-  border-left: 4px solid #ddd;
+  border-left: 4px solid #6c757d; /* Darker border for blockquotes */
   padding-left: 1rem;
   margin-left: 0;
-  color: #666;
+  color: #adb5bd; /* Lighter gray for blockquote text */
 }
 
 /* Style markdown tables */
@@ -60,24 +69,90 @@ code {
   border-collapse: collapse;
   width: 100%;
   margin: 1rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .markdown-report th, 
 .markdown-report td {
-  border: 1px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.5rem;
+  color: #f8f9fa; /* Light text color for table cells */
 }
 
 .markdown-report th {
-  background-color: #f5f5f5;
+  background-color: rgba(52, 58, 64, 0.8); /* Semi-transparent dark background for table headers */
+  color: #ffffff; /* White text for table headers */
 }
 
 /* Style markdown links */
 .markdown-report a {
-  color: #0366d6;
+  color: #8ab4f8; /* Light blue color for links */
   text-decoration: none;
 }
 
 .markdown-report a:hover {
   text-decoration: underline;
+  color: #afd5ff; /* Lighter blue on hover */
+}
+
+/* Add semi-transparent background to content containers for better visibility */
+.content-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Add semi-transparent dark background for dark-themed containers */
+.content-container-dark {
+  background-color: rgba(33, 37, 41, 0.85);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  color: #f8f9fa;
+}
+
+/* Improve form elements visibility */
+input, textarea, select, .form-control {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Ensure buttons have good contrast */
+.btn {
+  font-weight: 500 !important;
+}
+
+/* Ensure text in alerts is visible */
+.alert {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.9) !important;
+  color: white !important;
+}
+
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.9) !important;
+  color: white !important;
+}
+
+/* Improve table visibility */
+table {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Apply content container styles to Bootstrap container class */
+.container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }

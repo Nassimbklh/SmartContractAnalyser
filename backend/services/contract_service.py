@@ -13,10 +13,53 @@ from modules import (
     auto_fund_contract_for_attack,
     build_multi_contract_observation,
     generate_complete_attack_strategy,
-    slither_analyze
+    slither_analyze,
+    execute_attack_on_contracts
 )
 
 logger = logging.getLogger(__name__)
+
+def print_separator(title: str, char: str = "=", width: int = 80):
+    """
+    Affiche un séparateur de section avec un titre centré.
+    """
+    print(f"\n{char * width}")
+    print(f"{title.center(width)}")
+    print(f"{char * width}")
+
+def try_single_attack(slith_result, observation, contract_group, w3):
+    """
+    Version simplifiée de try_attack_n_times qui ne fait qu'une seule tentative
+    """
+    print_separator("🧠 Génération de la stratégie d'attaque")
+
+    # Générer la stratégie d'attaque
+    attack_strategy = generate_complete_attack_strategy(slith_result, observation)
+    code = attack_strategy.get('code')
+    code_type = attack_strategy.get('code_type')
+
+    if not code:
+        print("❌ Aucun code d'attaque généré")
+        return attack_strategy, None
+
+    try:
+        # Exécuter l'attaque
+        attack_result = execute_attack_on_contracts(
+            code,
+            contract_group,
+            w3,
+            code_type=code_type
+        )
+    except Exception as e:
+        print(f"❌ Erreur lors de l'exécution de l'attaque: {e}")
+        return attack_strategy, None
+
+    if attack_result.get('success'):
+        print("✅ Attaque réussie!")
+    else:
+        print("❌ Attaque échouée")
+
+    return attack_strategy, attack_result
 
 def analyze_contract_from_code(content):
     """
@@ -210,9 +253,17 @@ def analyze_contract_from_code(content):
                     }
                 }
 
-            # Generate attack strategy with Slither results and observation
+            # Generate and execute attack strategy with Slither results and observation
             try:
-                attack_strategy = generate_complete_attack_strategy(slith_result, observation)
+                attack_strategy, attack_result = try_single_attack(slith_result, observation, deployed_contracts, w3)
+
+                if attack_result and attack_result.get('success'):
+                    logger.info("Attaque exécutée avec succès")
+                    # Ajouter des informations sur l'exécution de l'attaque au résultat
+                    attack_strategy['execution_result'] = attack_result
+                else:
+                    logger.info("L'attaque n'a pas réussi ou n'a pas pu être exécutée")
+
                 logger.info(f"Attack strategy generated successfully: {attack_strategy}")
 
                 # Log detailed information about the attack strategy
@@ -300,13 +351,18 @@ def analyze_contract_from_code(content):
         # Determine if a vulnerability was found
         has_code = attack_strategy.get("code", "") != ""
         no_vulnerabilities_mentioned = "no vulnerabilit" in attack_strategy.get("summary", "").lower()
+        attack_executed = 'execution_result' in attack_strategy
+        attack_succeeded = attack_executed and attack_strategy['execution_result'].get('success', False)
 
         logger.info(f"Has exploit code: {has_code}")
         logger.info(f"No vulnerabilities mentioned: {no_vulnerabilities_mentioned}")
+        logger.info(f"Attack executed: {attack_executed}")
+        logger.info(f"Attack succeeded: {attack_succeeded}")
 
-        # A vulnerability is found if there is exploit code OR if the summary mentions vulnerabilities
-        # (and doesn't explicitly say "no vulnerabilities")
-        has_vulnerability = has_code or not no_vulnerabilities_mentioned
+        # A vulnerability is found if:
+        # - there is exploit code AND the attack succeeded (if it was executed)
+        # - OR if the summary mentions vulnerabilities (and doesn't explicitly say "no vulnerabilities")
+        has_vulnerability = (has_code and (not attack_executed or attack_succeeded)) or not no_vulnerabilities_mentioned
 
         # If the summary explicitly says no vulnerabilities, force status to OK regardless of code
         if no_vulnerabilities_mentioned:
