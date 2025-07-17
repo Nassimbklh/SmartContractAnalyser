@@ -104,6 +104,13 @@ function Navbar() {
                 >
                   <span className="me-2" role="img" aria-label="étoile">⭐</span> Abonnements
                 </Link>
+                <Link 
+                  to="/finetune" 
+                  className="dropdown-item py-2 px-4 d-flex align-items-center" 
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <span className="me-2" role="img" aria-label="cible">🎯</span> Finetune
+                </Link>
                 <button 
                   className="dropdown-item py-2 px-4 d-flex align-items-center" 
                   onClick={() => {

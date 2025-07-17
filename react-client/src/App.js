@@ -8,6 +8,7 @@ import EtherscanAnalyze from "./components/EtherscanAnalyze";
 import Navbar from "./components/Navbar";
 import History from "./components/History";
 import Subscription from "./components/Subscription";
+import Finetune from "./components/Finetune";
 import BlockchainBackground from "./components/BlockchainBackground";
 
 function ProtectedRoute({ children }) {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/analyse-etherscan" element={<ProtectedRoute><EtherscanAnalyze /></ProtectedRoute>} />
           <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
           <Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
+          <Route path="/finetune" element={<ProtectedRoute><Finetune /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
