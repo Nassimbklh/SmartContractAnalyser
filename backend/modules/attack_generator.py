@@ -10,7 +10,7 @@ from typing import Dict, Any, Tuple
 import openai
 import requests
 from decimal import Decimal
-from backend.config.config import Config
+from config import Config
 
 def check_runpod_health() -> Tuple[bool, int]:
     """
