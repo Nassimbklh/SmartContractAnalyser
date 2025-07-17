@@ -253,7 +253,11 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
 
             <button onClick={() => {
                 console.log(reportData, analysisData);
-                handleReportDownload(reportData.rawReport.filename);
+                if (reportData.rawReport && reportData.rawReport.filename) {
+                    handleReportDownload(reportData.rawReport.filename);
+                } else {
+                    alert("Erreur: Impossible de télécharger le rapport, informations manquantes.");
+                }
             }} className="download-button">Télécharger le rapport</button>
           ) : (
             <button className="download-button" disabled title="Téléchargement indisponible en raison d'une erreur de service">
