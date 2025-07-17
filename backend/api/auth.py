@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from services import register_user, authenticate_user
-from utils import success_response, error_response, validation_error_response
+from services import register_user, authenticate_user, get_user_by_wallet
+from utils import success_response, error_response, validation_error_response, token_required
 import logging
 
 logger = logging.getLogger(__name__)
@@ -112,4 +112,32 @@ def login():
         return error_response("Identifiants invalides", 401)
     except Exception as e:
         logger.error(f"Server error during authentication for wallet: {wallet}, error: {str(e)}", exc_info=True)
+        return error_response("Erreur serveur", 500)
+
+@auth_bp.route("/user/me", methods=["GET"])
+@token_required
+def get_current_user(wallet):
+    """
+    Get current user information.
+    
+    Returns:
+        JSON: User information including technical_score and technical_level.
+    """
+    logger.info(f"Getting user info for wallet: {wallet}")
+    
+    try:
+        user = get_user_by_wallet(wallet)
+        if not user:
+            logger.warning(f"User not found for wallet: {wallet}")
+            return error_response("Utilisateur non trouvé", 404)
+        
+        user_data = {
+            "wallet": user.wallet,
+            "technical_score": user.technical_score,
+            "technical_level": user.technical_level
+        }
+        
+        return success_response(data=user_data)
+    except Exception as e:
+        logger.error(f"Error getting user info for wallet: {wallet}, error: {str(e)}", exc_info=True)
         return error_response("Erreur serveur", 500)
