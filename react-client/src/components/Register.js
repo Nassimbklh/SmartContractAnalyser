@@ -165,7 +165,18 @@ function Register() {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary w-100">Continuer</button>
+            <button 
+              type="submit" 
+              className="btn btn-primary w-100" 
+              style={{ 
+                padding: "10px", 
+                fontSize: "16px", 
+                fontWeight: "bold",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}
+            >
+              Continuer
+            </button>
           </form>
           {message && (
             <div className={`alert alert-${messageType} mt-3 text-center`}>
@@ -200,8 +211,24 @@ function Register() {
                         checked={answers[qIndex] === oIndex}
                         onChange={() => handleAnswerChange(qIndex, oIndex)}
                         required
+                        style={{ 
+                          width: "20px", 
+                          height: "20px", 
+                          cursor: "pointer",
+                          border: "2px solid #007bff",
+                          backgroundColor: answers[qIndex] === oIndex ? "#007bff" : "white",
+                          accentColor: "#007bff"
+                        }}
                       />
-                      <label className="form-check-label" htmlFor={`q${qIndex}-option${oIndex}`}>
+                      <label 
+                        className="form-check-label" 
+                        htmlFor={`q${qIndex}-option${oIndex}`}
+                        style={{ 
+                          cursor: "pointer", 
+                          paddingLeft: "8px",
+                          fontWeight: answers[qIndex] === oIndex ? "bold" : "normal"
+                        }}
+                      >
                         {option.text}
                       </label>
                     </div>
@@ -215,6 +242,12 @@ function Register() {
                 type="button" 
                 className="btn btn-secondary" 
                 onClick={() => setStep("credentials")}
+                style={{ 
+                  padding: "10px 15px", 
+                  fontSize: "16px", 
+                  fontWeight: "bold",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+                }}
               >
                 Retour
               </button>
@@ -222,6 +255,12 @@ function Register() {
                 type="submit" 
                 className="btn btn-success"
                 disabled={answers.includes(null)}
+                style={{ 
+                  padding: "10px 15px", 
+                  fontSize: "16px", 
+                  fontWeight: "bold",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+                }}
               >
                 Terminer l'inscription
               </button>

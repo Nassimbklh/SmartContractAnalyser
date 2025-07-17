@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from .base import Base
 import datetime
@@ -22,6 +22,9 @@ class Report(Base):
     reasoning = Column(Text)
     exploit_code = Column(Text)
     code_result = Column(Integer)
+    contract_funding_success = Column(Boolean, default=False)
+    attack_executed = Column(Boolean, default=False)
+    attack_succeeded = Column(Boolean, default=False)
     created_at = Column(DateTime, default=lambda: datetime.datetime.now(UTC))
 
     def __repr__(self):

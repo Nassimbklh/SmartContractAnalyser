@@ -85,6 +85,9 @@ def analyze(wallet):
             "summary": report.summary,
             "reasoning": report.reasoning,
             "code": report.exploit_code,
+            "contract_funding_success": report.contract_funding_success,
+            "attack_executed": report.attack_executed,
+            "attack_succeeded": report.attack_succeeded,
             "is_service_error": False,  # Assuming no service error if we get here
             "created_at": report.created_at.isoformat()
         }
@@ -136,6 +139,9 @@ def history(wallet):
                 "contract_address": r.contract_address,
                 "status": r.status,
                 "attack": r.attack,
+                "contract_funding_success": r.contract_funding_success,
+                "attack_executed": r.attack_executed,
+                "attack_succeeded": r.attack_succeeded,
                 "feedback": None
             }
 

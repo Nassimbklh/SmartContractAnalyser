@@ -379,6 +379,9 @@ def analyze_contract_from_code(content):
             "reasoning": attack_strategy.get("reasoning", ""),
             "summary": attack_strategy.get("summary", ""),
             "code": attack_strategy.get("code", ""),
+            "contract_funding_success": True,  # Ajouter cette ligne pour indiquer si le contrat a été financé
+            "attack_executed": attack_executed,  # Ajouter cette ligne pour indiquer si l'attaque a été exécutée
+            "attack_succeeded": attack_succeeded,  # Ajouter cette ligne pour indiquer si l'attaque a réussi
             "contract_info": {
                 "contract_name": deployed_contracts[0]["contract_name"],
                 "solc_version": deployed_contracts[0]["solc_version"],
@@ -454,6 +457,11 @@ def analyze_contract(content, user_id):
     # Set code_result based on status
     code_result = 1 if status == "OK" else 0
 
+    # Extract the new fields from the analysis result
+    contract_funding_success = analysis_result.get("contract_funding_success", False)
+    attack_executed = analysis_result.get("attack_executed", False)
+    attack_succeeded = analysis_result.get("attack_succeeded", False)
+
     # Create a new report
     report = Report(
         user_id=user_id,
@@ -467,6 +475,9 @@ def analyze_contract(content, user_id):
         reasoning=reasoning,
         exploit_code=exploit_code,
         code_result=code_result,
+        contract_funding_success=contract_funding_success,
+        attack_executed=attack_executed,
+        attack_succeeded=attack_succeeded,
         created_at=datetime.datetime.now()
     )
 
@@ -574,6 +585,11 @@ def generate_report_markdown(report):
 {markdown_block}
 """ if report.exploit_code else "## ⚔️ Code d'exploit proposé\n\nAucun exploit exécutable généré."
 
+    # Ajouter ces lignes pour afficher les statuts de financement et d'attaque
+    funding_status = "✅ Oui" if report.contract_funding_success else "❌ Non"
+    attack_executed_status = "✅ Oui" if report.attack_executed else "❌ Non"
+    attack_succeeded_status = "✅ Oui" if report.attack_succeeded else "❌ Non"
+
     return f"""# 📄 Rapport d'analyse de contrat intelligent
 
 **Nom du fichier :** {report.filename}  
@@ -604,6 +620,16 @@ def generate_report_markdown(report):
 ---
 
 {exploit_section}
+
+---
+
+## 📊 Tableau détaillé final
+
+| Indicateur | Statut |
+|------------|--------|
+| Contrat financé | {funding_status} |
+| Attaque exécutée | {attack_executed_status} |
+| Attaque réussie | {attack_succeeded_status} |
 
 ---
 
