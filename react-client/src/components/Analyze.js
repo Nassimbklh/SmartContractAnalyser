@@ -110,7 +110,8 @@ function Analyze() {
       
       // Capturer l'input de l'utilisateur et la réponse pour finetune
       const userInput = code.trim() || (file ? `File: ${file.name}` : '');
-      const modelOutput = res.data;
+      // Convert the model output to a string representation
+      const modelOutput = JSON.stringify(res.data);
 
       await new Promise(resolve => setTimeout(resolve, 500));
       setAnalysisProgressData(prev => ({
@@ -227,7 +228,7 @@ function Analyze() {
           try {
             const finetuneData = {
               user_input: userInput,
-              model_outputs: modelOutput,
+              model_outputs: typeof modelOutput === 'string' ? modelOutput : JSON.stringify(modelOutput),
               report_id: latestReport.id,
               user_info: JSON.stringify({
                 timestamp: new Date().toISOString(),
