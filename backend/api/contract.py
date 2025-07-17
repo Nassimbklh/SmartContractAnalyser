@@ -78,6 +78,7 @@ def analyze(wallet):
             "user_id": report.user_id,
             "filename": report.filename,
             "contract_name": report.contract_name,
+            "contract_address": report.contract_address,
             "solc_version": report.solc_version,
             "status": report.status,
             "attack": report.attack,
@@ -131,6 +132,8 @@ def history(wallet):
                 "id": r.id,
                 "filename": r.filename,
                 "date": r.created_at.strftime("%Y-%m-%d %H:%M"),
+                "contract_name": r.contract_name,
+                "contract_address": r.contract_address,
                 "status": r.status,
                 "attack": r.attack,
                 "feedback": None

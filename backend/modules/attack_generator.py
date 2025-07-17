@@ -19,7 +19,7 @@ def check_runpod_health() -> Tuple[bool, int]:
         Tuple[bool, int]: A tuple containing a boolean indicating if the endpoint is healthy
                          and the HTTP status code.
     """
-    POD_ID = "i12bxlubhy2mjp"
+    POD_ID = "r3etcvinyjvth2"
     HEALTH_URL = f"https://{POD_ID}-80.proxy.runpod.net/health"
 
     try:
@@ -252,7 +252,7 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     :rtype: Tuple[str, float]
     :raises Exception: If the Runpod is not healthy or if a 5xx error is received.
     """
-    POD_ID = "i12bxlubhy2mjp"
+    POD_ID = "r3etcvinyjvth2"
     VLLM_URL = f"https://{POD_ID}-80.proxy.runpod.net/generate"
 
     # Check if Runpod is healthy
