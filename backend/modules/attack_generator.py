@@ -10,7 +10,6 @@ from typing import Dict, Any, Tuple
 import openai
 import requests
 from decimal import Decimal
-from config import Config
 
 def check_runpod_health() -> Tuple[bool, int]:
     """
@@ -20,7 +19,7 @@ def check_runpod_health() -> Tuple[bool, int]:
         Tuple[bool, int]: A tuple containing a boolean indicating if the endpoint is healthy
                          and the HTTP status code.
     """
-    POD_ID = Config.RUNPOD_ID
+    POD_ID = "lznabbex3b5znh"
     HEALTH_URL = f"https://{POD_ID}-80.proxy.runpod.net/health"
 
     try:
@@ -253,7 +252,7 @@ def query_gpt4(prompt: str, temperature: float = 0.2) -> Tuple[str, float]:
     :rtype: Tuple[str, float]
     :raises Exception: If the Runpod is not healthy or if a 5xx error is received.
     """
-    POD_ID = Config.RUNPOD_ID
+    POD_ID = "lznabbex3b5znh"
     VLLM_URL = f"https://{POD_ID}-80.proxy.runpod.net/generate"
 
     # Check if Runpod is healthy
