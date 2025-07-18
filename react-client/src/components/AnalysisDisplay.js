@@ -202,7 +202,7 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
           {/* Tableau détaillé final */}
           <div className="report-section detailed-table">
             <Tooltip text="Ce tableau présente les résultats détaillés de l'analyse du contrat, indiquant si le contrat a été financé, si une attaque a été exécutée, et si l'attaque a réussi.">
-              <h3>📊 Tableau Financement</h3>
+              <h3>📊 Tableau de réussite</h3>
             </Tooltip>
             <div className="detailed-table-container">
               <table className="detailed-table">
