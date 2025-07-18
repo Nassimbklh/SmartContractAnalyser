@@ -34,7 +34,7 @@ function History() {
 
     contractAPI.getReport(userData.wallet, filename)
       .then(res => {
-        downloadBlob(res.data, `${filename}.txt`);
+        downloadBlob(res.data, `${filename}.pdf`);
       })
       .catch(error => {
         alert(`Erreur lors du téléchargement: ${handleApiError(error)}`);

@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from services import (
     analyze_contract, get_user_reports, get_report_by_filename,
-    get_user_by_wallet, save_report, generate_report_markdown
+    get_user_by_wallet, save_report, generate_report_markdown, generate_report_pdf
 )
 from utils import (
     token_required, success_response, error_response,
@@ -170,7 +170,7 @@ def download_report(token_wallet, wallet, filename):
         filename (str): The filename of the report.
 
     Returns:
-        str: The report in markdown format.
+        bytes: The report in PDF format.
     """
     if token_wallet != wallet:
         return error_response("Accès interdit", 403)
@@ -186,9 +186,14 @@ def download_report(token_wallet, wallet, filename):
         if not report:
             return not_found_response("Rapport introuvable")
 
-        # Generate markdown
-        markdown = generate_report_markdown(report)
+        # Generate PDF
+        pdf_data = generate_report_pdf(report)
 
-        return markdown, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+        # Create response with PDF data
+        response = make_response(pdf_data)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = f'attachment; filename="{filename}.pdf"'
+
+        return response
     except Exception as e:
         return server_error_response(str(e))

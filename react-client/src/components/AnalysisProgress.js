@@ -630,7 +630,7 @@ const AnalysisProgress = ({ reportId, onComplete, reportData, downloadUrl, file 
             <div className="mt-3 mb-4">
               <a
                 href={downloadUrl}
-                download="rapport.txt"
+                download="rapport.pdf"
                 className="btn btn-success"
               >
                 <span role="img" aria-label="télécharger">📥</span> Télécharger le rapport

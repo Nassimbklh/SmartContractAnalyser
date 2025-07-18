@@ -3,9 +3,14 @@ import os
 import tempfile
 import traceback
 import logging
+import io
 from web3 import Web3
 from models import Report, User
 from config import Config
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from modules import (
     compile_and_deploy_all_contracts,
     deploy_contract,
@@ -655,3 +660,139 @@ def generate_report_markdown(report):
 
 ⚠️ **Note :** Ce rapport est généré automatiquement. Une validation humaine est conseillée.
 """
+
+def generate_report_pdf(report):
+    """
+    Generate a PDF report from a Report object.
+
+    Args:
+        report (Report): The report.
+
+    Returns:
+        bytes: The PDF report as bytes.
+    """
+    # Create a buffer to store the PDF
+    buffer = io.BytesIO()
+
+    # Create the PDF document
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    # Get styles
+    styles = getSampleStyleSheet()
+    title_style = styles['Title']
+    heading_style = styles['Heading2']
+    normal_style = styles['Normal']
+
+    # Create a custom style for code
+    code_style = ParagraphStyle(
+        'CodeStyle',
+        parent=styles['Normal'],
+        fontName='Courier',
+        fontSize=8,
+        leading=10,
+        leftIndent=20,
+        rightIndent=20
+    )
+
+    # Create the content
+    content = []
+
+    # Title
+    content.append(Paragraph("Rapport d'analyse de contrat intelligent", title_style))
+    content.append(Spacer(1, 12))
+
+    # Contract info
+    contract_info = [
+        ["Nom du fichier", report.filename],
+        ["Nom du contrat", report.contract_name],
+        ["Adresse déployée", report.contract_address],
+        ["Compilateur Solidity", report.solc_version],
+        ["Date d'analyse", report.created_at.strftime('%Y-%m-%d %H:%M')]
+    ]
+
+    contract_info_table = Table(contract_info, colWidths=[150, 350])
+    contract_info_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (0, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    content.append(contract_info_table)
+    content.append(Spacer(1, 12))
+
+    # Result
+    content.append(Paragraph("Résultat global", heading_style))
+    content.append(Spacer(1, 6))
+
+    status_text = "❌ KO – Vulnérabilité détectée" if report.status == "KO" else "✅ OK – Aucun comportement anormal détecté"
+    content.append(Paragraph(f"<b>Statut:</b> {status_text}", normal_style))
+    content.append(Paragraph(f"<b>Type de vulnérabilité:</b> {report.attack or 'Aucune'}", normal_style))
+    content.append(Spacer(1, 12))
+
+    # Summary
+    content.append(Paragraph("Résumé de l'analyse", heading_style))
+    content.append(Spacer(1, 6))
+    content.append(Paragraph(report.summary or "Aucune vulnérabilité évidente détectée.", normal_style))
+    content.append(Spacer(1, 12))
+
+    # Reasoning
+    content.append(Paragraph("Raisonnement du modèle", heading_style))
+    content.append(Spacer(1, 6))
+    content.append(Paragraph(report.reasoning or "Aucun raisonnement généré.", normal_style))
+    content.append(Spacer(1, 12))
+
+    # Exploit code
+    content.append(Paragraph("Code d'exploit proposé", heading_style))
+    content.append(Spacer(1, 6))
+
+    if report.exploit_code:
+        content.append(Paragraph(report.exploit_code, code_style))
+    else:
+        content.append(Paragraph("Aucun exploit exécutable généré.", normal_style))
+
+    content.append(Spacer(1, 12))
+
+    # Status table
+    content.append(Paragraph("Tableau détaillé final", heading_style))
+    content.append(Spacer(1, 6))
+
+    funding_status = "✅ Oui" if report.contract_funding_success else "❌ Non"
+    attack_executed_status = "✅ Oui" if report.attack_executed else "❌ Non"
+    attack_succeeded_status = "✅ Oui" if report.attack_succeeded else "❌ Non"
+
+    status_data = [
+        ["Indicateur", "Statut"],
+        ["Contrat financé", funding_status],
+        ["Attaque exécutée", attack_executed_status],
+        ["Attaque réussie", attack_succeeded_status]
+    ]
+
+    status_table = Table(status_data, colWidths=[250, 250])
+    status_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    content.append(status_table)
+    content.append(Spacer(1, 12))
+
+    # Note
+    content.append(Paragraph("⚠️ Note: Ce rapport est généré automatiquement. Une validation humaine est conseillée.", normal_style))
+
+    # Build the PDF
+    doc.build(content)
+
+    # Get the value from the buffer
+    pdf_value = buffer.getvalue()
+    buffer.close()
+
+    return pdf_value
