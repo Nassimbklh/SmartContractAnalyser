@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../services/api";
 import { handleApiError } from "../utils/utils";
+import { FaCircle, FaDotCircle } from "react-icons/fa";
 
 // Questions techniques pour l'évaluation
 const technicalQuestions = [
@@ -202,31 +203,25 @@ function Register() {
                 <h5>{qIndex + 1}. {q.question}</h5>
                 <div className="mt-2">
                   {q.options.map((option, oIndex) => (
-                    <div key={oIndex} className="form-check mb-2">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name={`question-${qIndex}`}
-                        id={`q${qIndex}-option${oIndex}`}
-                        checked={answers[qIndex] === oIndex}
-                        onChange={() => handleAnswerChange(qIndex, oIndex)}
-                        required
-                        style={{ 
-                          width: "20px", 
-                          height: "20px", 
-                          cursor: "pointer",
-                          border: "2px solid #007bff",
-                          backgroundColor: answers[qIndex] === oIndex ? "#007bff" : "white",
-                          accentColor: "#007bff"
-                        }}
-                      />
+                    <div 
+                      key={oIndex} 
+                      className="form-check mb-2 d-flex align-items-center"
+                      onClick={() => handleAnswerChange(qIndex, oIndex)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="me-2">
+                        {answers[qIndex] === oIndex ? (
+                          <FaDotCircle size={20} color="#007bff" />
+                        ) : (
+                          <FaCircle size={20} color="#6c757d" />
+                        )}
+                      </div>
                       <label 
-                        className="form-check-label" 
-                        htmlFor={`q${qIndex}-option${oIndex}`}
+                        className="form-check-label mb-0" 
                         style={{ 
-                          cursor: "pointer", 
-                          paddingLeft: "8px",
-                          fontWeight: answers[qIndex] === oIndex ? "bold" : "normal"
+                          cursor: "pointer",
+                          fontWeight: answers[qIndex] === oIndex ? "bold" : "normal",
+                          fontSize: "16px"
                         }}
                       >
                         {option.text}
