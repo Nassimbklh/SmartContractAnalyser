@@ -3,6 +3,7 @@ import './AnalysisDisplay.css';
 import {downloadBlob, getUserFromToken, handleApiError} from "../utils/utils";
 import {contractAPI} from "../services/api";
 import {AuthContext} from "../contexts/AuthContext";
+import Tooltip from './Tooltip'; // Importez le composant Tooltip
 
 
 
@@ -43,7 +44,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
     <div className="analysis-display">
       {showProgress && analysisData && analysisData.steps && (
         <div className="progress-table">
-          <h2>Tableau d’avancement</h2>
+          <Tooltip text="Ce tableau montre l'état d'avancement de l'analyse en cours. Chaque étape est mise à jour en temps réel pour vous permettre de suivre la progression.">
+            <h2>Tableau d'avancement</h2>
+          </Tooltip>
           <table>
             <thead>
               <tr>
@@ -75,7 +78,61 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
 
       {!showProgress && reportData && (
         <div className="final-report">
-          <h2>Tableau détaillé final</h2>
+          <Tooltip text="Ce tableau présente un résumé détaillé de l'analyse du contrat intelligent, incluant les informations sur le financement, l'exécution et le résultat de l'attaque.">
+            <h2>Tableau détaillé final</h2>
+          </Tooltip>
+
+          {!reportData.isServiceError && (
+            <div className="report-section guide">
+              <Tooltip text="Cette section explique comment lire et interpréter les différentes parties du rapport d'analyse.">
+                <h3>Guide de lecture du rapport</h3>
+              </Tooltip>
+              <div className="guide-container">
+                <table className="guide-table">
+                  <thead>
+                    <tr>
+                      <th>Section</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Informations globales</strong></td>
+                      <td>Métadonnées du contrat analysé (nom, adresse, version du compilateur)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Résultat global</strong></td>
+                      <td>Verdict final de l'analyse : SÉCURISÉ ou VULNÉRABLE</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Résumé de l'analyse</strong></td>
+                      <td>Points clés et vulnérabilités identifiées dans le contrat</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Détails techniques</strong></td>
+                      <td>Analyse approfondie des vulnérabilités et de leur impact</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Code d'exploit</strong></td>
+                      <td>Démonstration technique de l'exploitation de la vulnérabilité (si applicable)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Contrat financé</strong></td>
+                      <td>Indique si le contrat a été financé avec succès pour les tests d'attaque</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Attaque exécutée</strong></td>
+                      <td>Indique si une attaque a été tentée sur le contrat</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Attaque réussie</strong></td>
+                      <td>Indique si l'attaque a réussi à exploiter une vulnérabilité</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           {reportData.isServiceError ? (
             <div className="report-section service-error">
@@ -100,7 +157,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
           ) : (
             <>
               <div className={`report-section global-info ${reportData.globalStatus === 'OK' ? 'status-ok' : 'status-ko'}`}>
-                <h3>Informations globales</h3>
+                <Tooltip text="Cette section contient les métadonnées du contrat analysé, comme son nom, son adresse de déploiement et la version du compilateur utilisée.">
+                  <h3>Informations globales</h3>
+                </Tooltip>
                 <p><strong>Nom du fichier:</strong> {reportData.fileName}</p>
                 <p><strong>Nom du contrat:</strong> {reportData.contractName}</p>
                 <p><strong>Adresse déployée:</strong> {reportData.contractAddress}</p>
@@ -110,7 +169,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
               </div>
 
               <div className={`report-section global-result ${reportData.globalStatus === 'OK' ? 'status-ok' : 'status-ko'}`}>
-                <h3>Résultat global</h3>
+                <Tooltip text="Cette section indique si le contrat est sécurisé ou vulnérable. Un statut 'SÉCURISÉ' signifie qu'aucune vulnérabilité critique n'a été détectée, tandis qu'un statut 'VULNÉRABLE' indique qu'au moins une vulnérabilité a été identifiée.">
+                  <h3>Résultat global</h3>
+                </Tooltip>
                 <div className="status-badge-container">
                   {reportData.globalStatus === 'OK' ? (
                     <div className="status-badge status-badge-ok">
@@ -139,7 +200,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
           )}
 
           <div className="report-section analysis-summary">
-            <h3>Résumé de l’analyse</h3>
+            <Tooltip text="Cette section présente les points clés de l'analyse, mettant en évidence les vulnérabilités potentielles et les caractéristiques importantes du contrat. Les éléments critiques sont marqués d'un symbole d'avertissement.">
+              <h3>Résumé de l'analyse</h3>
+            </Tooltip>
             <div className="summary-container">
               {reportData.analysisSummary && reportData.analysisSummary.map((item, index) => (
                 <div key={index} className={`summary-item ${item.isCritical ? 'summary-item-critical' : 'summary-item-normal'}`}>
@@ -173,7 +236,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
           </div>
 
           <div className="report-section model-reasoning">
-            <h3>Détails techniques</h3>
+            <Tooltip text="Cette section fournit une analyse technique approfondie du contrat, expliquant en détail les vulnérabilités identifiées, leur cause et leur impact potentiel sur la sécurité du contrat.">
+              <h3>Détails techniques</h3>
+            </Tooltip>
             <div className="reasoning-container">
               <div className="reasoning-header">
                 <div className="reasoning-icon">🔍</div>
@@ -194,7 +259,9 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
 
           {reportData.globalStatus !== 'OK' && (
             <div className="report-section exploit-code">
-              <h3>⚔️ Code d’exploit</h3>
+              <Tooltip text="Cette section présente un code d'exploitation (Proof of Concept) qui démontre comment la vulnérabilité identifiée pourrait être exploitée. Ce code est fourni uniquement à des fins éducatives et ne doit pas être utilisé en production.">
+                <h3>⚔️ Code d'exploit</h3>
+              </Tooltip>
               {reportData.exploitCode && reportData.exploitCode.trim() !== '' && reportData.exploitCode !== 'function exploit() public payable {}' ? (
                 <>
                   <div className="exploit-header">

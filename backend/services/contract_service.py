@@ -159,10 +159,12 @@ def analyze_contract_from_code(content):
                             # Continue with the analysis even if setup fails
 
                         # Fund the contract for attack testing
+                        funding_success = False
                         try:
                             logger.info(f"Funding contract {deployed_contract['contract_name']} for attack testing...")
-                            auto_fund_contract_for_attack(w3, deployed_contract)
-                            logger.info(f"Contract {deployed_contract['contract_name']} funded")
+                            funding_success, funding_log = auto_fund_contract_for_attack(w3, deployed_contract)
+                            logger.info(f"Contract {deployed_contract['contract_name']} funded: {funding_success}")
+                            logger.debug(f"Funding log: {funding_log}")
                         except Exception as e:
                             logger.warning(f"Failed to fund contract {deployed_contract['contract_name']}: {str(e)}")
                             logger.warning(traceback.format_exc())
@@ -182,6 +184,9 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to deploy the contract: {str(e)}",
                 "summary": "Deployment error",
                 "code": "",
+                "contract_funding_success": False,
+                "attack_executed": False,
+                "attack_succeeded": False,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -197,6 +202,9 @@ def analyze_contract_from_code(content):
                 "reasoning": "Failed to deploy the contract. Please check the Solidity code for errors.",
                 "summary": "Deployment error",
                 "code": "",
+                "contract_funding_success": False,
+                "attack_executed": False,
+                "attack_succeeded": False,
                 "contract_info": {
                     "contract_name": "Unknown",
                     "solc_version": "Unknown",
@@ -218,6 +226,9 @@ def analyze_contract_from_code(content):
                 "reasoning": f"Failed to build contract observation: {str(e)}",
                 "summary": "Analysis error",
                 "code": "",
+                "contract_funding_success": False,
+                "attack_executed": False,
+                "attack_succeeded": False,
                 "contract_info": {
                     "contract_name": deployed_contracts[0]["contract_name"] if deployed_contracts else "Unknown",
                     "solc_version": deployed_contracts[0]["solc_version"] if deployed_contracts else "Unknown",
@@ -246,6 +257,9 @@ def analyze_contract_from_code(content):
                     "reasoning": f"Slither analysis failed: {str(e)}",
                     "summary": "Slither analysis error",
                     "code": "",
+                    "contract_funding_success": False,
+                    "attack_executed": False,
+                    "attack_succeeded": False,
                     "contract_info": {
                         "contract_name": deployed_contracts[0]["contract_name"] if deployed_contracts else "Unknown",
                         "solc_version": deployed_contracts[0]["solc_version"] if deployed_contracts else "Unknown",
@@ -284,6 +298,9 @@ def analyze_contract_from_code(content):
                         "reasoning": "Analyse non terminée — Runpod indisponible",
                         "summary": "Runpod backend not reachable",
                         "code": "",
+                        "contract_funding_success": False,
+                        "attack_executed": False,
+                        "attack_succeeded": False,
                         "contract_info": {
                             "contract_name": deployed_contracts[0]["contract_name"],
                             "solc_version": deployed_contracts[0]["solc_version"],
@@ -379,7 +396,7 @@ def analyze_contract_from_code(content):
             "reasoning": attack_strategy.get("reasoning", ""),
             "summary": attack_strategy.get("summary", ""),
             "code": attack_strategy.get("code", ""),
-            "contract_funding_success": True,  # Ajouter cette ligne pour indiquer si le contrat a été financé
+            "contract_funding_success": funding_success,  # Utiliser la valeur réelle du financement
             "attack_executed": attack_executed,  # Ajouter cette ligne pour indiquer si l'attaque a été exécutée
             "attack_succeeded": attack_succeeded,  # Ajouter cette ligne pour indiquer si l'attaque a réussi
             "contract_info": {
@@ -401,6 +418,9 @@ def analyze_contract_from_code(content):
             "reasoning": f"An error occurred during analysis: {str(e)}",
             "summary": "Analysis error",
             "code": "",
+            "contract_funding_success": False,  # Set to False on error
+            "attack_executed": False,  # Set to False on error
+            "attack_succeeded": False,  # Set to False on error
             "contract_info": {
                 "contract_name": "Unknown",
                 "solc_version": "Unknown",
