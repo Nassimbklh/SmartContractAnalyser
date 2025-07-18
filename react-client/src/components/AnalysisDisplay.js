@@ -199,6 +199,37 @@ const AnalysisDisplay = ({ analysisData, reportData, showProgress, onRestartAnal
             </>
           )}
 
+          {/* Tableau détaillé final */}
+          <div className="report-section detailed-table">
+            <Tooltip text="Ce tableau présente les résultats détaillés de l'analyse du contrat, indiquant si le contrat a été financé, si une attaque a été exécutée, et si l'attaque a réussi.">
+              <h3>📊 Tableau Financement</h3>
+            </Tooltip>
+            <div className="detailed-table-container">
+              <table className="detailed-table">
+                <thead>
+                  <tr>
+                    <th>Indicateur</th>
+                    <th>Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Contrat financé</td>
+                    <td>{reportData.rawReport && reportData.rawReport.contract_funding_success ? "✅ Oui" : "❌ Non"}</td>
+                  </tr>
+                  <tr>
+                    <td>Attaque exécutée</td>
+                    <td>{reportData.rawReport && reportData.rawReport.attack_executed ? "✅ Oui" : "❌ Non"}</td>
+                  </tr>
+                  <tr>
+                    <td>Attaque réussie</td>
+                    <td>{reportData.rawReport && reportData.rawReport.attack_succeeded ? "✅ Oui" : "❌ Non"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div className="report-section analysis-summary">
             <Tooltip text="Cette section présente les points clés de l'analyse, mettant en évidence les vulnérabilités potentielles et les caractéristiques importantes du contrat. Les éléments critiques sont marqués d'un symbole d'avertissement.">
               <h3>Résumé de l'analyse</h3>
