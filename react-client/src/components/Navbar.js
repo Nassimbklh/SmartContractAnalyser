@@ -111,6 +111,13 @@ function Navbar() {
                 >
                   <span className="me-2" role="img" aria-label="cible">🎯</span> Finetune
                 </Link>
+                <Link 
+                  to="/evaluation" 
+                  className="dropdown-item py-2 px-4 d-flex align-items-center" 
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <span className="me-2" role="img" aria-label="graphique">📊</span> Évaluation
+                </Link>
                 <button 
                   className="dropdown-item py-2 px-4 d-flex align-items-center" 
                   onClick={() => {

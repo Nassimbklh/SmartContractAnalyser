@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import History from "./components/History";
 import Subscription from "./components/Subscription";
 import Finetune from "./components/Finetune";
+import Evaluation from "./components/Evaluation";
 import BlockchainBackground from "./components/BlockchainBackground";
 
 function ProtectedRoute({ children }) {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
           <Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
           <Route path="/finetune" element={<ProtectedRoute><Finetune /></ProtectedRoute>} />
+          <Route path="/evaluation" element={<ProtectedRoute><Evaluation /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>

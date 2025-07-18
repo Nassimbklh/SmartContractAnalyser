@@ -3,6 +3,7 @@ import { Container, Card, Button, Table, Alert, Spinner, Modal, Form } from "rea
 import { AuthContext } from "../contexts/AuthContext";
 import { finetuneAPI } from "../services/api";
 import axios from 'axios';
+import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 
 const POD_ID = process.env.REACT_APP_RUNPOD_ID || "r3etcvinyjvth2";
 const FINETUNE_URL = `https://${POD_ID}-80.proxy.runpod.net/finetune-feedback`;
@@ -28,10 +29,11 @@ function Finetune() {
       setLoading(true);
       setError(null);
       
-      // Fetch finetune entries from the API
+      // Fetch finetune entries from the API - show all entries from all users
       const response = await finetuneAPI.list({ 
         page: currentPage, 
-        per_page: 20 
+        per_page: 20,
+        show_all: true 
       });
 
       // Filter only entries that have feedback_user
@@ -211,12 +213,17 @@ function Finetune() {
               <Table striped bordered hover responsive>
                 <thead>
                   <tr>
-                    <th style={{ width: "50px" }}>
-                      <Form.Check 
-                        type="checkbox"
-                        checked={selectedFinetunes.length === finetunes.length && finetunes.length > 0}
-                        onChange={handleSelectAll}
-                      />
+                    <th style={{ width: "50px", textAlign: "center" }}>
+                      <div 
+                        style={{ cursor: "pointer", display: "inline-block" }}
+                        onClick={handleSelectAll}
+                      >
+                        {selectedFinetunes.length === finetunes.length && finetunes.length > 0 ? (
+                          <FaCheckSquare size={20} color="#0d6efd" />
+                        ) : (
+                          <FaSquare size={20} color="#6c757d" />
+                        )}
+                      </div>
                     </th>
                     <th>Requête utilisateur</th>
                     <th>Réponse du modèle</th>
@@ -229,12 +236,17 @@ function Finetune() {
                 <tbody>
                   {finetunes.map((finetune) => (
                     <tr key={finetune.id}>
-                      <td>
-                        <Form.Check 
-                          type="checkbox"
-                          checked={selectedFinetunes.some(f => f.id === finetune.id)}
-                          onChange={() => handleSelectFinetune(finetune)}
-                        />
+                      <td style={{ textAlign: "center" }}>
+                        <div 
+                          style={{ cursor: "pointer", display: "inline-block" }}
+                          onClick={() => handleSelectFinetune(finetune)}
+                        >
+                          {selectedFinetunes.some(f => f.id === finetune.id) ? (
+                            <FaCheckSquare size={20} color="#0d6efd" />
+                          ) : (
+                            <FaSquare size={20} color="#6c757d" />
+                          )}
+                        </div>
                       </td>
                       <td title={finetune.user_input}>
                         {truncateText(finetune.user_input, 40)}

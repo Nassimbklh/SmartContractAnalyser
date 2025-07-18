@@ -251,6 +251,7 @@ def list_finetune(wallet):
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     feedback_status = request.args.get('feedback_status', type=str)
+    show_all = request.args.get('show_all', 'false').lower() == 'true'
     
     # Validation des paramètres
     if page < 1:
@@ -267,7 +268,12 @@ def list_finetune(wallet):
             return not_found_response("Utilisateur non trouvé")
         
         # Construire la requête
-        query = db.query(Finetune).filter(Finetune.user_id == user.id)
+        if show_all:
+            # Afficher toutes les entrées de la base de données
+            query = db.query(Finetune)
+        else:
+            # Afficher seulement les entrées de l'utilisateur actuel
+            query = db.query(Finetune).filter(Finetune.user_id == user.id)
         
         if feedback_status:
             query = query.filter(Finetune.feedback_status == feedback_status)
