@@ -130,6 +130,9 @@ Requirements:
 - NO explanations, NO comments, ONLY CODE
 Return format: Pure Solidity code in ```solidity code blocks.
 ```pragma solidity {observation['contracts'][0]['solc_version']}
+THE OUTPUT MUST BE A SINGLE CODE CELL CONTAINING ONLY SOLIDITY CODE. 
+IT MUST START WITH ```solidity, INCLUDE THE COMPLETE SOLIDITY CODE, AND END WITH ```. 
+DO NOT INCLUDE ANY EXPLANATIONS OR ADDITIONAL INFORMATION.
 """
     return txt
 
@@ -462,10 +465,6 @@ Contract Analysis: {analysis_result['contract_analysis']}
 Vulnerability Assessment: {analysis_result['vulnerability_assessment']}
 
 Exploitation Requirements: {analysis_result['exploitation_requirements']}
-
-THE OUTPUT MUST BE A SINGLE CODE CELL CONTAINING ONLY SOLIDITY CODE. 
-IT MUST START WITH ```solidity, INCLUDE THE COMPLETE SOLIDITY CODE, AND END WITH ```. 
-DO NOT INCLUDE ANY EXPLANATIONS OR ADDITIONAL INFORMATION.
 """
 
     # Build attack code prompt
