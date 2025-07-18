@@ -66,12 +66,12 @@ function Evaluation() {
           "Attack Vector Identification": Math.min(100, gptResults.average_score * 0.95),
           "Overall Score": gptResults.average_score
         },
-        details: gptResults.individual_evaluations.slice(0, 5).map(eval => ({
-          category: eval.attack_type || "Type non spécifié",
-          passed: eval.score,
+        details: gptResults.individual_evaluations.slice(0, 5).map(evaluation => ({
+          category: evaluation.attack_type || "Type non spécifié",
+          passed: evaluation.score,
           total: 100,
-          accuracy: eval.score,
-          reasoning: eval.reasoning
+          accuracy: evaluation.score,
+          reasoning: evaluation.reasoning
         })),
         performance_rating: gptResults.performance_rating,
         summary: gptResults.summary
