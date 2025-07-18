@@ -10,19 +10,28 @@ from sqlalchemy.orm import Session
 logger = logging.getLogger(__name__)
 evaluation_gpt_bp = Blueprint('evaluation_gpt', __name__)
 
-# Note: Pour cette version simplifiée, on simule l'évaluation GPT-4
-# Dans un environnement de production, vous devriez utiliser l'API OpenAI
+# Configuration OpenAI
+try:
+    from openai import OpenAI
+    api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=api_key) if api_key else None
+    USE_OPENAI = client is not None
+except Exception as e:
+    logger.warning(f"OpenAI non disponible, utilisation du mode simulation: {e}")
+    client = None
+    USE_OPENAI = False
 
 @evaluation_gpt_bp.route("/evaluate/gpt", methods=["POST"])
 @token_required
 def evaluate_with_gpt(wallet):
     """
-    Évalue les 10 derniers fine-tunings en simulant GPT-4.
+    Évalue les 10 derniers fine-tunings en utilisant GPT-4 si disponible.
     
     Returns:
         JSON: Note moyenne et détails de l'évaluation
     """
-    logger.info(f"Lancement de l'évaluation simulée depuis le portefeuille: {wallet}")
+    logger.info(f"Lancement de l'évaluation depuis le portefeuille: {wallet}")
+    logger.info(f"Mode d'évaluation: {'GPT-4' if USE_OPENAI else 'Simulation'}")
     
     db: Session = next(get_db())
     
@@ -39,6 +48,7 @@ def evaluate_with_gpt(wallet):
         for finetune in recent_finetunes:
             # Extraire le type d'attaque depuis le rapport si disponible
             attack_type = "Non spécifié"
+            vulnerability_details = ""
             
             if finetune.report:
                 try:
@@ -47,46 +57,67 @@ def evaluate_with_gpt(wallet):
                         # Extraire le type depuis le rapport
                         if isinstance(report_data, dict):
                             attack_type = report_data.get('vulnerability', report_data.get('attack_type', 'Non spécifié'))
+                            vulnerability_details = str(report_data.get('details', ''))[:500]
                 except Exception as e:
                     logger.warning(f"Erreur parsing rapport: {e}")
             
-            # Simuler une évaluation basée sur les données disponibles
-            base_score = 70  # Score de base
-            
-            # Ajuster selon le feedback
-            if finetune.feedback_status == "approved":
-                base_score += 15
-            elif finetune.feedback_status == "rejected":
-                base_score -= 10
-            
-            # Ajuster selon la présence de feedback utilisateur
-            if finetune.feedback_user:
-                base_score += 5
-            
-            # Ajouter un peu de variation
-            import random
-            score = max(0, min(100, base_score + random.randint(-10, 10)))
-            
-            # Créer l'évaluation
-            evaluation = {
-                "score": score,
-                "finetune_id": finetune.id,
-                "attack_type": attack_type,
-                "reasoning": f"Évaluation basée sur le feedback '{finetune.feedback_status or 'pending'}' et la qualité des données",
-                "strengths": [
-                    "Données d'entrée bien structurées",
-                    "Modèle répond de manière cohérente"
-                ] if score >= 70 else ["Structure de base correcte"],
-                "weaknesses": [
-                    "Manque de diversité dans les exemples",
-                    "Feedback utilisateur limité"
-                ] if score < 80 else ["Pourrait bénéficier de plus de données"]
-            }
+            if USE_OPENAI and client:
+                # Utiliser GPT-4 pour l'évaluation
+                try:
+                    prompt = f"""
+                    Évalue ce fine-tuning d'un modèle spécialisé dans l'analyse de smart contracts Solidity.
+                    
+                    Données du fine-tuning:
+                    - Input utilisateur (extrait): {finetune.user_input[:300] if finetune.user_input else "Non disponible"}
+                    - Output du modèle (extrait): {finetune.model_outputs[:300] if finetune.model_outputs else "Non disponible"}
+                    - Type d'attaque identifié: {attack_type}
+                    - Détails de vulnérabilité: {vulnerability_details[:200]}
+                    
+                    Évalue la qualité de ce fine-tuning sur une échelle de 0 à 100 en considérant:
+                    1. La pertinence et la clarté de l'input utilisateur (25%)
+                    2. La qualité et la précision de l'output du modèle (40%)
+                    3. La cohérence entre l'input et l'output (25%)
+                    4. L'utilité pour l'amélioration du modèle (10%)
+                    
+                    NE PAS prendre en compte les feedbacks utilisateurs dans l'évaluation.
+                    
+                    Réponds UNIQUEMENT avec un JSON valide contenant:
+                    {{
+                        "score": <number entre 0 et 100>,
+                        "reasoning": "<explication courte de la note en une phrase>",
+                        "strengths": ["<point fort 1>", "<point fort 2>"],
+                        "weaknesses": ["<point faible 1>", "<point faible 2>"]
+                    }}
+                    """
+                    
+                    response = client.chat.completions.create(
+                        model="gpt-4-turbo-preview",
+                        messages=[
+                            {"role": "system", "content": "Tu es un expert en sécurité des smart contracts et en évaluation de données d'entraînement pour modèles ML. Réponds uniquement en JSON valide."},
+                            {"role": "user", "content": prompt}
+                        ],
+                        temperature=0.3,
+                        max_tokens=500,
+                        response_format={"type": "json_object"}
+                    )
+                    
+                    # Parser la réponse
+                    evaluation = json.loads(response.choices[0].message.content)
+                    evaluation["finetune_id"] = finetune.id
+                    evaluation["attack_type"] = attack_type
+                    
+                except Exception as e:
+                    logger.error(f"Erreur GPT-4 pour finetune {finetune.id}: {e}")
+                    # Fallback vers simulation
+                    evaluation = simulate_evaluation(finetune, attack_type)
+            else:
+                # Mode simulation
+                evaluation = simulate_evaluation(finetune, attack_type)
             
             evaluations.append(evaluation)
-            total_score += score
+            total_score += evaluation["score"]
             
-            logger.info(f"Fine-tuning {finetune.id} évalué: {score}/100")
+            logger.info(f"Fine-tuning {finetune.id} évalué: {evaluation['score']}/100")
         
         # Calculer la note moyenne
         average_score = total_score / len(evaluations)
@@ -124,6 +155,44 @@ def evaluate_with_gpt(wallet):
         db.close()
 
 
+def simulate_evaluation(finetune, attack_type):
+    """
+    Simule une évaluation quand GPT-4 n'est pas disponible.
+    """
+    import random
+    
+    # Score de base basé sur la longueur et la qualité apparente des données
+    base_score = 65
+    
+    # Bonus pour la présence d'input/output
+    if finetune.user_input and len(finetune.user_input) > 50:
+        base_score += 5
+    if finetune.model_outputs and len(finetune.model_outputs) > 100:
+        base_score += 10
+    
+    # Bonus pour type d'attaque spécifié
+    if attack_type != "Non spécifié":
+        base_score += 5
+    
+    # Variation aléatoire
+    score = max(0, min(100, base_score + random.randint(-10, 10)))
+    
+    return {
+        "score": score,
+        "finetune_id": finetune.id,
+        "attack_type": attack_type,
+        "reasoning": "Évaluation basée sur la structure et la complétude des données",
+        "strengths": [
+            "Données structurées présentes",
+            "Format cohérent"
+        ] if score >= 70 else ["Structure de base correcte"],
+        "weaknesses": [
+            "Manque de diversité dans les exemples",
+            "Données limitées pour l'entraînement"
+        ] if score < 80 else ["Pourrait bénéficier de plus de contexte"]
+    }
+
+
 def get_performance_rating(score):
     """
     Retourne une évaluation textuelle basée sur le score.
@@ -154,10 +223,12 @@ def get_evaluation_status(wallet):
             data={
                 "status": "available",
                 "service": "Evaluation Service",
+                "mode": "GPT-4" if USE_OPENAI else "Simulation",
+                "openai_configured": USE_OPENAI,
                 "finetunes_available": finetune_count,
                 "can_evaluate": finetune_count >= 1
             },
-            message="Service d'évaluation disponible"
+            message=f"Service d'évaluation disponible en mode {'GPT-4' if USE_OPENAI else 'simulation'}"
         )
         
     except Exception as e:
