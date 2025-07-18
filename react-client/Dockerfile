@@ -1,5 +1,5 @@
-# Base image: Node.js 18 with Alpine Linux (lightweight)
-FROM node:18-alpine
+# Base image: Node.js 20 with Alpine Linux (lightweight)
+FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci

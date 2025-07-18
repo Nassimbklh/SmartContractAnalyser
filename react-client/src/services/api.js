@@ -29,6 +29,7 @@ api.interceptors.request.use(
 export const authAPI = {
   login: (credentials) => api.post('/login', credentials),
   register: (userData) => api.post('/register', userData),
+  getCurrentUser: () => api.get('/user/me'),
 };
 
 // Contract API
@@ -49,6 +50,14 @@ export const contractAPI = {
 // Feedback API
 export const feedbackAPI = {
   submitFeedback: (feedbackData) => api.post('/feedback', feedbackData),
+};
+
+// Finetune API
+export const finetuneAPI = {
+  create: (data) => api.post('/finetune', data),
+  get: (id) => api.get(`/finetune/${id}`),
+  update: (id, data) => api.put(`/finetune/${id}`, data),
+  list: (params) => api.get('/finetune', { params }),
 };
 
 // Subscription API

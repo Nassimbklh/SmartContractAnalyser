@@ -1,9 +1,23 @@
 import React, { useState } from "react";
-import { contractAPI, feedbackAPI } from "../services/api";
+import { contractAPI, feedbackAPI, finetuneAPI, authAPI } from "../services/api";
 import { handleApiError } from "../utils/utils";
 import AnalysisDisplay from "./AnalysisDisplay"; // Import the new component
 
 function Analyze() {
+  // Fetch user technical score on component mount
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await authAPI.getCurrentUser();
+        if (response.data && response.data.data && response.data.data.technical_score) {
+          setUserTechnicalScore(response.data.data.technical_score);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
   const [code, setCode] = useState("");
   const [file, setFile] = useState(null);
   // const [reportContent, setReportContent] = useState(""); // Replaced by analysisReportData
@@ -15,11 +29,13 @@ function Analyze() {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [feedbackError, setFeedbackError] = useState("");
+  const [finetuneId, setFinetuneId] = useState(null);
 
   // State for the new AnalysisDisplay component
   const [analysisProgressData, setAnalysisProgressData] = useState(null);
   const [analysisReportData, setAnalysisReportData] = useState(null);
   const [analysisInProgress, setAnalysisInProgress] = useState(false);
+  const [userTechnicalScore, setUserTechnicalScore] = useState(1);
 
 
   const resetAnalysisState = () => {
@@ -31,6 +47,7 @@ function Analyze() {
     setFeedbackComment("");
     setFeedbackSubmitted(false);
     setFeedbackError("");
+    setFinetuneId(null);
     // setFile(null); // Optionally reset file input
     // setCode(""); // Optionally reset code input
   };
@@ -90,6 +107,11 @@ function Analyze() {
       }));
 
       const res = await contractAPI.analyze(formData);
+      
+      // Capturer l'input de l'utilisateur et la réponse pour finetune
+      const userInput = code.trim() || (file ? `File: ${file.name}` : '');
+      // Convert the model output to a string representation
+      const modelOutput = JSON.stringify(res.data);
 
       await new Promise(resolve => setTimeout(resolve, 500));
       setAnalysisProgressData(prev => ({
@@ -201,6 +223,27 @@ function Analyze() {
         if (historyRes.data && historyRes.data.data && historyRes.data.data.length > 0) {
           const latestReport = historyRes.data.data[0];
           setReportId(latestReport.id);
+          
+          // Créer une entrée finetune
+          try {
+            const finetuneData = {
+              user_input: userInput,
+              model_outputs: typeof modelOutput === 'string' ? modelOutput : JSON.stringify(modelOutput),
+              report_id: latestReport.id,
+              user_info: JSON.stringify({
+                timestamp: new Date().toISOString(),
+                browser: navigator.userAgent
+              }),
+              feedback_status: "pending"
+            };
+            
+            const finetuneRes = await finetuneAPI.create(finetuneData);
+            setFinetuneId(finetuneRes.data.data.finetune_id);
+            console.log("Finetune entry created:", finetuneRes.data.data.finetune_id);
+          } catch (finetuneError) {
+            console.error("Failed to create finetune entry:", finetuneError);
+            // Ne pas bloquer l'analyse si finetune échoue
+          }
         }
       } catch (historyError) {
         console.error("Failed to fetch report ID from history:", historyError);
@@ -311,6 +354,21 @@ function Analyze() {
       });
 
       setFeedbackSubmitted(true);
+      
+      // Mettre à jour l'entrée finetune avec le feedback
+      if (finetuneId) {
+        try {
+          await finetuneAPI.update(finetuneId, {
+            feedback_user: feedbackComment,
+            feedback_status: feedbackStatus === "OK" ? "approved" : "rejected",
+            weight_request: feedbackStatus === "OK" ? userTechnicalScore : 0
+          });
+          console.log("Finetune entry updated with feedback");
+        } catch (finetuneUpdateError) {
+          console.error("Failed to update finetune entry:", finetuneUpdateError);
+          // Ne pas bloquer si la mise à jour échoue
+        }
+      }
     } catch (error) {
       console.error(error);
       const errorMessage = handleApiError(error);

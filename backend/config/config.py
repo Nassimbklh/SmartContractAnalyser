@@ -6,6 +6,7 @@ class Config:
     Base configuration class.
     """
     # Flask settings
+    RUNPOD_ID = os.environ.get("RUNPOD_ID")
     SECRET_KEY = os.environ.get("SECRET_KEY", "supersecret")
 
     # JWT settings
@@ -44,4 +45,5 @@ class Config:
             "GANACHE_URL": cls.GANACHE_URL,
             "CORS_ORIGINS": cls.CORS_ORIGINS,
             "LOG_LEVEL": cls.LOG_LEVEL,
+            "RUNPOD_ID": cls.RUNPOD_ID,
         }
